@@ -1,103 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GoblinReach.ai — Let AI DM for You</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoblinReach</title>
   <style>
-    :root {
-      --accent: #46FF00; /* neon green */
-      --bg: #000;
-      --text: #fff;
-      --font: 'Arial', sans-serif;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
-    .container { max-width: 800px; margin: auto; padding: 20px; }
-    header { text-align: center; padding: 60px 0; }
-    h1 { font-size: 3rem; }
-    p { font-size: 1.1rem; margin: 20px 0; }
-    .buttons { margin: 30px 0; }
-    .btn { display: inline-flex; align-items: center; background: none; border: 2px solid var(--accent); color: var(--accent); padding: 12px 20px; font-size: 1rem; text-decoration: none; border-radius: 8px; margin-right: 10px; transition: background 0.2s, color 0.2s; }
-    .btn:hover { background: var(--accent); color: var(--bg); }
-    .btn img { width: 20px; height: 20px; margin-right: 8px; }
-    section { margin: 60px 0; }
-    .feature-list { list-style: none; }
-    .feature-list li::before { content: '✓'; color: var(--accent); margin-right: 8px; }
-    .comment { background: #111; border-left: 4px solid var(--accent); padding: 20px; border-radius: 4px; display: flex; align-items: flex-start; }
-    .comment img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; }
-    .token-form { display: flex; flex-direction: column; max-width: 400px; }
-    .token-form input { padding: 10px; font-size: 1rem; border: 1px solid #333; border-radius: 4px; margin-bottom: 15px; }
-    .token-form button { padding: 10px; font-size: 1rem; border: none; background: var(--accent); color: var(--bg); border-radius: 4px; cursor: pointer; }
-    #saved-msg { margin-top: 10px; }
-    footer { text-align: center; padding: 40px 0; font-size: 0.9rem; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+    header { background: #333; color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+    header .logo { font-size: 1.5rem; font-weight: bold; }
+    header nav a { color: #fff; margin-left: 1.5rem; text-decoration: none; font-weight: 500; }
+    .hero { padding: 4rem 2rem; text-align: center; background: #444; color: #fff; }
+    .features { display: flex; justify-content: space-around; margin: 2rem 0; }
+    .feature { background: #fff; border-radius: 8px; padding: 1.5rem; width: 28%; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; }
+    .feature h3 { margin-top: 0; }
+    .controls { background: #fff; margin: 2rem auto; padding: 1.5rem; width: 80%; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .controls label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+    .controls input[type=range] { width: 100%; }
+    .controls .value { text-align: right; margin-top: -1.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: #333; }
+    footer { background: #333; color: #fff; text-align: center; padding: 1rem 0; margin-top: 2rem; }
+    /* Modal styles */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.6); }
+    .modal-content { background: #fff; margin: 10% auto; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px; position: relative; }
+    .modal-content h2 { margin-top: 0; }
+    .modal-content input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; }
+    .modal-content button { width: 100%; padding: 0.75rem; background: #333; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+    .close-btn { position: absolute; top: 0.5rem; right: 0.75rem; font-size: 1.2rem; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Let AI DM for You</h1>
-      <p>Automate your Instagram outreach and start closing deals today.</p>
-      <div class="buttons">
-        <a href="#features" class="btn"><img src="logo.png" alt="Logo">Learn</a>
-        <a href="sample.pdf" download class="btn">Download Sample PDF</a>
-      </div>
-    </header>
+  <header>
+    <div class="logo">GoblinReach</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#controls">Settings</a>
+      <a href="#" id="loginBtn">Login</a>
+    </nav>
+  </header>
 
-    <section id="features">
-      <h2>Features</h2>
-      <ul class="feature-list">
-        <li>50 free DMs trial — no credit card required</li>
-        <li>Proxy & VPN support for safe, reliable outreach</li>
-        <li>Auto mouse wiggler to prevent sleep</li>
-        <li>Randomized delays & auto-retry to avoid bans</li>
-        <li>Lead tracking: seen/opened/responded</li>
-        <li>Google Sheets & Telegram integration</li>
-      </ul>
-    </section>
+  <section class="hero">
+    <h1>Automate Your Instagram Outreach</h1>
+    <p>Scale your DM campaigns with stealth and reliability.</p>
+  </section>
 
-    <section id="comment-section">
-      <h2>What People Are Saying</h2>
-      <div class="comment">
-        <img src="lisa-avatar.png" alt="Lisa K">
-        <div>
-          <strong>Lisa K</strong>
-          <p>"This tool doubled my sales in a week! The automation feels human, and the support is top-notch."</p>
-        </div>
-      </div>
-    </section>
+  <section id="features" class="features">
+    <div class="feature">
+      <h3>Rotating Proxies</h3>
+      <p>Stay under the radar with auto-switching IPs.</p>
+    </div>
+    <div class="feature">
+      <h3>VPNs</h3>
+      <p>Secure connections for every message.</p>
+    </div>
+    <div class="feature">
+      <h3>DigitalOcean 24/7</h3>
+      <p>Always-on cloud servers to power your bots.</p>
+    </div>
+  </section>
 
-    <section id="token-section">
-      <h2>Enter Your Cash App Token</h2>
-      <form class="token-form" onsubmit="saveToken(event)">
-        <input type="text" id="cashToken" placeholder="Paste Cash App token here" required>
-        <button type="submit">Save Token</button>
-        <div id="saved-msg"></div>
-      </form>
-    </section>
+  <section id="controls" class="controls">
+    <label for="intervalRange">Adjust DM Interval (seconds):</label>
+    <input type="range" id="intervalRange" min="60" max="3600" step="60" value="600">
+    <div class="value">Current Interval: <span id="intervalValue">600</span>s</div>
+  </section>
 
-    <footer>
-      &copy; 2025 GoblinReach.ai — All rights reserved.
-    </footer>
+  <footer>
+    <p>&copy; 2025 GoblinReach. All rights reserved.</p>
+  </footer>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <h2>Instagram Login</h2>
+      <input type="text" id="instaUser" placeholder="Username">
+      <input type="password" id="instaPass" placeholder="Password">
+      <button id="submitLogin">Login &amp; Open Instagram</button>
+    </div>
   </div>
 
   <script>
-    function saveToken(e) {
+    // Slider update
+    const range = document.getElementById('intervalRange');
+    const valueDisplay = document.getElementById('intervalValue');
+    range.addEventListener('input', () => {
+      valueDisplay.textContent = range.value;
+    });
+
+    // Modal handling
+    const loginBtn = document.getElementById('loginBtn');
+    const modal = document.getElementById('loginModal');
+    const closeModal = document.getElementById('closeModal');
+    const submitBtn = document.getElementById('submitLogin');
+
+    loginBtn.addEventListener('click', e => {
       e.preventDefault();
-      const token = document.getElementById('cashToken').value.trim();
-      if (token) {
-        localStorage.setItem('cashAppToken', token);
-        document.getElementById('saved-msg').textContent = 'Token saved successfully.';
-      }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('cashAppToken');
-      if (saved) {
-        document.getElementById('cashToken').value = saved;
-        document.getElementById('saved-msg').textContent = 'Loaded saved token.';
-      }
+      modal.style.display = 'block';
+    });
+    closeModal.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+
+    submitBtn.addEventListener('click', () => {
+      // Placeholder: open Instagram in new tab
+      window.open('https://www.instagram.com', '_blank');
+      modal.style.display = 'none';
     });
   </script>
 </body>
 </html>
+
