@@ -1,136 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GoblinReach – Stealth DM & Data Automation</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoblinReach.ai — Let AI DM for You</title>
   <style>
-    body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; }
-    .container { max-width:1000px; margin:auto; padding:20px; }
-    .hero { text-align:center; padding:80px 20px; }
-    .hero h1 { font-size:3rem; margin-bottom:.5rem; }
-    .hero p.sub { font-size:1.1rem; color:#0f0; margin-bottom:.5rem; }
-    .hero p.rate{ font-size:1rem; color:#ccc; margin-bottom:20px; }
-    .buttons a {
-      display:inline-block; margin:0 8px; padding:12px 24px;
-      border-radius:6px; text-decoration:none; font-weight:bold; transition:.2s;
+    :root {
+      --accent: #46FF00; /* neon green */
+      --bg: #000;
+      --text: #fff;
+      --font: 'Arial', sans-serif;
     }
-    .btn-primary { background:#0f0; color:#000; }
-    .btn-primary:hover { background:#0c0; }
-    .btn-secondary { background:#222; color:#fff; border:1px solid #444; }
-    .btn-secondary:hover { background:#333; }
-    section { padding:60px 0; }
-    section h2 { font-size:2rem; text-align:center; margin-bottom:40px; color:#0f0; }
-    .features {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      grid-template-rows:repeat(2,auto);
-      gap:30px;
-    }
-    .feature {
-      background:#111; border-radius:8px; padding:20px; text-align:center;
-      box-shadow:0 4px 12px rgba(0,0,0,0.6); transition:.2s;
-    }
-    .feature:hover { transform:translateY(-4px); }
-    .feature svg { width:48px; height:48px; fill:#0f0; margin-bottom:12px; }
-    .feature h3 { margin:0 0 8px; font-size:1.15rem; }
-    .feature p { margin:0; color:#ccc; font-size:.9rem; }
-    .example-img { margin-top:12px; }
-    .example-img img { max-width:100%; border-radius:4px; }
-    html{scroll-behavior:smooth;}
-    .reviews{padding:60px 0;}
-    .review-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:20px;
-    }
-    .review{
-      background:#111; border-radius:8px; padding:20px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.6);
-    }
-    .review-header{
-      display:flex; align-items:center; justify-content:center; margin-bottom:10px;
-    }
-    .review-header svg{
-      width:20px; height:20px; fill:#1DA1F2; margin-right:8px;
-    }
-    .review strong{color:#fff;}
-    .review p{margin:0; color:#ccc; font-size:.9rem;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+    .container { max-width: 800px; margin: auto; padding: 20px; }
+    header { text-align: center; padding: 60px 0; }
+    h1 { font-size: 3rem; }
+    p { font-size: 1.1rem; margin: 20px 0; }
+    .buttons { margin: 30px 0; }
+    .btn { display: inline-flex; align-items: center; background: none; border: 2px solid var(--accent); color: var(--accent); padding: 12px 20px; font-size: 1rem; text-decoration: none; border-radius: 8px; margin-right: 10px; transition: background 0.2s, color 0.2s; }
+    .btn:hover { background: var(--accent); color: var(--bg); }
+    .btn img { width: 20px; height: 20px; margin-right: 8px; }
+    section { margin: 60px 0; }
+    .feature-list { list-style: none; }
+    .feature-list li::before { content: '✓'; color: var(--accent); margin-right: 8px; }
+    .comment { background: #111; border-left: 4px solid var(--accent); padding: 20px; border-radius: 4px; display: flex; align-items: flex-start; }
+    .comment img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; }
+    .token-form { display: flex; flex-direction: column; max-width: 400px; }
+    .token-form input { padding: 10px; font-size: 1rem; border: 1px solid #333; border-radius: 4px; margin-bottom: 15px; }
+    .token-form button { padding: 10px; font-size: 1rem; border: none; background: var(--accent); color: var(--bg); border-radius: 4px; cursor: pointer; }
+    #saved-msg { margin-top: 10px; }
+    footer { text-align: center; padding: 40px 0; font-size: 0.9rem; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- HERO -->
-    <div class="hero">
-      <h1>GoblinReach</h1>
-      <p class="sub">Join 2,000+ stealth operators</p>
-      <p class="rate">Safe pacing &amp; throttling • 24/7 Uptime</p>
+    <header>
+      <h1>Let AI DM for You</h1>
+      <p>Automate your Instagram outreach and start closing deals today.</p>
       <div class="buttons">
-        <a href="#features" class="btn-secondary">Learn More</a>
-        <a href="https://buy.stripe.com/3cI7sK69n4Zx4S340UaZi02" class="btn-primary" target="_blank">Subscribe Now</a>
+        <a href="#features" class="btn"><img src="logo.png" alt="Logo">Learn</a>
+        <a href="sample.pdf" download class="btn">Download Sample PDF</a>
       </div>
-    </div>
+    </header>
 
-    <!-- FEATURES -->
     <section id="features">
       <h2>Features</h2>
-      <div class="features">
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M3 3h18v14H3z"/><path d="M1 19h22v2H1z"/></svg>
-          <h3>Web Dashboard</h3>
-          <p>No Telegram—full browser control panel included.</p>
-        </div>
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5 3.8 9.8 8 11 4.2-1.2 8-6 8-11V5l-8-3z"/><path d="M13 16h-2v-6h2v6zm0 4h-2v-2h2v2z"/></svg>
-          <h3>Data Export</h3>
-          <p>Export followers, likes, comments &amp; more effortlessly.</p>
-          <div class="example-img">
-            <img src="/example.jpg" alt="Data Export Sample"/>
-          </div>
-        </div>
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-          <h3>VPN &amp; Proxy</h3>
-          <p>Rotating nodes mask your location to prevent bans.</p>
-        </div>
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16v14H4zm2 2v10h12V6zM2 20h20v2H2z"/></svg>
-          <h3>Headless Runner</h3>
-          <p>Runs 24/7 on DigitalOcean—laptop can stay closed.</p>
-        </div>
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7v3h1a1 1 0 010 2h-1v3a7 7 0 01-14 0v-3H4a1 1 0 010-2h1V9a7 7 0 017-7zm-5 10v3a5 5 0 0010 0v-3H7zm8-3v-2a5 5 0 00-10 0v2h10z"/></svg>
-          <h3>Token Access</h3>
-          <p>Secure tokens for auth &amp; throttling.</p>
-        </div>
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a7 7 0 017 7 7 7 0 01-7 7v3l-4-4 4-4v3a5 5 0 005-5 5 5 0 00-5-5z"/></svg>
-          <h3>Auto-Recovery</h3>
-          <p>Self-healing routines detect &amp; fix issues automatically.</p>
+      <ul class="feature-list">
+        <li>50 free DMs trial — no credit card required</li>
+        <li>Proxy & VPN support for safe, reliable outreach</li>
+        <li>Auto mouse wiggler to prevent sleep</li>
+        <li>Randomized delays & auto-retry to avoid bans</li>
+        <li>Lead tracking: seen/opened/responded</li>
+        <li>Google Sheets & Telegram integration</li>
+      </ul>
+    </section>
+
+    <section id="comment-section">
+      <h2>What People Are Saying</h2>
+      <div class="comment">
+        <img src="lisa-avatar.png" alt="Lisa K">
+        <div>
+          <strong>Lisa K</strong>
+          <p>"This tool doubled my sales in a week! The automation feels human, and the support is top-notch."</p>
         </div>
       </div>
     </section>
 
-    <!-- REVIEWS -->
-    <section class="reviews">
-      <h2>What Our Users Say</h2>
-      <div class="review-grid">
-        <div class="review">
-          <div class="review-header">
-            <svg viewBox="0 0 24 24"><path d="M22 5.7l-1.4-1.4-8.6 8.6-3.6-3.6-1.4 1.4 5 5 10-10z"/></svg>
-            <strong>Jane D. <span style="color:#1DA1F2;">✔︎</span></strong>
-          </div>
-          <p>"Doubled my sales in one week!"</p>
-        </div>
-        <div class="review">
-          <div class="review-header">
-            <svg viewBox="0 0 24 24"><path d="M22 5.7l-1.4-1.4-8.6 8.6-3.6-3.6-1.4 1.4 5 5 10-10z"/></svg>
-            <strong>Mark S. <span style="color:#1DA1F2;">✔︎</span></strong>
-          </div>
-          <p>"Safe, stealthy &amp; SO effective."</p>
-        </div>
-        <div class="review">
-          <div class="review-header">
-            <svg viewBox="0 0 24 24"><path d="M22 5.7l-1.4-1.4-8.6 8.6-3.6-3.6-1.4 1.4 5 5 10-10z"/></svg>  
-            <strong>Lisa K. <span style="color:#1DA1F2;">✔︎</span></strong>
+    <section id="token-section">
+      <h2>Enter Your Cash App Token</h2>
+      <form class="token-form" onsubmit="saveToken(event)">
+        <input type="text" id="cashToken" placeholder="Paste Cash App token here" required>
+        <button type="submit">Save Token</button>
+        <div id="saved-msg"></div>
+      </form>
+    </section>
 
+    <footer>
+      &copy; 2025 GoblinReach.ai — All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    function saveToken(e) {
+      e.preventDefault();
+      const token = document.getElementById('cashToken').value.trim();
+      if (token) {
+        localStorage.setItem('cashAppToken', token);
+        document.getElementById('saved-msg').textContent = 'Token saved successfully.';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('cashAppToken');
+      if (saved) {
+        document.getElementById('cashToken').value = saved;
+        document.getElementById('saved-msg').textContent = 'Loaded saved token.';
+      }
+    });
+  </script>
+</body>
+</html>
