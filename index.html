@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -10,10 +10,11 @@
     .hero { text-align:center; padding:80px 20px; }
     .hero h1 { font-size:3rem; margin-bottom:.5rem; }
     .hero p.sub { font-size:1.1rem; color:#0f0; margin-bottom:.5rem; }
-    .hero p.rate { font-size:1rem; color:#ccc; margin-bottom:1.5rem; }
-    .buttons a { 
-      display:inline-block; margin:0 8px; padding:12px 24px; border-radius:6px;
-      text-decoration:none; font-weight:bold; transition:.2s;
+    .hero p.rate{ font-size:1rem; color:#ccc; margin-bottom:20px; }
+    .buttons a {
+      display:inline-block; margin:0 8px; padding:12px 24px;
+      border-radius:6px; text-decoration:none; font-weight:bold;
+      transition:.2s;
     }
     .btn-primary { background:#0f0; color:#000; }
     .btn-primary:hover { background:#0c0; }
@@ -23,7 +24,8 @@
     section h2 { font-size:2rem; text-align:center; margin-bottom:40px; color:#0f0; }
     .features {
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      grid-template-columns:repeat(3,1fr);
+      grid-template-rows:repeat(2,auto);
       gap:30px;
     }
     .feature {
@@ -34,11 +36,10 @@
     .feature svg { width:48px; height:48px; fill:#0f0; margin-bottom:12px; }
     .feature h3 { margin:0 0 8px; font-size:1.15rem; }
     .feature p { margin:0; color:#ccc; font-size:.9rem; }
-    .example-pdf { text-align:center; margin-top:15px; }
-    .example-pdf a { color:#0f0; text-decoration:underline; }
+    .example-img { margin-top:12px; }
+    .example-img img { max-width:100%; border-radius:4px; }
     html { scroll-behavior:smooth; }
     .reviews { padding:60px 0; }
-    .reviews h2 { color:#0f0; margin-bottom:20px; }
     .review-grid {
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -48,172 +49,33 @@
       background:#111; border-radius:8px; padding:20px;
       box-shadow:0 4px 12px rgba(0,0,0,0.6);
     }
-    .review-header { display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
-    .review-header svg { width:20px; height:20px; fill:#1DA1F2; margin-right:8px; }
+    .review-header {
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:10px;
+    }
+    .review-header svg {
+      width:20px; height:20px; fill:#1DA1F2; margin-right:8px;
+    }
     .review strong { color:#fff; }
     .review p { margin:0; color:#ccc; font-size:.9rem; }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- HERO -->
     <div class="hero">
       <h1>GoblinReach</h1>
       <p class="sub">Join 2,000+ stealth operators</p>
       <p class="rate">Safe pacing &amp; throttling • 24/7 Uptime</p>
       <div class="buttons">
         <a href="#features" class="btn-secondary">Learn More</a>
-        <a href="https://buy.stripe.com/3cI7sK69n4Zx4S340UaZi02" class="btn-primary" target="_blank">Subscribe Now</a>
+        <a href="https://buy.stripe.com/3cI7sK69n4Zx4S340UaZi02" class="btn-primary" target="_blank">
+          Subscribe Now
+        </a>
       </div>
     </div>
 
-    <section id="features">
-      <h2>Features</h2>
-      <div class="features">
-        <!-- Web Dashboard -->
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M3 3h18v14H3z"/><path d="M1 19h22v2H1z"/></svg>
-          <h3>Web Dashboard</h3>
-          <p>No Telegram—full browser control panel included.</p>
-        </div>
-        <!-- Data Export -->
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5 3.8 9.8 8 11 4.2-1.2 8-6 8-11V5l-8-3zm1 14h-2v-6h2v6zm0 4h-2v-2h2v2z"/></svg>
-          <h3>Data Export</h3>
-          <p>Export followers, likes, comments &amp; more—just like PhantomBuster.</p>
-          <div class="example-pdf">
-            <a href="/example.pdf" target="_blank">Download sample PDF</a>
-          </div>
-        </div>
-        <!-- VPN & Proxy -->
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-          <h3>VPN &amp; Proxy</h3>
-          <p>Rotating nodes mask your location to prevent bans.</p>
-        </div>
-        <!-- Headless Runner -->
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16v14H4zm2 2v10h12V6zM2 20h20v2H2z"/></svg>
-          <h3>Headless Runner</h3>
-          <p>24/7 on DigitalOcean—laptop can stay closed.</p>
-        </div>
-        <!-- Token Access -->
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7v3h1a1 1 0 010 2h-1v3a7 7 0 01-14 0v-3H4a1 1 0 010-2h1V9a7 7 0 017-7zm-5 10v3a5 5 0 0010 0v-3H7zm8-3v-2a5 5 0 00-10 0v2h10z"/></svg>
-          <h3>Token Access</h3>
-          <p>Secure tokens in your extension for auth &amp; throttling.</p>
-        </div>
-        <!-- Auto-Recovery -->
-        <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a7 7 0 017 7 7 7 0 01-7 7v3l-4-4 4-4v3a5 5 0 005-5 5 5 0 00-5-5z"/></svg>
-          <h3>Auto-Recovery</h3>
-          <p>Self-healing routines detect &amp; fix issues automatically.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="reviews">
-      <h2>What Our Users Say</h2>
-      <div class="review-grid">
-        <div class="review">
-          <div class="review-header">
-            <svg viewBox="0 0 24 24"><path d="M22 5.7l-1.4-1.4-8.6 8.6-3.6-3.6-1.4 1.4 5 5 10-10z"/></svg>
-            <strong>Jane D. <span style="color:#1DA1F2;">✔︎</span></strong>
-          </div>
-          <p>"Doubled my sales in one week!"</p>
-        </div>
-        <div class="review">
-          <div class="review-header">
-            <svg viewBox="0 0 24 24"><path d="M22 5.7l-1.4-1.4-8.6 8.6-3.6-3.6-1.4 1.4 5 5 10-10z"/></svg>
-            <strong>Mark S. <span style="color:#1DA1F2;">✔︎</span></strong>
-          </div>
-          <p>"Safe, stealthy &amp; SO effective."</p>
-        </div>
-        <div class="review">
-          <div class="review-header">
-            <svg viewBox="0 0 24 24"><path d="M22 5.7l-1.4-1.4-8.6 8.6-3.6-3.6-1.4 1.4 5 5 10-10z"/></svg>
-            <strong>Lisa K. <span style="color:#1DA1F2;">✔︎</span></strong>
-          </div>
-          <p>"Auto-recovery saved my campaign twice."</p>
-        </div>
-      </div>
-    </section>
-  </div>
-</body>
-</html>
-<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GoblinReach – Stealth DM & Data Automation</title>
-  <style>
-    body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; }
-    .container { max-width:1000px; margin:auto; padding:20px; }
-    .hero { text-align:center; padding:80px 20px; }
-    .hero h1 { font-size:3rem; margin-bottom:.5rem; }
-    .hero p.sub { font-size:1.1rem; color:#0f0; margin-bottom:.5rem; }
-    .hero p.rate { font-size:1rem; color:#ccc; margin-bottom:1.5rem; }
-    .buttons a { display:inline-block; margin:0 8px; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:bold; transition:.2s; }
-    .btn-primary { background:#0f0; color:#000; }
-    .btn-primary:hover { background:#0c0; }
-    .btn-secondary { background:#222; color:#fff; border:1px solid #444; }
-    .btn-secondary:hover { background:#333; }
-    section { padding:60px 0; }
-    section h2 { font-size:2rem; text-align:center; margin-bottom:40px; color:#0f0; }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, auto);
-      gap: 30px;
-      padding: 40px 0;
-    }
-    .feature {
-      background:#111; border-radius:8px; padding:20px; text-align:center;
-      box-shadow:0 4px 12px rgba(0,0,0,0.6); transition:.2s;
-    }
-    .feature:hover { transform:translateY(-4px); }
-    .feature svg { width:48px; height:48px; fill:#0f0; margin-bottom:12px; }
-    .feature h3 { margin:0 0 8px; font-size:1.15rem; }
-    .feature p { margin:0; color:#ccc; font-size:.9rem; }
-    .example-pdf { text-align:center; margin-top:15px; }
-    .example-pdf a { color:#0f0; text-decoration:underline; }
-    html { scroll-behavior:smooth; }
-    .reviews { padding:60px 0; }
-    .reviews h2 { color:#0f0; margin-bottom:20px; text-align:center; }
-    .review-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:20px;
-    }
-    .review { background:#111; border-radius:8px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-    .review-header { display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
-    .review-header svg { width:20px; height:20px; fill:#1DA1F2; margin-right:8px; }
-    .review strong { color:#fff; }
-    .review p { margin:0; color:#ccc; font-size:.9rem; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="hero">
-      <h1>GoblinReach</h1>
-      <p class="sub">Join 2,000+ stealth operators</p>
-      <p class="rate">Safe pacing &amp; throttling • 24/7 Uptime</p>
-      <div class="buttons">
-        <a href="#features" class="btn-secondary">Learn More</a>
-        <a href="https://buy.stripe.com/3cI7sK69n4Zx4S340UaZi02" class="btn-primary" target="_blank">Subscribe Now</a>
-      </div>
-    </div>
-
+    <!-- FEATURES -->
     <section id="features">
       <h2>Features</h2>
       <div class="features">
@@ -223,11 +85,11 @@
           <p>No Telegram—full browser control panel included.</p>
         </div>
         <div class="feature">
-          <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5 3.8 9.8 8 11 4.2-1.2 8-6 8-11V5l-8-3zm1 14h-2v-6h2v6zm0 4h-2v-2h2v2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5 3.8 9.8 8 11 4.2-1.2 8-6 8-11V5l-8-3z"/><path d="M13 16h-2v-6h2v6zm0 4h-2v-2h2v2z"/></svg>
           <h3>Data Export</h3>
           <p>Export followers, likes, comments &amp; more—just like PhantomBuster.</p>
-          <div class="example-pdf">
-            <a href="/example.pdf" target="_blank">Download sample PDF</a>
+          <div class="example-img">
+            <img src="/example.jpg" alt="Data Export Sample"/>
           </div>
         </div>
         <div class="feature">
@@ -253,6 +115,7 @@
       </div>
     </section>
 
+    <!-- REVIEWS -->
     <section class="reviews">
       <h2>What Our Users Say</h2>
       <div class="review-grid">
