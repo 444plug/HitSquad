@@ -118,7 +118,7 @@
     }
 
     /* Login Section */
-    .login-section {
+    #login {
       background-color: #1f1f1f;
       padding: 3rem 1rem;
       display: flex;
@@ -185,7 +185,7 @@
   <section class="hero">
     <h1>Automate Your Instagram Outreach</h1>
     <p>Effortless DM campaigns running in the cloud—no laptop needed.</p>
-    <button class="btn-cta">Get Started</button>
+    <a href="#login"><button class="btn-cta">Get Started</button></a>
   </section>
 
   <section class="features">
@@ -230,7 +230,7 @@
     </div>
   </section>
 
-  <section class="login-section">
+  <section id="login">
     <div class="login-card">
       <h2>Account Login</h2>
       <label for="email">Email</label>
@@ -240,6 +240,43 @@
       <button class="btn-token">Generate Token</button>
     </div>
   </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.querySelector('.btn-token');
+      btn.addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        if (!email || !password) {
+          alert('Please enter both email and password.');
+          return;
+        }
+        btn.disabled = true;
+        const originalText = btn.textContent;
+        btn.textContent = 'Generating...';
+        try {
+          const response = await fetch('/api/generate-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          if (!response.ok) throw new Error('Server error');
+          const data = await response.json();
+          if (data.token) {
+            alert('Your token: ' + data.token);
+          } else {
+            alert('Failed to generate token.');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Error generating token.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 
