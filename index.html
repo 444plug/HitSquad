@@ -1,113 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GoblinReach</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoblinReach.ai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
-    header { background: #333; color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
-    header .logo { font-size: 1.5rem; font-weight: bold; }
-    header nav a { color: #fff; margin-left: 1.5rem; text-decoration: none; font-weight: 500; }
-    .hero { padding: 4rem 2rem; text-align: center; background: #444; color: #fff; }
-    .features { display: flex; justify-content: space-around; margin: 2rem 0; }
-    .feature { background: #fff; border-radius: 8px; padding: 1.5rem; width: 28%; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; }
-    .feature h3 { margin-top: 0; }
-    .controls { background: #fff; margin: 2rem auto; padding: 1.5rem; width: 80%; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .controls label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
-    .controls input[type=range] { width: 100%; }
-    .controls .value { text-align: right; margin-top: -1.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: #333; }
-    footer { background: #333; color: #fff; text-align: center; padding: 1rem 0; margin-top: 2rem; }
-    /* Modal styles */
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.6); }
-    .modal-content { background: #fff; margin: 10% auto; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px; position: relative; }
-    .modal-content h2 { margin-top: 0; }
-    .modal-content input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; }
-    .modal-content button { width: 100%; padding: 0.75rem; background: #333; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
-    .close-btn { position: absolute; top: 0.5rem; right: 0.75rem; font-size: 1.2rem; cursor: pointer; }
+    /* Dark theme with green accents */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    button {
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      outline: none;
+    }
+    button:hover { transform: translateY(-1px); }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #50fa7b;
+    }
+    .header .actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn-login, .btn-instagram {
+      background-color: #50fa7b;
+      color: #121212;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 2.75rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      color: #bbbbbb;
+    }
+    .btn-cta {
+      background-color: #50fa7b;
+      color: #121212;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background-color: #1e1e1e;
+      border-radius: 8px;
+      padding: 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      border: 1px solid #333;
+    }
+    .feature-card .icon {
+      font-size: 2.25rem;
+      color: #50fa7b;
+      flex-shrink: 0;
+    }
+    .feature-content h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .feature-content p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #bbbbbb;
+    }
+
+    /* Login Section */
+    .login-section {
+      background-color: #1f1f1f;
+      padding: 3rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+    .login-card {
+      background-color: #1e1e1e;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 320px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .login-card h2 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      color: #e0e0e0;
+    }
+    .login-card label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+      color: #cccccc;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background-color: #121212;
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+    .btn-token {
+      background-color: #50fa7b;
+      color: #121212;
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.25rem; }
+      .features { padding: 1rem; }
+      .header { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">GoblinReach</div>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#controls">Settings</a>
-      <a href="#" id="loginBtn">Login</a>
-    </nav>
+  <header class="header">
+    <div class="logo">GoblinReach.ai</div>
+    <div class="actions">
+      <a href="https://instagram.com/goblinreach.ai" target="_blank"><button class="btn-instagram">@goblinreach.ai</button></a>
+      <button class="btn-login">Login</button>
+    </div>
   </header>
 
   <section class="hero">
     <h1>Automate Your Instagram Outreach</h1>
-    <p>Scale your DM campaigns with stealth and reliability.</p>
+    <p>Effortless DM campaigns with proxy rotation, VPN security, and smart scheduling.</p>
+    <button class="btn-cta">Start Free Trial</button>
   </section>
 
-  <section id="features" class="features">
-    <div class="feature">
-      <h3>Rotating Proxies</h3>
-      <p>Stay under the radar with auto-switching IPs.</p>
+  <section class="features">
+    <div class="feature-card">
+      <div class="icon">🔄</div>
+      <div class="feature-content">
+        <h3>Rotating Proxies</h3>
+        <p>Switch IPs automatically to keep your account safe.</p>
+      </div>
     </div>
-    <div class="feature">
-      <h3>VPNs</h3>
-      <p>Secure connections for every message.</p>
+
+    <div class="feature-card">
+      <div class="icon">☁️</div>
+      <div class="feature-content">
+        <h3>VPN &amp; Hosting</h3>
+        <p>Secure, 24/7 DigitalOcean servers protected by VPN.</p>
+      </div>
     </div>
-    <div class="feature">
-      <h3>DigitalOcean 24/7</h3>
-      <p>Always-on cloud servers to power your bots.</p>
+
+    <div class="feature-card">
+      <div class="icon">⏰</div>
+      <div class="feature-content">
+        <h3>Smart Scheduling</h3>
+        <p>Adjust DM intervals and time zones with our slider control.</p>
+      </div>
     </div>
   </section>
 
-  <section id="controls" class="controls">
-    <label for="intervalRange">Adjust DM Interval (seconds):</label>
-    <input type="range" id="intervalRange" min="60" max="3600" step="60" value="600">
-    <div class="value">Current Interval: <span id="intervalValue">600</span>s</div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 GoblinReach. All rights reserved.</p>
-  </footer>
-
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" id="closeModal">&times;</span>
-      <h2>Instagram Login</h2>
-      <input type="text" id="instaUser" placeholder="Username">
-      <input type="password" id="instaPass" placeholder="Password">
-      <button id="submitLogin">Login &amp; Open Instagram</button>
+  <section class="login-section">
+    <div class="login-card">
+      <h2>Account Login</h2>
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com" />
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="••••••••" />
+      <button class="btn-token">Generate Token</button>
     </div>
-  </div>
-
-  <script>
-    // Slider update
-    const range = document.getElementById('intervalRange');
-    const valueDisplay = document.getElementById('intervalValue');
-    range.addEventListener('input', () => {
-      valueDisplay.textContent = range.value;
-    });
-
-    // Modal handling
-    const loginBtn = document.getElementById('loginBtn');
-    const modal = document.getElementById('loginModal');
-    const closeModal = document.getElementById('closeModal');
-    const submitBtn = document.getElementById('submitLogin');
-
-    loginBtn.addEventListener('click', e => {
-      e.preventDefault();
-      modal.style.display = 'block';
-    });
-    closeModal.addEventListener('click', () => modal.style.display = 'none');
-    window.addEventListener('click', e => {
-      if (e.target === modal) modal.style.display = 'none';
-    });
-
-    submitBtn.addEventListener('click', () => {
-      // Placeholder: open Instagram in new tab
-      window.open('https://www.instagram.com', '_blank');
-      modal.style.display = 'none';
-    });
-  </script>
+  </section>
 </body>
 </html>
-
