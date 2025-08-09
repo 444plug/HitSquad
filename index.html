@@ -1,4 +1,5 @@
-<!doctype html>
+# Write the single-file index.html (all-in-one) so the user can download and deploy without copying.
+content = r"""<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
@@ -287,8 +288,7 @@
 
   <script>
     // ===== Instant-working Extension Download (embedded ZIP) =====
-    // Base64 of a tiny zip with a READ_ME_FIRST.txt inside:
-    const EXT_B64 = "UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA"
+    const EXT_B64 = "UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
     function downloadExtension(){
       try{
         const byteChars = atob(EXT_B64);
@@ -411,5 +411,8 @@
   </script>
 </body>
 </html>
-
+"""
+path = "/mnt/data/index.single-file.html"
+open(path, "w", encoding="utf-8").write(content)
+path
 
