@@ -1,5 +1,4 @@
-# Write the single-file index.html (all-in-one) so the user can download and deploy without copying.
-content = r"""<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
@@ -7,24 +6,20 @@ content = r"""<!doctype html>
   <title>GoblinReach — DM Automation for Client Acquisition</title>
   <meta name="description" content="The #1 DM automation tool for getting high-ticket clients. Looks like $1,000/mo, priced at just $22/mo."/>
   <style>
-    :root{
-      --bg:#050708; --panel:#0a0f0a; --panel-2:#0e1510; --text:#e7ffe7;
-      --muted:#9ef8c3; --accent:#16ff6b; --accent-2:#00c853; --danger:#ff4d4f;
-      --shadow: 0 10px 30px rgba(0,0,0,.6);
-    }
+    :root{--bg:#050708;--panel:#0a0f0a;--panel-2:#0e1510;--text:#e7ffe7;--muted:#9ef8c3;--accent:#16ff6b;--accent-2:#00c853;--danger:#ff4d4f;--shadow:0 10px 30px rgba(0,0,0,.6)}
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:radial-gradient(1000px 600px at 70% -10%, #102015 0%, var(--bg) 50%), var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;line-height:1.5}
+    html,body{margin:0;padding:0;background:radial-gradient(1000px 600px at 70% -10%, #102015 0%, var(--bg) 50%), var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
     a{color:var(--muted);text-decoration:none}
     a:hover{color:var(--accent)}
     .container{max-width:1100px;margin:0 auto;padding:24px}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
     .logo{display:flex;gap:12px;align-items:center}
     .badge{border:1px solid #1d2b1f;padding:4px 10px;border-radius:999px;background:rgba(22,255,107,.08);color:var(--muted);font-size:12px}
-    .btn{display:inline-block;padding:14px 22px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001b0b;font-weight:700;box-shadow:var(--shadow);border:none;cursor:pointer;transition:transform .05s ease}
+    .btn{display:inline-block;padding:14px 22px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001b0b;font-weight:700;box-shadow:var(--shadow);border:none;cursor:pointer;transition:transform .05s}
     .btn:active{transform:scale(.98)}
     .btn-ghost{background:transparent;border:1px solid #17311e;color:var(--text)}
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:40px 0}
-    .card{background:linear-gradient(180deg, rgba(22,255,107,.07), rgba(0,0,0,.0));border:1px solid #163b23;border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+    .card{background:linear-gradient(180deg,rgba(22,255,107,.07),rgba(0,0,0,0));border:1px solid #163b23;border-radius:20px;padding:20px;box-shadow:var(--shadow)}
     .h1{font-size:42px;line-height:1.1;margin:0 0 12px;font-weight:900;letter-spacing:.2px}
     .sub{color:var(--muted);font-size:18px;margin-bottom:18px}
     .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
@@ -33,35 +28,33 @@ content = r"""<!doctype html>
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
     .footer{padding:40px 0;color:#8bbf9e;font-size:14px}
-    .input, select{width:100%;padding:14px 12px;border-radius:12px;background:#0b1410;border:1px solid #1a3724;color:var(--text);outline:none}
+    .input,select{width:100%;padding:14px 12px;border-radius:12px;background:#0b1410;border:1px solid #1a3724;color:var(--text);outline:none}
     .input:focus{border-color:var(--accent)}
     .small{font-size:12px;color:#9bd6b3}
     .center{text-align:center}
     .tag{display:inline-block;background:#0b1410;border:1px solid #17311e;border-radius:999px;padding:6px 10px;margin:6px 6px 0 0;color:#9ef8c3;font-size:12px}
     hr{border:0;border-top:1px solid #12301c;margin:26px 0}
-    .code{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0b1410;border:1px solid #163b23;border-radius:12px;padding:10px;color:#afffcf;font-size:12px}
+    .code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0b1410;border:1px solid #163b23;border-radius:12px;padding:10px;color:#afffcf;font-size:12px}
     .notice{background:#0e1a12;border-left:4px solid var(--accent);padding:12px;border-radius:12px}
     .pricing{display:flex;gap:16px;flex-wrap:wrap}
     .price{flex:1;min-width:260px}
     .price h3{margin:0 0 8px}
     .toggle{display:flex;align-items:center;gap:8px}
     .switch{width:48px;height:28px;border-radius:999px;background:#132219;border:1px solid #1a3724;position:relative;cursor:pointer}
-    .knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:999px;background:var(--accent);transition:left .15s ease}
+    .knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:999px;background:var(--accent);transition:left .15s}
     .switch.active .knob{left:22px}
     .toast{position:fixed;right:20px;bottom:20px;background:#0b1410;border:1px solid #17311e;color:#fff;padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);opacity:.98}
     form{display:grid;gap:10px}
     label{font-size:13px;color:#9ef8c3}
     ul{padding-left:18px}
-    @media (max-width:900px){ .hero{grid-template-columns:1fr} }
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
     section[aria-hidden="true"]{display:none}
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- NAV -->
     <div class="nav">
       <div class="logo">
-        <!-- Inline SVG logo -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" height="38" aria-label="GoblinReach">
           <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#16ff6b"/><stop offset="1" stop-color="#00c853"/></linearGradient></defs>
           <rect width="240" height="60" rx="10" fill="#0a0f0a"/>
@@ -80,7 +73,6 @@ content = r"""<!doctype html>
       </div>
     </div>
 
-    <!-- HOME -->
     <section id="home" aria-hidden="false">
       <div class="hero">
         <div class="card">
@@ -92,18 +84,9 @@ content = r"""<!doctype html>
             <button class="btn-ghost" id="download-btn-2">Download Extension</button>
           </div>
           <div class="kpis">
-            <div class="kpi">
-              <div class="small">Avg. Replies / 100 DMs</div>
-              <div style="font-weight:800;font-size:24px">18–31</div>
-            </div>
-            <div class="kpi">
-              <div class="small">Active Users</div>
-              <div style="font-weight:800;font-size:24px">1,000+</div>
-            </div>
-            <div class="kpi">
-              <div class="small">Compliance</div>
-              <div style="font-weight:800;font-size:24px">Rate-limits • Randomizer</div>
-            </div>
+            <div class="kpi"><div class="small">Avg. Replies / 100 DMs</div><div style="font-weight:800;font-size:24px">18–31</div></div>
+            <div class="kpi"><div class="small">Active Users</div><div style="font-weight:800;font-size:24px">1,000+</div></div>
+            <div class="kpi"><div class="small">Compliance</div><div style="font-weight:800;font-size:24px">Rate-limits • Randomizer</div></div>
           </div>
         </div>
         <div class="card">
@@ -166,21 +149,14 @@ content = r"""<!doctype html>
             <h3>Looks like $1,000/mo</h3>
             <p>But it’s only <b>$22/mo</b>. We priced it to be your unfair advantage—no fluff, just pipeline.</p>
             <div class="pricing">
-              <div class="price">
-                <h3>Starter</h3>
-                <div class="sub">$22/mo • 1 seat</div>
-              </div>
-              <div class="price">
-                <h3>Pro</h3>
-                <div class="sub">$95/6mo • 3 seats</div>
-              </div>
+              <div class="price"><h3>Starter</h3><div class="sub">$22/mo • 1 seat</div></div>
+              <div class="price"><h3>Pro</h3><div class="sub">$95/6mo • 3 seats</div></div>
             </div>
           </div>
         </div>
       </section>
     </section>
 
-    <!-- AUTH -->
     <section id="auth" aria-hidden="true">
       <div class="section">
         <div class="grid-2">
@@ -212,7 +188,6 @@ content = r"""<!doctype html>
       </div>
     </section>
 
-    <!-- DASHBOARD -->
     <section id="dashboard" aria-hidden="true">
       <div class="section card">
         <h2 class="h1">Campaign Builder</h2>
@@ -279,7 +254,6 @@ content = r"""<!doctype html>
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <div>© 2025 GoblinReach. Compliant automation with human-like pacing. <a href="#" data-nav="dashboard">Dashboard</a></div>
       <div class="small">Sales alerts to SMS: 845-500-9255</div>
@@ -287,132 +261,71 @@ content = r"""<!doctype html>
   </div>
 
   <script>
-    // ===== Instant-working Extension Download (embedded ZIP) =====
+    // Instant-working Extension Download (embedded tiny ZIP)
     const EXT_B64 = "UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
     function downloadExtension(){
-      try{
-        const byteChars = atob(EXT_B64);
-        const bytes = new Uint8Array(byteChars.length);
-        for(let i=0;i<byteChars.length;i++){ bytes[i] = byteChars.charCodeAt(i); }
-        const blob = new Blob([bytes], {type:"application/zip"});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "goblinreach-extension.zip";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(()=>URL.revokeObjectURL(url), 1500);
-      }catch(e){
-        console.error(e);
-        alert("Download failed. Please try again.");
-      }
+      const byteChars = atob(EXT_B64);
+      const bytes = new Uint8Array(byteChars.length);
+      for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
+      const blob = new Blob([bytes], {type:"application/zip"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "goblinreach-extension.zip"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
     }
 
-    // ===== SPA nav + front-end auth (localStorage) =====
-    const LS_USERS = "gr_users";
-    const LS_SESSION = "gr_session";
-
-    function loadUsers(){ try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}} }
-    function saveUsers(u){ localStorage.setItem(LS_USERS, JSON.stringify(u)); }
-    function setSession(username){ localStorage.setItem(LS_SESSION, username); }
-    function getSession(){ return localStorage.getItem(LS_SESSION); }
-    function clearSession(){ localStorage.removeItem(LS_SESSION); }
-
-    function toast(msg){
-      const t = document.createElement("div");
-      t.className = "toast";
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(()=>t.remove(), 2500);
-    }
-
-    function show(sectionId){
-      for(const sec of document.querySelectorAll("section")){
-        sec.setAttribute("aria-hidden", sec.id === sectionId ? "false" : "true");
-      }
-      window.scrollTo({top:0,behavior:"smooth"});
-    }
-
-    function requireAuthTo(sectionId){
-      if(getSession()){ show(sectionId); }
-      else { show("auth"); toast("Please log in first."); }
-    }
+    // SPA nav + front-end auth (localStorage)
+    const LS_USERS="gr_users", LS_SESSION="gr_session";
+    const loadUsers=()=>{try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}}}
+    const saveUsers=u=>localStorage.setItem(LS_USERS,JSON.stringify(u));
+    const setSession=u=>localStorage.setItem(LS_SESSION,u);
+    const getSession=()=>localStorage.getItem(LS_SESSION);
+    const toast=msg=>{const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500)}
+    function show(id){for(const s of document.querySelectorAll("section"))s.setAttribute("aria-hidden",s.id===id?"false":"true");window.scrollTo({top:0,behavior:"smooth"})}
+    function requireAuthTo(id){ if(getSession()) show(id); else { show("auth"); toast("Please log in first."); } }
 
     function onSignup(e){
       e.preventDefault();
-      const username = document.getElementById("su-username").value.trim();
-      const email = document.getElementById("su-email").value.trim();
-      const password = document.getElementById("su-password").value.trim();
-      if(!username || !email || !password){ toast("Please fill all fields."); return; }
-      const users = loadUsers();
-      if(users[username]){ toast("Username already exists."); return; }
-      users[username] = { email, password, createdAt: Date.now() };
-      saveUsers(users);
-      setSession(username);
-      toast("Account created. Opening dashboard...");
-      setTimeout(()=> show("dashboard"), 600);
+      const u=document.getElementById("su-username").value.trim();
+      const m=document.getElementById("su-email").value.trim();
+      const p=document.getElementById("su-password").value.trim();
+      if(!u||!m||!p){toast("Please fill all fields.");return}
+      const users=loadUsers();
+      if(users[u]){toast("Username already exists.");return}
+      users[u]={email:m,password:p,createdAt:Date.now()}; saveUsers(users); setSession(u);
+      toast("Account created. Opening dashboard..."); setTimeout(()=>show("dashboard"),600);
     }
-
     function onLogin(e){
       e.preventDefault();
-      const username = document.getElementById("li-username").value.trim();
-      const password = document.getElementById("li-password").value.trim();
-      const users = loadUsers();
-      if(!users[username] || users[username].password !== password){
-        toast("Invalid username or password.");
-        return;
-      }
-      setSession(username);
-      toast("Welcome back!");
-      setTimeout(()=> show("dashboard"), 400);
+      const u=document.getElementById("li-username").value.trim();
+      const p=document.getElementById("li-password").value.trim();
+      const users=loadUsers();
+      if(!users[u]||users[u].password!==p){toast("Invalid username or password.");return}
+      setSession(u); toast("Welcome back!"); setTimeout(()=>show("dashboard"),400);
     }
-
     function toggleAutomation(id){
-      const sw = document.getElementById(id);
-      sw.classList.toggle("active");
-      const on = sw.classList.contains("active");
-      toast(on ? "Automation ON (simulated)" : "Automation OFF");
+      const sw=document.getElementById(id); sw.classList.toggle("active");
+      toast(sw.classList.contains("active")?"Automation ON (simulated)":"Automation OFF");
     }
 
     function wire(){
-      // Nav buttons
       document.querySelectorAll("[data-nav]").forEach(el=>{
-        el.addEventListener("click", ()=>{
-          const dest = el.getAttribute("data-nav");
-          if(dest === "dashboard") requireAuthTo("dashboard");
-          else if(dest === "auth") show("auth");
-          else if(dest === "home") show("home");
+        el.addEventListener("click",()=>{
+          const dest=el.getAttribute("data-nav");
+          if(dest==="dashboard") requireAuthTo("dashboard");
+          else if(dest==="auth") show("auth");
+          else if(dest==="home") show("home");
         });
       });
-
-      // Download buttons (works instantly)
-      const d1 = document.getElementById("download-btn");
-      if(d1) d1.addEventListener("click", downloadExtension);
-      const d2 = document.getElementById("download-btn-2");
-      if(d2) d2.addEventListener("click", downloadExtension);
-
-      // Forms
-      const su = document.getElementById("signup");
-      if(su) su.addEventListener("submit", onSignup);
-      const li = document.getElementById("login");
-      if(li) li.addEventListener("submit", onLogin);
-
-      // Switches
-      const homeSwitch = document.getElementById("home-switch");
-      if(homeSwitch) homeSwitch.addEventListener("click", ()=>toggleAutomation("home-switch"));
-      const dashSwitch = document.getElementById("dash-switch");
-      if(dashSwitch) dashSwitch.addEventListener("click", ()=>toggleAutomation("dash-switch"));
-
-      show("home"); // default section
+      const d1=document.getElementById("download-btn"); if(d1) d1.addEventListener("click",downloadExtension);
+      const d2=document.getElementById("download-btn-2"); if(d2) d2.addEventListener("click",downloadExtension);
+      const su=document.getElementById("signup"); if(su) su.addEventListener("submit",onSignup);
+      const li=document.getElementById("login"); if(li) li.addEventListener("submit",onLogin);
+      const hsw=document.getElementById("home-switch"); if(hsw) hsw.addEventListener("click",()=>toggleAutomation("home-switch"));
+      const dsw=document.getElementById("dash-switch"); if(dsw) dsw.addEventListener("click",()=>toggleAutomation("dash-switch"));
+      show("home");
     }
-
-    document.addEventListener("DOMContentLoaded", wire);
+    document.addEventListener("DOMContentLoaded",wire);
   </script>
 </body>
 </html>
-"""
-path = "/mnt/data/index.single-file.html"
-open(path, "w", encoding="utf-8").write(content)
-path
-
