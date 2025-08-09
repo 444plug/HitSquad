@@ -5,166 +5,386 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>GoblinReach — DM Automation for Client Acquisition</title>
   <meta name="description" content="The #1 DM automation tool for getting high-ticket clients. Looks like $1,000/mo, priced at just $22/mo."/>
-  <link rel="stylesheet" href="css/styles.css"/>
-  <link rel="preload" href="assets/logo.svg" as="image"/>
+  <style>
+    :root{
+      --bg:#050708; --panel:#0a0f0a; --panel-2:#0e1510; --text:#e7ffe7;
+      --muted:#9ef8c3; --accent:#16ff6b; --accent-2:#00c853; --danger:#ff4d4f;
+      --shadow: 0 10px 30px rgba(0,0,0,.6);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:radial-gradient(1000px 600px at 70% -10%, #102015 0%, var(--bg) 50%), var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;line-height:1.5}
+    a{color:var(--muted);text-decoration:none}
+    a:hover{color:var(--accent)}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+    .logo{display:flex;gap:12px;align-items:center}
+    .badge{border:1px solid #1d2b1f;padding:4px 10px;border-radius:999px;background:rgba(22,255,107,.08);color:var(--muted);font-size:12px}
+    .btn{display:inline-block;padding:14px 22px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001b0b;font-weight:700;box-shadow:var(--shadow);border:none;cursor:pointer;transition:transform .05s ease}
+    .btn:active{transform:scale(.98)}
+    .btn-ghost{background:transparent;border:1px solid #17311e;color:var(--text)}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:40px 0}
+    .card{background:linear-gradient(180deg, rgba(22,255,107,.07), rgba(0,0,0,.0));border:1px solid #163b23;border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+    .h1{font-size:42px;line-height:1.1;margin:0 0 12px;font-weight:900;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:18px;margin-bottom:18px}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+    .kpi{padding:14px;border-radius:14px;background:#0b1410;border:1px solid #163b23}
+    .section{padding:40px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .footer{padding:40px 0;color:#8bbf9e;font-size:14px}
+    .input, select{width:100%;padding:14px 12px;border-radius:12px;background:#0b1410;border:1px solid #1a3724;color:var(--text);outline:none}
+    .input:focus{border-color:var(--accent)}
+    .small{font-size:12px;color:#9bd6b3}
+    .center{text-align:center}
+    .tag{display:inline-block;background:#0b1410;border:1px solid #17311e;border-radius:999px;padding:6px 10px;margin:6px 6px 0 0;color:#9ef8c3;font-size:12px}
+    hr{border:0;border-top:1px solid #12301c;margin:26px 0}
+    .code{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0b1410;border:1px solid #163b23;border-radius:12px;padding:10px;color:#afffcf;font-size:12px}
+    .notice{background:#0e1a12;border-left:4px solid var(--accent);padding:12px;border-radius:12px}
+    .pricing{display:flex;gap:16px;flex-wrap:wrap}
+    .price{flex:1;min-width:260px}
+    .price h3{margin:0 0 8px}
+    .toggle{display:flex;align-items:center;gap:8px}
+    .switch{width:48px;height:28px;border-radius:999px;background:#132219;border:1px solid #1a3724;position:relative;cursor:pointer}
+    .knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:999px;background:var(--accent);transition:left .15s ease}
+    .switch.active .knob{left:22px}
+    .hidden{display:none}
+    .toast{position:fixed;right:20px;bottom:20px;background:#0b1410;border:1px solid #17311e;color:var(--text);padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);opacity:.98}
+    form{display:grid;gap:10px}
+    label{font-size:13px;color:#9ef8c3}
+    ul{padding-left:18px}
+    @media (max-width:900px){ .hero{grid-template-columns:1fr} }
+    /* Simple SPA sections */
+    section[aria-hidden="true"]{display:none}
+  </style>
 </head>
 <body>
   <div class="container">
+    <!-- NAV -->
     <div class="nav">
       <div class="logo">
-        <img src="assets/logo.svg" alt="GoblinReach" height="38"/>
+        <!-- Inline SVG logo -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" height="38" aria-label="GoblinReach">
+          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#16ff6b"/><stop offset="1" stop-color="#00c853"/></linearGradient></defs>
+          <rect width="240" height="60" rx="10" fill="#0a0f0a"/>
+          <g transform="translate(10,10)">
+            <circle cx="20" cy="20" r="18" fill="url(#g)" opacity="0.9"/>
+            <path d="M14 26 l6-20 6 20 -6-4z" fill="#0a0f0a"/>
+            <text x="50" y="26" fill="#16ff6b" font-family="Arial Black, Arial, sans-serif" font-size="20">GoblinReach</text>
+            <text x="50" y="44" fill="#9ef8c3" font-family="Arial, sans-serif" font-size="10">DM Automation for Client Acquisition</text>
+          </g>
+        </svg>
         <span class="badge">24/7 Cloud • Proxies • VPN Ready</span>
       </div>
       <div>
-        <a class="btn-ghost" href="#auth">Login / Sign Up</a>
+        <button class="btn-ghost" data-nav="auth">Login / Sign Up</button>
         <a class="btn" href="downloads/goblinreach-extension.zip">Download Extension</a>
       </div>
     </div>
 
-    <section class="hero">
-      <div class="card">
-        <div class="badge">Miracle pricing: $22/mo</div>
-        <h1 class="h1">Get High-Ticket Clients on Autopilot.</h1>
-        <p class="sub">GoblinReach looks like a $1,000/mo tool, but it’s just <b>$22/mo</b> to own your market. Dominate NY/NJ with compliant, human-like DM automation.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <a class="btn" href="#auth">Start Free</a>
-          <a class="btn-ghost" href="downloads/goblinreach-extension.zip">Download Extension</a>
+    <!-- HOME -->
+    <section id="home" aria-hidden="false">
+      <div class="hero">
+        <div class="card">
+          <div class="badge">Miracle pricing: $22/mo</div>
+          <h1 class="h1">Get High-Ticket Clients on Autopilot.</h1>
+          <p class="sub">GoblinReach looks like a $1,000/mo tool, but it’s just <b>$22/mo</b> to own your market. Dominate NY/NJ with compliant, human-like DM automation.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn" data-nav="auth">Start Free</button>
+            <a class="btn-ghost" href="downloads/goblinreach-extension.zip">Download Extension</a>
+          </div>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="small">Avg. Replies / 100 DMs</div>
+              <div style="font-weight:800;font-size:24px">18–31</div>
+            </div>
+            <div class="kpi">
+              <div class="small">Users in NY/NJ</div>
+              <div style="font-weight:800;font-size:24px">1,000+</div>
+            </div>
+            <div class="kpi">
+              <div class="small">Compliance</div>
+              <div style="font-weight:800;font-size:24px">Rate-limits • Randomizer</div>
+            </div>
+          </div>
         </div>
-        <div class="kpis">
-          <div class="kpi">
-            <div class="small">Avg. Replies / 100 DMs</div>
-            <div style="font-weight:800;font-size:24px">18–31</div>
-          </div>
-          <div class="kpi">
-            <div class="small">Users in NY/NJ</div>
-            <div style="font-weight:800;font-size:24px">1,000+</div>
-          </div>
-          <div class="kpi">
-            <div class="small">Compliance</div>
-            <div style="font-weight:800;font-size:24px">Rate-limits • Randomizer</div>
+        <div class="card">
+          <div class="notice"><b>LIVE Preview:</b> This is the actual UI your buyers see. Only stable features are visible on the live site.</div>
+          <div class="section">
+            <div class="toggle">
+              <div>Automation</div>
+              <div class="switch" id="home-switch"><div class="knob"></div></div>
+            </div>
+            <hr/>
+            <div class="grid-2">
+              <div>
+                <label>Target</label>
+                <select class="input">
+                  <option>Followers of @nycevents</option>
+                  <option>Followers of @njnightlife</option>
+                  <option>Followers of @luxurycarsnyc</option>
+                </select>
+              </div>
+              <div>
+                <label>Delay (sec)</label>
+                <input class="input" type="number" value="600" min="300" max="1800"/>
+              </div>
+            </div>
+            <div class="grid-2" style="margin-top:10px">
+              <div>
+                <label>Message Template</label>
+                <select class="input">
+                  <option>“We help you book 20–50 new clients/mo…”</option>
+                  <option>“Quick question about your IG growth…”</option>
+                  <option>“Want more high-ticket bookings?”</option>
+                </select>
+              </div>
+              <div>
+                <label>Safety</label>
+                <select class="input">
+                  <option>Human-like randomizer</option>
+                  <option>Strict (new accounts)</option>
+                  <option>Aggressive (warmed accounts)</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="notice"><b>LIVE Preview:</b> This is the actual UI your buyers see. Only stable features are visible on the live site.</div>
-        <div class="section">
-          <div class="toggle">
-            <div>Automation</div>
-            <div class="switch"><div class="knob"></div></div>
+
+      <section class="section">
+        <div class="grid-3">
+          <div class="card">
+            <h3>Why it converts</h3>
+            <p>Laser targeting + human-like pacing. GoblinReach lands real conversations without bans, delivering booked calls and paid invoices.</p>
+            <span class="tag">Rotating Proxies</span><span class="tag">VPN-Ready</span><span class="tag">Auto-Retry</span><span class="tag">Reply Export</span>
           </div>
-          <hr/>
-          <div class="grid-2">
-            <div>
-              <label>Target</label>
-              <select class="input">
-                <option>Followers of @nycevents</option>
-                <option>Followers of @njnightlife</option>
-                <option>Followers of @luxurycarsnyc</option>
-              </select>
-            </div>
-            <div>
-              <label>Delay (sec)</label>
-              <input class="input" type="number" value="600" min="300" max="1800"/>
+          <div class="card">
+            <h3>NY/NJ Advantage</h3>
+            <p>Pre-loaded targets and scripts for high-income zip codes, black-car services, studios, restaurants, med spas, and more.</p>
+            <span class="tag">High-tax Zips</span><span class="tag">Luxury Niches</span><span class="tag">Concierge</span>
+          </div>
+          <div class="card">
+            <h3>Looks like $1,000/mo</h3>
+            <p>But it’s only <b>$22/mo</b>. We priced it to be your unfair advantage—no fluff, just pipeline.</p>
+            <div class="pricing">
+              <div class="price">
+                <h3>Starter</h3>
+                <div class="sub">$22/mo • 1 seat</div>
+              </div>
+              <div class="price">
+                <h3>Pro</h3>
+                <div class="sub">$95/6mo • 3 seats</div>
+              </div>
             </div>
           </div>
-          <div class="grid-2" style="margin-top:10px">
-            <div>
-              <label>Message Template</label>
-              <select class="input">
-                <option>“We help you book 20–50 new clients/mo…”</option>
-                <option>“Quick question about your IG growth…”</option>
-                <option>“Want more high-ticket bookings?”</option>
-              </select>
-            </div>
-            <div>
-              <label>Safety</label>
-              <select class="input">
-                <option>Human-like randomizer</option>
-                <option>Strict (new accounts)</option>
-                <option>Aggressive (warmed accounts)</option>
-              </select>
-            </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- AUTH -->
+    <section id="auth" aria-hidden="true">
+      <div class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Create Account</h3>
+            <form id="signup">
+              <label>Username</label>
+              <input id="su-username" class="input" placeholder="yourname"/>
+              <label>Email</label>
+              <input id="su-email" type="email" class="input" placeholder="you@domain.com"/>
+              <label>Password</label>
+              <input id="su-password" type="password" class="input" placeholder="••••••••"/>
+              <button class="btn" type="submit">Create & Go to Dashboard</button>
+            </form>
+            <p class="small">No credit card for trial. Upgrade anytime.</p>
+          </div>
+          <div class="card">
+            <h3>Login</h3>
+            <form id="login">
+              <label>Username</label>
+              <input id="li-username" class="input" placeholder="yourname"/>
+              <label>Password</label>
+              <input id="li-password" type="password" class="input" placeholder="••••••••"/>
+              <button class="btn" type="submit">Login</button>
+            </form>
+            <p class="small">Having issues? Text us: <a href="sms:+18455009255">845-500-9255</a></p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="grid-3">
-        <div class="card">
-          <h3>Why it converts</h3>
-          <p>Laser targeting + human-like pacing. GoblinReach lands real conversations without bans, delivering booked calls and paid invoices.</p>
-          <span class="tag">Rotating Proxies</span><span class="tag">VPN-Ready</span><span class="tag">Auto-Retry</span><span class="tag">Reply Export</span>
-        </div>
-        <div class="card">
-          <h3>NY/NJ Advantage</h3>
-          <p>Pre-loaded targets and scripts for high-income zip codes, black-car services, studios, restaurants, med spas, and more.</p>
-          <span class="tag">High-tax Zips</span><span class="tag">Luxury Niches</span><span class="tag">Concierge</span>
-        </div>
-        <div class="card">
-          <h3>Looks like $1,000/mo</h3>
-          <p>But it’s only <b>$22/mo</b>. We priced it to be your unfair advantage—no fluff, just pipeline.</p>
-          <div class="pricing">
-            <div class="price">
-              <h3>Starter</h3>
-              <div class="sub">$22/mo • 1 seat</div>
-            </div>
-            <div class="price">
-              <h3>Pro</h3>
-              <div class="sub">$95/6mo • 3 seats</div>
-            </div>
+    <!-- DASHBOARD -->
+    <section id="dashboard" aria-hidden="true">
+      <div class="section card">
+        <h2 class="h1">Campaign Builder</h2>
+        <p class="sub">Upload a list, choose a script, set pacing. Safety defaults protect your accounts.</p>
+
+        <div class="grid-2">
+          <div>
+            <label>Audience</label>
+            <select class="input">
+              <option>Followers of @luxurycarsnyc</option>
+              <option>Followers of @njnightlife</option>
+              <option>Followers of @nycfoodie</option>
+            </select>
+          </div>
+          <div>
+            <label>Delay (sec)</label>
+            <input class="input" type="number" value="600"/>
           </div>
         </div>
+        <div class="grid-2" style="margin-top:10px">
+          <div>
+            <label>Message Template</label>
+            <select class="input">
+              <option>High-ticket bookings script</option>
+              <option>Quick question script</option>
+              <option>Growth audit script</option>
+            </select>
+          </div>
+          <div>
+            <label>Seat</label>
+            <select class="input">
+              <option>Main</option>
+              <option>Assistant 1</option>
+              <option>Assistant 2</option>
+            </select>
+          </div>
+        </div>
+        <hr/>
+        <div class="toggle">
+          <div>Automation</div>
+          <div class="switch" id="dash-switch"><div class="knob"></div></div>
+        </div>
+        <p class="small">Status: <b>Ready</b>. Keep sessions warm, use proxies/VPNs, and randomize delays.</p>
       </div>
-    </section>
 
-    <section id="auth" class="section">
-      <div class="grid-2">
+      <div class="section grid-3">
         <div class="card">
-          <h3>Create Account</h3>
-          <form id="signup">
-            <label>Username</label>
-            <input id="su-username" class="input" placeholder="yourname"/>
-            <label>Email</label>
-            <input id="su-email" type="email" class="input" placeholder="you@domain.com"/>
-            <label>Password</label>
-            <input id="su-password" type="password" class="input" placeholder="••••••••"/>
-            <button class="btn" type="submit">Create & Go to Dashboard</button>
-          </form>
-          <p class="small">No credit card for trial. Upgrade anytime.</p>
+          <h3>Reply Exports</h3>
+          <p>Send replies to Google Sheets or Telegram. (Hook placeholders included.)</p>
+          <div class="code">POST /webhooks/replies → forwards to Sheets/Telegram</div>
         </div>
         <div class="card">
-          <h3>Login</h3>
-          <form id="login">
-            <label>Username</label>
-            <input id="li-username" class="input" placeholder="yourname"/>
-            <label>Password</label>
-            <input id="li-password" type="password" class="input" placeholder="••••••••"/>
-            <button class="btn" type="submit">Login</button>
-          </form>
-          <p class="small">Having issues? Text us: <a href="sms:+18455009255">845-500-9255</a></p>
+          <h3>Safety Controls</h3>
+          <ul>
+            <li>Human-like delay randomizer</li>
+            <li>Auto-retry failed DMs</li>
+            <li>Low-burst mode for new accounts</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Need Help?</h3>
+          <p>Text us: <a href="sms:+18455009255">845-500-9255</a></p>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="card center">
-        <h3>Trusted by founders, studios & services</h3>
-        <p class="sub">“Doubled my booked calls in a week.” • “Finally a tool that actually brings in cash.”</p>
-        <div style="margin-top:10px">
-          <a class="btn" href="#auth">Start Free</a>
-          <a class="btn-ghost" href="downloads/goblinreach-extension.zip">Download Extension</a>
-        </div>
-      </div>
-    </section>
-
+    <!-- FOOTER -->
     <footer class="footer">
-      <div>© 2025 GoblinReach. Compliant automation with human-like pacing. <a href="dashboard.html">Dashboard</a></div>
+      <div>© 2025 GoblinReach. Compliant automation with human-like pacing. <a href="#" data-nav="dashboard">Dashboard</a></div>
       <div class="small">Sales alerts to SMS: 845-500-9255</div>
     </footer>
   </div>
-  <script src="js/app.js"></script>
+
+  <script>
+    // Basic SPA nav + front-end auth (localStorage)
+    const LS_USERS = "gr_users";
+    const LS_SESSION = "gr_session";
+
+    function loadUsers(){ try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}} }
+    function saveUsers(u){ localStorage.setItem(LS_USERS, JSON.stringify(u)); }
+    function setSession(username){ localStorage.setItem(LS_SESSION, username); }
+    function getSession(){ return localStorage.getItem(LS_SESSION); }
+    function clearSession(){ localStorage.removeItem(LS_SESSION); }
+
+    function toast(msg){
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(()=>t.remove(), 2500);
+    }
+
+    function show(sectionId){
+      for(const sec of document.querySelectorAll("section")){
+        sec.setAttribute("aria-hidden", sec.id === sectionId ? "false" : "true");
+      }
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function requireAuthTo(sectionId){
+      if(getSession()){ show(sectionId); }
+      else { show("auth"); toast("Please log in first."); }
+    }
+
+    function onSignup(e){
+      e.preventDefault();
+      const username = document.getElementById("su-username").value.trim();
+      const email = document.getElementById("su-email").value.trim();
+      const password = document.getElementById("su-password").value.trim();
+      if(!username || !email || !password){ toast("Please fill all fields."); return; }
+      const users = loadUsers();
+      if(users[username]){ toast("Username already exists."); return; }
+      users[username] = { email, password, createdAt: Date.now() };
+      saveUsers(users);
+      setSession(username);
+      toast("Account created. Opening dashboard...");
+      setTimeout(()=> show("dashboard"), 600);
+    }
+
+    function onLogin(e){
+      e.preventDefault();
+      const username = document.getElementById("li-username").value.trim();
+      const password = document.getElementById("li-password").value.trim();
+      const users = loadUsers();
+      if(!users[username] || users[username].password !== password){
+        toast("Invalid username or password.");
+        return;
+      }
+      setSession(username);
+      toast("Welcome back!");
+      setTimeout(()=> show("dashboard"), 400);
+    }
+
+    function toggleAutomation(id){
+      const sw = document.getElementById(id);
+      sw.classList.toggle("active");
+      const on = sw.classList.contains("active");
+      toast(on ? "Automation ON (simulated)" : "Automation OFF");
+    }
+
+    function wire(){
+      // Nav buttons
+      document.querySelectorAll("[data-nav]").forEach(el=>{
+        el.addEventListener("click", ()=>{
+          const dest = el.getAttribute("data-nav");
+          if(dest === "dashboard") requireAuthTo("dashboard");
+          else if(dest === "auth") show("auth");
+          else if(dest === "home") show("home");
+        });
+      });
+
+      // Forms
+      const su = document.getElementById("signup");
+      if(su) su.addEventListener("submit", onSignup);
+      const li = document.getElementById("login");
+      if(li) li.addEventListener("submit", onLogin);
+
+      // Switches
+      const homeSwitch = document.getElementById("home-switch");
+      if(homeSwitch) homeSwitch.addEventListener("click", ()=>toggleAutomation("home-switch"));
+      const dashSwitch = document.getElementById("dash-switch");
+      if(dashSwitch) dashSwitch.addEventListener("click", ()=>toggleAutomation("dash-switch"));
+
+      // If already logged in, let user access dashboard quickly
+      if(getSession()){
+        // Keep them on home unless they click Dashboard; avoids surprise jumps.
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", wire);
+  </script>
 </body>
 </html>
-
 
