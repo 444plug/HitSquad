@@ -5,37 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GoblinReach — DM Automation</title>
   <meta name="description" content="Compliant, human-like Instagram DM automation with rotating proxies, VPN ready, account protection, exports, and 24/7 cloud." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- ✅ Ad/Pixels: replace IDs below with your real ones -->
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)}; if(!f._fbq)f._fbq=n;
+  n.push=n; n.loaded=!0; n.version='2.0'; n.queue=[]; t=b.createElement(e); t.async=!0;
+  t.src=v; s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s)
+  }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'YOUR_META_PIXEL_ID');  // ← REPLACE
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=YOUR_META_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+  <!-- Google Tag (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX'); // ← REPLACE
+  </script>
+
+  <!-- TikTok Pixel -->
+  <script>
+  !function (w, d, t) { w.TiktokAnalyticsObject=t; var ttq=w[t]=w[t]||[];
+    ttq.methods=['page','track','identify','instances','debug','on','off','once','ready','setUserProperties','setVisitorProperties','reset'];
+    ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat([].slice.call(arguments,0)))}}; for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq, ttq.methods[i]);
+    ttq.instance=function(t){ for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]); return e };
+    ttq.load=function(e,n){ var i='https://analytics.tiktok.com/i18n/pixel/events.js';
+    ttq._i=ttq._i||{}; ttq._i[e]=[]; var o=d.createElement('script'); o.type='text/javascript'; o.async=!0;
+    o.src=i+'?sdkid='+e+'&lib='+t; var a=d.getElementsByTagName('script')[0]; a.parentNode.insertBefore(o,a); };
+    ttq.load('YOUR_TIKTOK_PIXEL_ID'); // ← REPLACE
+    ttq.page();
+  }(window, document, 'ttq');
+  </script>
+  <!-- End Pixels -->
+
   <style>
     :root { --bg:#0a0a0a; --card:#101214; --fg:#e6f4ea; --muted:#9fb3a6; --accent:#35f18a; --accent-2:#14b866; --ok:#29d67d; --shadow:0 10px 30px rgba(8,255,163,.08),0 2px 10px rgba(0,0,0,.6); --radius:16px }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#090909 0%,#070707 100%);color:var(--fg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
     .container{width:100%;max-width:1120px;margin:0 auto;padding:24px}
     /* NAV */
     .nav{position:sticky;top:0;z-index:100;backdrop-filter:saturate(140%) blur(8px);background:rgba(10,10,10,.7);border-bottom:1px solid rgba(53,241,138,.12)}
     .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
     .logo-mark{width:28px;height:28px;border-radius:8px;background:radial-gradient(circle at 30% 30%, var(--accent) 0%, var(--accent-2) 45%, #0a6240 70%, #083826 100%);box-shadow:0 0 30px rgba(53,241,138,.3) inset,0 0 10px rgba(53,241,138,.35)}
-    .nav-links{display:flex;align-items:center;gap:14px}
     .nav-actions{display:flex;gap:10px;align-items:center}
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid rgba(53,241,138,.25);background:linear-gradient(180deg,#0f1412,#0b0f0d);color:var(--fg);box-shadow:var(--shadow);cursor:pointer;font-weight:600;transition:transform .08s ease,border-color .2s ease,background .2s ease}
     .btn:hover{transform:translateY(-1px);border-color:rgba(53,241,138,.55)}
     .btn.primary{background:linear-gradient(180deg,var(--accent),#0bbf67);color:#02140a;border-color:transparent;box-shadow:0 8px 30px rgba(53,241,138,.35), inset 0 1px 0 rgba(255,255,255,.2)}
     .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(53,241,138,.08);border:1px solid rgba(53,241,138,.2);color:var(--muted);font-size:12px}
     /* HERO */
-    .hero{padding:72px 0 36px;text-align:center}
+    .hero{padding:72px 0 24px;text-align:center}
     .title{font-size:clamp(28px,4.2vw,48px);line-height:1.05;margin:12px 0 10px;font-weight:800;letter-spacing:-.5px}
     .subtitle{font-size:clamp(14px,2.2vw,18px);color:var(--muted);max-width:860px;margin:0 auto 24px}
     .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    /* METRICS */
-    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px auto 0;max-width:880px}
+    .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#0f1412;border:1px solid rgba(53,241,138,.4);color:var(--fg);padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:200}
+    /* METRICS + BADGES */
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px auto 0;max-width:880px}
     .metric{padding:14px 16px;border-radius:14px;background:linear-gradient(180deg,#0f1311,#0c0f0e);border:1px solid rgba(53,241,138,.12);color:var(--muted)}
     .metric strong{display:block;font-size:18px;color:var(--fg)}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(53,241,138,.22);background:rgba(53,241,138,.06);color:var(--muted)}
     /* GRID */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:34px 0}
     .card{padding:18px;border-radius:var(--radius);background:linear-gradient(180deg,#0e1110,#0a0d0c);border:1px solid rgba(53,241,138,.12);box-shadow:var(--shadow)}
@@ -46,18 +84,17 @@
     .price{padding:22px;border-radius:var(--radius);background:linear-gradient(180deg,#0f1412,#0b0f0d);border:1px solid rgba(53,241,138,.18);box-shadow:var(--shadow)}
     .price h4{margin:0 0 8px;font-size:18px}
     .price .num{font-size:36px;font-weight:800;color:var(--accent)}
-    .ul{margin:10px 0 0;padding:0 0 0 18px;color:var(--muted)}
+    .ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
     /* PANELS */
     .panel{padding:18px;border-radius:16px;background:linear-gradient(180deg,#0e1110,#0a0d0c);border:1px solid rgba(53,241,138,.12);box-shadow:var(--shadow);margin:16px 0}
     .panel h3{margin:0 0 6px;font-size:16px}
     .input{width:100%;padding:12px;background:#0a0c0b;color:var(--fg);border:1px solid rgba(53,241,138,.22);border-radius:12px;outline:none}
     .row{display:grid;gap:10px;margin:12px 0}
     .note{font-size:12px;color:var(--muted)}
-    /* TRUST */
-    .testimonial{display:grid;gap:8px;align-items:center;grid-template-columns:56px 1fr;background:linear-gradient(180deg,#0f1311,#0c0f0e);border:1px solid rgba(53,241,138,.12);border-radius:16px;padding:14px}
-    .avatar{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#3cf194 0%,#0bbf67 60%,#0a6b43 100%)}
-    .badges{display:flex;gap:10px;flex-wrap:wrap}
-    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(53,241,138,.22);background:rgba(53,241,138,.06);color:var(--muted)}
+    /* INSTALL */
+    details.install{margin:20px auto;max-width:880px}
+    details.install summary{cursor:pointer;padding:12px 16px;border-radius:12px;border:1px solid rgba(53,241,138,.25);background:#0f1412}
+    details.install .box{padding:14px;border:1px solid rgba(53,241,138,.15);border-radius:12px;margin-top:10px;background:#0b0f0d}
     /* FOOTER */
     footer{border-top:1px solid rgba(53,241,138,.12);background:#090a0a;color:var(--muted)}
     .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:26px 0}
@@ -74,15 +111,15 @@
         <div class="logo-mark" aria-hidden="true"></div>
         <span>GoblinReach</span>
       </div>
-      <div class="nav-links">
-        <a href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noreferrer">@goblinreach.ai</a>
-      </div>
       <div class="nav-actions">
+        <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noreferrer">@goblinreach.ai</a>
         <button class="btn" id="loginBtn">Log In</button>
         <button class="btn primary" id="signupBtn">Sign Up</button>
       </div>
     </div>
   </nav>
+
+  <div id="toast" class="toast">Payment confirmed — download below.</div>
 
   <!-- HERO -->
   <header class="container hero">
@@ -92,32 +129,24 @@
     <div class="hero-cta">
       <!-- Button will auto-detect the correct ZIP path -->
       <a class="btn primary" id="downloadBtn" href="#" download>Download Extension</a>
-      <button class="btn" id="openLearn">Live Preview</button>
+      <a class="btn" href="#install">How to install</a>
     </div>
+
     <div class="metrics">
       <div class="metric"><strong>18–31</strong>Avg. replies / 100 DMs</div>
       <div class="metric"><strong>1,000+</strong>Active users</div>
       <div class="metric"><strong>600s</strong>Recommended delay (safe)</div>
     </div>
-  </header>
 
-  <main class="container">
-    <!-- TRUST -->
-    <section class="badges" aria-label="Badges" style="margin-top:6px">
+    <div class="badges">
       <div class="badge">Secure payments by Stripe</div>
       <div class="badge">Account Protection</div>
       <div class="badge">Compliant pacing</div>
       <div class="badge">Proxy + VPN Ready</div>
-    </section>
+    </div>
+  </header>
 
-    <section style="margin-top:14px" class="testimonial" aria-label="Testimonial">
-      <div class="avatar" aria-hidden="true"></div>
-      <div>
-        <strong>Lisa K.</strong>
-        <div class="small">"Doubled my replies in a week — safer than anything else I tried."</div>
-      </div>
-    </section>
-
+  <main class="container">
     <!-- FEATURES -->
     <section class="grid" aria-label="Core features">
       <div class="card"><h3>Followers of an Account</h3><p>Target all followers of a chosen Instagram account.</p></div>
@@ -159,59 +188,27 @@
           <li>Priority support</li>
           <li>Scale: 5,000–25,000 DMs/month</li>
         </ul>
-        <div><button class="btn" id="tierVip">Book Call</button></div>
+        <div><button class="btn" id="tierVip">VIP — $triple4mgmt</button></div>
       </div>
     </section>
 
-    <!-- PANELS (static demo) -->
-    <section class="panel">
-      <h3>Account & Safety</h3>
-      <div class="row">
-        <input class="input" id="igUser" placeholder="Instagram username"/>
-        <input class="input" id="igPass" type="password" placeholder="Instagram password (stored locally in demo)"/>
-        <label class="small"><input type="checkbox" id="twoFactor"> Use 2FA (enter codes when prompted)</label>
-        <label class="small"><input type="checkbox" id="safeMode" checked> Safe Mode (600–900s jitter, pauses on rate-limit)</label>
-        <button class="btn" id="saveAcct">Save Account (local)</button>
+    <!-- INSTALL HOW-TO -->
+    <a id="install"></a>
+    <details class="install" open>
+      <summary><strong>Install in 60 seconds (Chrome)</strong></summary>
+      <div class="box">
+        <ol>
+          <li>Click <em>Download Extension</em> above.</li>
+          <li>Unzip the file you downloaded.</li>
+          <li>Open <code>chrome://extensions</code> → turn on <strong>Developer mode</strong>.</li>
+          <li>Click <strong>Load unpacked</strong> → select the <em>unzipped</em> folder (it must contain <code>manifest.json</code>).</li>
+          <li>Pin the extension → click it → press <strong>Inject “Installed” Banner</strong>.</li>
+        </ol>
+        <p class="note">If clicking download does nothing, right-click the button and choose “Save link as…”.</p>
       </div>
-      <div class="note">Demo stores to browser only. For production, replace with secure server API.</div>
-    </section>
+    </details>
 
-    <section class="panel">
-      <h3>Proxies & Rotation</h3>
-      <div class="row">
-        <input class="input" id="proxyUrl" placeholder="http(s)://user:pass@host:port"/>
-        <select class="input" id="rotation">
-          <option value="none">No rotation</option>
-          <option value="per-login">Rotate per login</option>
-          <option value="per-20">Rotate every 20 DMs</option>
-          <option value="per-50">Rotate every 50 DMs</option>
-        </select>
-        <button class="btn" id="saveProxy">Save Proxy Settings (local)</button>
-      </div>
-      <div class="note">Backend should validate proxy pool & enforce region targeting.</div>
-    </section>
-
-    <section class="panel">
-      <h3>Sources</h3>
-      <div class="row">
-        <label><input type="checkbox" class="src" value="followers" checked> Followers of an account</label>
-        <label><input type="checkbox" class="src" value="following"> Following of an account</label>
-        <label><input type="checkbox" class="src" value="likers" checked> Likers of a post</label>
-        <label><input type="checkbox" class="src" value="commenters"> Commenters of a post</label>
-        <input class="input" id="targetHandle" placeholder="@target or https://instagram.com/p/POST_ID"/>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h3>Exports</h3>
-      <div class="row">
-        <button class="btn" id="exportCsv">Export CSV</button>
-        <button class="btn" id="exportSheets">Send to Google Sheets</button>
-        <button class="btn" id="exportTelegram">Send to Telegram</button>
-        <div class="note">Wire these to your webhook/keys. CSV works locally now.</div>
-      </div>
-    </section>
-
+    <!-- (Optional) Local demo panels for trust -->
     <section class="panel" aria-label="Dashboard Preview">
       <h3>Dashboard Preview (Static)</h3>
       <div class="grid">
@@ -221,35 +218,48 @@
         <div class="card"><h3>Auto-Recovery</h3><p>Will resume after rate-limit cool-down</p></div>
       </div>
     </section>
-
-    <section class="panel">
-      <h3>Checkout</h3>
-      <div class="row">
-        <button class="btn primary" id="pay22">$22/mo — Starter</button>
-        <button class="btn" id="pay95">$95/mo — Pro</button>
-        <button class="btn" id="payVip">VIP — $5,000–$25,000</button>
-        <div class="note">Replace STRIPE_* constants in the script with your live links.</div>
-      </div>
-    </section>
   </main>
 
   <footer>
     <div class="container footer-inner">
       <div class="small">© 2025 GoblinReach. Compliant automation with human-like pacing.</div>
       <div class="links small">
-        <a href="#" id="openLoginLink">Login</a>
-        <a href="#" id="openSignupLink">Sign up</a>
+        <a href="mailto:support@yoursite.com">support@yoursite.com</a>
+        <a href="https://calendly.com/YOUR_HANDLE/intro" target="_blank" rel="noreferrer">Book a setup call</a>
         <a href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noreferrer">Instagram</a>
       </div>
     </div>
   </footer>
 
   <script>
-    const $ = (s)=>document.querySelector(s); const $$ = (s)=>document.querySelectorAll(s);
-    function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
-    function load(k,f){ try{ return JSON.parse(localStorage.getItem(k)) ?? f } catch { return f } }
+    // ====== CONFIG: set your links here ======
+    const STRIPE = {
+      starter: 'https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03',  // ✅ your $22 link
+      pro:     'https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04',  // ✅ your $95 link
+      vip:     '$triple4mgmt'                                      // ✅ your VIP cashtag (Cash App)
+    };
+    // =========================================
 
-    // Auto-detect which ZIP path exists and set button href
+    const $ = s => document.querySelector(s);
+
+    // Pricing buttons (VIP supports $cashtag)
+    function go(u){
+      if(!u){ alert('Link missing.'); return }
+      if (u.startsWith('$')) {
+        const tag = u; const url = 'https://cash.app/' + encodeURIComponent(tag);
+        // copy cashtag for the user + open Cash App page
+        if (navigator.clipboard) { navigator.clipboard.writeText(tag).catch(()=>{}); }
+        window.open(url, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      if (/REPLACE/.test(u)){ alert('Add your real link in the script at the bottom of index.html.'); return }
+      window.location.href = u;
+    }
+    $('#tier22')?.addEventListener('click', ()=> go(STRIPE.starter));
+    $('#tier95')?.addEventListener('click', ()=> go(STRIPE.pro));
+    $('#tierVip')?.addEventListener('click', ()=> go(STRIPE.vip));
+
+    // Auto-detect which download path exists and set button href
     (async () => {
       const btn = document.getElementById('downloadBtn');
       const candidates = ['/downloads/goblinreach.zip', '/public/downloads/goblinreach.zip'];
@@ -259,48 +269,22 @@
           if (r.ok) { btn.href = p; return; }
         } catch(e) {}
       }
-      // fallback text if neither exists
-      btn.addEventListener('click', (e)=> {
-        e.preventDefault();
-        alert('Could not find goblinreach.zip. Make sure it is uploaded to /downloads/ or /public/downloads/.');
-      });
+      btn.addEventListener('click', (e)=>{ e.preventDefault(); alert('Could not find goblinreach.zip. Upload it to /downloads/ or /public/downloads/.'); });
     })();
 
-    // local demo saves
-    $('#saveAcct')?.addEventListener('click', ()=>{
-      save('goblin_acct', { user: $('#igUser').value.trim(), pass: $('#igPass').value, twoFA: $('#twoFactor').checked, safe: $('#safeMode').checked });
-      alert('Account saved locally (demo). Connect a secure backend for production.');
-    });
-    (function(){ const a=load('goblin_acct',{}); if(a?.user) $('#igUser').value=a.user; if(a?.pass) $('#igPass').value=a.pass; $('#twoFactor').checked=!!a?.twoFA; $('#safeMode').checked=a?.safe!==false; })();
-
-    $('#saveProxy')?.addEventListener('click', ()=>{ save('goblin_proxy', { url: $('#proxyUrl').value.trim(), rotation: $('#rotation').value }); alert('Proxy saved locally. Backend should verify/rotate.'); });
-    (function(){ const p=load('goblin_proxy',{}); if(p?.url) $('#proxyUrl').value=p.url; if(p?.rotation) $('#rotation').value=p.rotation; })();
-
-    function getSources(){ return [...$$('.src')].filter(x=>x.checked).map(x=>x.value) }
-
-    // exports
-    $('#exportCsv')?.addEventListener('click', ()=>{
-      const rows = [['type','target'], ...getSources().map(s=>[s, $('#targetHandle').value]) ];
-      const csv = rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
-      const a=document.createElement('a'); a.href=url; a.download='goblinreach_export.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(url), 1200);
-    });
-    $('#exportSheets')?.addEventListener('click', ()=> alert('POST to your Google Apps Script webhook here.'));
-    $('#exportTelegram')?.addEventListener('click', ()=> alert('POST to your Telegram bot webhook here.'));
-
-    // checkout links (replace with your live URLs)
-    const STRIPE = {
-      starter: 'https://buy.stripe.com/REPLACE_STARTER',
-      pro:     'https://buy.stripe.com/REPLACE_PRO',
-      vip:     'https://calendly.com/REPLACE_VIP'
-    };
-    function go(u){ if(!u || u.includes('REPLACE')){ alert('Add your Stripe/Calendly URL in the script.'); return } window.location.href=u }
-    $('#tier22')?.addEventListener('click', ()=> go(STRIPE.starter));
-    $('#tier95')?.addEventListener('click', ()=> go(STRIPE.pro));
-    $('#tierVip')?.addEventListener('click', ()=> go(STRIPE.vip));
-    $('#pay22')?.addEventListener('click', ()=> go(STRIPE.starter));
-    $('#pay95')?.addEventListener('click', ()=> go(STRIPE.pro));
-    $('#payVip')?.addEventListener('click', ()=> go(STRIPE.vip));
+    // Thanks mode: if Stripe redirects with ?paid=1, show toast + fire pixels + scroll to install
+    (function(){
+      const q = new URLSearchParams(location.search);
+      if (q.get('paid') === '1') {
+        const t = document.getElementById('toast'); if (t){ t.style.display='block'; setTimeout(()=> t.style.display='none', 5000); }
+        // Fire purchase events
+        try { window.fbq && fbq('track', 'Purchase', {value: 1, currency: 'USD'}); } catch(e){}
+        try { window.gtag && gtag('event', 'purchase', {value: 1, currency: 'USD'}); } catch(e){}
+        try { window.ttq && ttq.track('CompletePayment', {value: 1, currency: 'USD'}); } catch(e){}
+        // Jump to install section
+        const anchor = document.getElementById('install'); if (anchor) anchor.scrollIntoView({behavior:'smooth'});
+      }
+    })();
   </script>
 </body>
 </html>
