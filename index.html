@@ -1,182 +1,211 @@
-// 📁 File: package.json
-{
-  "name": "goblinreach-backend",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.0",
-    "jsonwebtoken": "^9.0.2",
-    "micro": "^10.0.1",
-    "raw-body": "^2.5.2"
-  }
-}
-
-// 📁 File: vercel.json
-{
-  "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs20.x"
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoblinReach — DM Automation</title>
+  <meta name="description" content="Compliant, human-like Instagram DM automation with 24/7 cloud, proxies, and VPN-friendly setup." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#070a08; --panel:#0c1210; --panel2:#0b1310; --ink:#e9ffe8; --muted:#9fd6a6; --brand:#22c55e; --accent:#16a34a; --line:#15211a; --glow:rgba(34,197,94,.22);
     }
-  }
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 800px at 70% -10%,#112218 0%,transparent 60%),linear-gradient(180deg,#0a0f0c,#060807 60%);color:var(--ink)}
+    a{color:var(--brand);text-decoration:none}
+    .wrap{max-width:1200px;margin-inline:auto;padding:28px}
+    header{display:flex;align-items:center;gap:16px;justify-content:space-between;margin-bottom:18px}
+    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#0b150f;color:var(--muted);display:inline-flex;gap:8px;align-items:center}
+    .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px var(--glow)}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800}
+    .mark{width:28px;height:28px;border-radius:10px;background:conic-gradient(from 210deg at 50% 50%,#183325,#31f189 40%,#0b1a13 60%);box-shadow:0 0 0 1px #163b2a,0 10px 25px rgba(18,241,137,.12)}
+    nav{display:flex;align-items:center;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:14px;border:1px solid #1c2a22;background:#0c140f;color:var(--ink);font-weight:600}
+    .btn.primary{background:linear-gradient(180deg,#20d66a,#129a49);border-color:#118844;color:#021307;box-shadow:0 10px 24px rgba(34,197,94,.25)}
+    .grid{display:grid;grid-template-columns:1.2fr .95fr;gap:20px}
+    .card{background:linear-gradient(180deg,#0d1511,#0b120f);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+    .h1{font-size:44px;line-height:1.1;margin:10px 0 12px}
+    .lede{color:var(--muted);max-width:720px}
+    .ctaRow{display:flex;gap:12px;margin:18px 0 10px}
+    .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+    .k{background:#0e1612;border:1px solid var(--line);padding:16px;border-radius:16px}
+    .k .v{font-size:28px;font-weight:800}
+    .panel{background:linear-gradient(180deg,#0e1713,#0b1310);border:1px solid var(--line);border-radius:18px;padding:18px}
+    .label{font-size:12px;color:var(--muted)}
+    .row{display:flex;gap:10px;align-items:center}
+    .stack{display:flex;flex-direction:column;gap:10px}
+    .input, select, textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid #1f2a24;background:#0b100e;color:var(--ink)}
+    .toggle{--s:22px;width:48px;height:26px;border-radius:999px;background:#0f1a14;border:1px solid #193325;position:relative;box-shadow:inset 0 0 0 2px rgba(0,0,0,.2)}
+    .toggle::after{content:"";position:absolute;top:50%;left:3px;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:#1b2a22;transition:.2s}
+    .toggle.on{background:#1ccf67}
+    .toggle.on::after{left:23px;background:#06240f}
+    .statusLight{width:10px;height:10px;border-radius:50%;background:#ff4d4d;box-shadow:0 0 0 3px rgba(239,68,68,.18)}
+    footer{padding:28px 0;color:#94caa1}
+    @media (max-width:1050px){.grid{grid-template-columns:1fr}.h1{font-size:36px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="row">
+        <div class="logo"><div class="mark"></div>GoblinReach <span class="label" style="margin-left:6px">DM Automation for Client Apps</span></div>
+        <span class="badge"><span class="dot"></span>24/7 Cloud • Proxies • VPN Ready</span>
+      </div>
+      <nav>
+        <a class="btn" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn" href="#auth">Login / Sign Up</a>
+      </nav>
+    </header>
 
-// 📁 File: api/auth/_supabase.js
-import { createClient } from '@supabase/supabase-js';
+    <main class="grid">
+      <section class="card">
+        <h1 class="h1">Get High-Ticket Clients<br/>on Autopilot.</h1>
+        <p class="lede">GoblinReach looks like a $1,000/mo tool, but it’s built to own your market. Compliant, human-like DM automation.</p>
+        <div class="ctaRow">
+          <a class="btn" id="downloadBtn" href="/goblinreach-extension.zip" download>Download Extension</a>
+        </div>
+        <div class="kpis">
+          <div class="k"><div class="label">Avg. Replies / 100 DMs</div><div class="v">18–31</div></div>
+          <div class="k"><div class="label">Active Users</div><div class="v">1,000+</div></div>
+          <div class="k"><div class="label">Compliance</div><div class="v">Rate-limits<br/>• Randomizer</div></div>
+        </div>
+      </section>
 
-export function supaAdmin() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE; // service role key (server only)
-  if (!url || !key) throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE');
-  return createClient(url, key, { auth: { persistSession: false } });
-}
+      <section class="card">
+        <div class="row" style="justify-content:space-between;margin-bottom:10px">
+          <div class="label"><strong>LIVE Preview:</strong> Stable features only. Keep ~<strong>600s</strong> between actions across accounts for best deliverability.</div>
+          <div class="row" style="gap:12px"><div class="label">Automation</div><div class="toggle" id="autoTgl" aria-label="automation toggle" role="switch" aria-checked="false"></div><div class="label">Status</div><div class="statusLight" id="statusDot"></div></div>
+        </div>
+        <div class="row" style="gap:16px">
+          <div class="stack" style="flex:1">
+            <label class="label">Target</label>
+            <select class="input" id="targetSel">
+              <option>Followers of target account</option>
+              <option>People they are following</option>
+              <option>People who liked a post</option>
+              <option>People who commented on a post</option>
+            </select>
+          </div>
+          <div class="stack" style="width:180px">
+            <label class="label">Delay (sec)</label>
+            <input class="input" id="delay" type="number" min="300" value="600" />
+          </div>
+        </div>
+        <div class="stack" style="margin-top:10px">
+          <label class="label">Message Template (custom)</label>
+          <textarea class="input" id="msg" rows="4" placeholder="Hey {{name}} — quick one…"></textarea>
+        </div>
 
-// Minimal JWT (for your app session)
-import jwt from 'jsonwebtoken';
-export function signAppToken(payload) {
-  const secret = process.env.APP_JWT_SECRET;
-  if (!secret) throw new Error('Missing APP_JWT_SECRET');
-  return jwt.sign(payload, secret, { expiresIn: '30d' });
-}
+        <div class="panel" style="margin-top:12px">
+          <div class="label" style="margin-bottom:8px">Engagement Actions</div>
+          <div class="row" style="gap:18px;align-items:flex-start">
+            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Send Likes (coming soon)</span></label>
+            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Auto-Comment (coming soon)</span></label>
+          </div>
+          <textarea class="input" rows="3" placeholder="Optional: write your comment template here" disabled></textarea>
+        </div>
 
-// 📁 File: api/auth/signup.js
-import { supaAdmin, signAppToken } from './_supabase.js';
+        <div class="panel" style="margin-top:12px">
+          <div class="label" style="margin-bottom:8px">Social Login</div>
+          <button class="btn" id="doLogin">Login with Instagram</button>
+          <p class="label" style="margin-top:8px">You’ll authenticate your Instagram account. (Requires backend/extension connection.)</p>
+        </div>
+      </section>
+    </main>
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  const { email, password, username } = req.body || {};
-  if (!email || !password || !username) return res.status(400).json({ error: 'Missing email/password/username' });
+    <section class="card" style="margin-top:20px">
+      <div class="label">Payments</div>
+      <p class="label">Choose your payment method below. After payment, accounts will be manually activated if not instant.</p>
+      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Pay with Card (Stripe)</a>
+      <a class="btn" href="https://cash.app/$triple4mgmt" target="_blank" rel="noopener">Pay via Cash App — $triple4mgmt</a>
+    </section>
 
-  try {
-    const supa = supaAdmin();
-    // create auth user
-    const { data: auth, error: e1 } = await supa.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { username }
+    <footer>
+      <div class="row" style="justify-content:space-between">
+        <div>© 2025 GoblinReach. Compliant automation with human-like pacing.</div>
+        <div class="row" style="gap:8px">
+          <a href="mailto:support@goblinreach.live">Support</a>
+          <a href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const $ = (s)=>document.querySelector(s);
+    const tgl = $('#autoTgl');
+    const dot = $('#statusDot');
+    tgl && tgl.addEventListener('click',()=>{
+      const on = tgl.classList.toggle('on');
+      tgl.setAttribute('aria-checked', on? 'true':'false');
+      dot.style.background = on ? '#10b981' : '#ff4d4d';
+      dot.style.boxShadow = on ? '0 0 0 3px rgba(16,185,129,.18)' : '0 0 0 3px rgba(239,68,68,.18)';
     });
-    if (e1) throw e1;
 
-    const user = auth.user;
-    // upsert profile row
-    const { error: e2 } = await supa.from('profiles').upsert({
-      user_id: user.id,
-      username,
-      plan: 'free',
-      status: 'pending'
-    });
-    if (e2) throw e2;
-
-    const token = signAppToken({ uid: user.id, username });
-    return res.status(200).json({ token });
-  } catch (err) {
-    return res.status(500).json({ error: err.message || 'Signup failed' });
-  }
-}
-
-// 📁 File: api/auth/login.js
-import { supaAdmin, signAppToken } from './_supabase.js';
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  const { identifier, password } = req.body || {};
-  if (!identifier || !password) return res.status(400).json({ error: 'Missing identifier/password' });
-
-  try {
-    const supa = supaAdmin();
-
-    // Find user by email first
-    let { data: usersByEmail } = await supa.auth.admin.listUsers({ page: 1, perPage: 1, email: identifier });
-    let user = usersByEmail?.users?.[0];
-
-    // If not email, try by username (stored in metadata)
-    if (!user) {
-      const { data, error } = await supa
-        .from('profiles')
-        .select('user_id, username')
-        .eq('username', identifier)
-        .single();
-      if (!error && data) {
-        const { data: userFetch } = await supa.auth.admin.getUserById(data.user_id);
-        user = userFetch?.user;
-      }
+    // Enable Login/Signup with real backend endpoints
+    async function postJSON(url, data){
+      const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+      const t = await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(t.error||t.message||('HTTP '+r.status));
+      return t;
     }
 
-    if (!user) return res.status(400).json({ error: 'User not found' });
-
-    // Create a short-lived email OTP to verify password (Supabase Admin API cannot verify password directly).
-    // Simpler approach: use public anon key on client for email/pass sign-in.
-    return res.status(501).json({ error: 'Use client-side Supabase signInWithPassword or add a password proxy here.' });
-  } catch (err) {
-    return res.status(500).json({ error: err.message || 'Login failed' });
-  }
-}
-
-// Alternative: client-side login snippet for index.html (uses anon key safely on client):
-// const supa = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-// const { data, error } = await supa.auth.signInWithPassword({ email, password });
-// if(!error){ const token = await supa.auth.getSession(); }
-
-// 📁 File: api/stripe/webhook.js
-import { buffer } from 'micro';
-import crypto from 'crypto';
-import { supaAdmin } from '../auth/_supabase.js';
-
-export const config = { api: { bodyParser: false } };
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
-  const sig = req.headers['stripe-signature'];
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret) return res.status(500).send('Missing STRIPE_WEBHOOK_SECRET');
-
-  const raw = await buffer(req);
-  // Basic signature check (manual) – if you use official stripe, swap to stripe.webhooks.constructEvent
-  const digest = crypto.createHmac('sha256', secret).update(raw).digest('hex');
-  // NOTE: For production, use Stripe SDK. Here we assume your reverse proxy sets X-Signature or you compare at your worker.
-
-  try {
-    const event = JSON.parse(raw.toString());
-    if (event.type === 'checkout.session.completed') {
-      const email = event.data.object.customer_details?.email;
-      if (email) {
-        const supa = supaAdmin();
-        // find profile by email (user metadata)
-        const { data: users } = await supa.auth.admin.listUsers({ page: 1, perPage: 1, email });
-        const user = users?.users?.[0];
-        if (user) {
-          await supa.from('profiles').update({ plan: 'pro', status: 'active' }).eq('user_id', user.id);
+    // Hook up Sign Up and Login fields (in the AUTH card)
+    const suUser = document.createElement('input');
+    const suEmail = document.createElement('input');
+    const suPass = document.createElement('input');
+    // Find existing fields by label text
+    // (We rely on current markup: first two inputs after the preview belong to auth card.)
+    document.addEventListener('DOMContentLoaded',()=>{
+      const authCard = document.querySelector('main + section.card');
+      // Add minimal auth form if missing
+      if(authCard){
+        if(!authCard.querySelector('#signupUser')){
+          authCard.insertAdjacentHTML('beforeend', `
+            <div class="panel" id="auth" style="margin-top:12px">
+              <div class="label">Create Account</div>
+              <input class="input" id="signupUser" placeholder="Username" />
+              <input class="input" id="signupEmail" placeholder="Email" type="email" />
+              <input class="input" id="signupPass" placeholder="Password" type="password" />
+              <button class="btn primary" id="signupBtn">Sign Up</button>
+              <div class="label" style="margin-top:12px">Login</div>
+              <input class="input" id="loginUser" placeholder="Username or Email" />
+              <input class="input" id="loginPass" placeholder="Password" type="password" />
+              <button class="btn" id="loginBtn">Login</button>
+            </div>`);
         }
+
+        document.getElementById('signupBtn').addEventListener('click', async ()=>{
+          try{
+            const body={ username:$('#signupUser').value.trim(), email:$('#signupEmail').value.trim(), password:$('#signupPass').value };
+            const res = await postJSON('/api/auth/signup', body);
+            localStorage.setItem('gr_token', res.token);
+            alert('Account created. You are logged in.');
+          }catch(e){ alert('Sign up failed: '+e.message); }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', async ()=>{
+          try{
+            const body={ identifier:$('#loginUser').value.trim(), password:$('#loginPass').value };
+            const res = await postJSON('/api/auth/login', body);
+            localStorage.setItem('gr_token', res.token);
+            alert('Logged in.');
+          }catch(e){ alert('Login failed: '+e.message); }
+        });
       }
-    }
-    return res.status(200).send('ok');
-  } catch (e) {
-    return res.status(400).send('Webhook error');
-  }
-}
+    });
 
-// 📁 File: supabase.sql (run in Supabase SQL editor)
-/*
-create table if not exists profiles (
-  user_id uuid primary key references auth.users(id) on delete cascade,
-  username text unique,
-  plan text default 'free',
-  status text default 'pending',
-  created_at timestamp with time zone default now()
-);
-
-alter table profiles enable row level security;
-create policy "public read own" on profiles for select using ( auth.uid() = user_id );
-create policy "insert own" on profiles for insert with check ( auth.uid() = user_id );
-create policy "update own" on profiles for update using ( auth.uid() = user_id );
-*/
-
-// 📁 File: .env (set these in Vercel → Project → Settings → Environment Variables)
-/*
-SUPABASE_URL=https://YOUR-PROJECT.ref.supabase.co
-SUPABASE_SERVICE_ROLE=eyJ... (Service role key)
-APP_JWT_SECRET=super-long-random-string
-STRIPE_WEBHOOK_SECRET=whsec_... (from Stripe dashboard)
-*/
+    // Download hint if ZIP missing
+    document.addEventListener('DOMContentLoaded',()=>{
+      fetch('/goblinreach-extension.zip',{method:'HEAD'})
+        .then(r=>{ if(!r.ok) throw new Error('missing'); })
+        .catch(()=>{
+          const btn=$('#downloadBtn');
+          btn.insertAdjacentHTML('afterend','<p class="label">Upload <code>public/goblinreach-extension.zip</code> to enable this download.</p>');
+        });
+    });
+  </script>
+</body>
+</html>
