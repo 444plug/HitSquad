@@ -60,11 +60,9 @@
     </header>
 
     <main class="grid">
-      <!-- LEFT HERO CARD -->
       <section class="card">
-        <span class="badge">Miracle pricing: $22/mo</span>
-        <h1 class="h1">Get High‑Ticket Clients<br/>on Autopilot.</h1>
-        <p class="lede">GoblinReach looks like a $1,000/mo tool, but it’s just $22/mo to own your market. Compliant, human‑like DM automation.</p>
+        <h1 class="h1">Get High-Ticket Clients<br/>on Autopilot.</h1>
+        <p class="lede">GoblinReach looks like a $1,000/mo tool, but it’s built to own your market. Compliant, human-like DM automation.</p>
         <div class="ctaRow">
           <a class="btn primary" href="#auth">Start Free</a>
           <a class="btn" id="downloadBtn" href="/goblinreach-extension.zip" download>Download Extension</a>
@@ -72,11 +70,10 @@
         <div class="kpis">
           <div class="k"><div class="label">Avg. Replies / 100 DMs</div><div class="v">18–31</div></div>
           <div class="k"><div class="label">Active Users</div><div class="v">1,000+</div></div>
-          <div class="k"><div class="label">Compliance</div><div class="v">Rate‑limits<br/>• Randomizer</div></div>
+          <div class="k"><div class="label">Compliance</div><div class="v">Rate-limits<br/>• Randomizer</div></div>
         </div>
       </section>
 
-      <!-- RIGHT LIVE PREVIEW -->
       <section class="card">
         <div class="row" style="justify-content:space-between;margin-bottom:10px">
           <div class="label"><strong>LIVE Preview:</strong> Stable features only. Keep ~<strong>600s</strong> between actions across accounts for best deliverability.</div>
@@ -85,7 +82,7 @@
         <div class="row" style="gap:16px">
           <div class="stack" style="flex:1">
             <label class="label">Target</label>
-            <select class=\"input\" id=\"targetSel\">
+            <select class="input" id="targetSel">
               <option>Followers of target account</option>
               <option>People they are following</option>
               <option>People who liked a post</option>
@@ -106,10 +103,9 @@
           <div class="label" style="margin-bottom:8px">Engagement Actions</div>
           <div class="row" style="gap:18px;align-items:flex-start">
             <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Send Likes (coming soon)</span></label>
-            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Auto‑Comment (coming soon)</span></label>
+            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Auto-Comment (coming soon)</span></label>
           </div>
           <textarea class="input" rows="3" placeholder="Optional: write your comment template here" disabled></textarea>
-          <p class="label" style="margin-top:8px">Tip: Mix DMs with likes + comments with ~600s pacing for best results (when enabled).</p>
         </div>
 
         <div class="panel" style="margin-top:12px">
@@ -122,13 +118,14 @@
 
     <section class="card" style="margin-top:20px">
       <div class="label">Payments</div>
-      <p class="label">Subscribe with Stripe (Payment Link). No keys on the site.</p>
-      $1Subscribe$3
+      <p class="label">Choose your payment method below. After payment, accounts will be manually activated if not instant.</p>
+      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Pay with Card (Stripe)</a>
+      <a class="btn" href="https://cash.app/$triple4mgmt" target="_blank" rel="noopener">Pay via Cash App — $triple4mgmt</a>
     </section>
 
     <footer>
       <div class="row" style="justify-content:space-between">
-        <div>© 2025 GoblinReach. Compliant automation with human‑like pacing.</div>
+        <div>© 2025 GoblinReach. Compliant automation with human-like pacing.</div>
         <div class="row" style="gap:8px">
           <a href="mailto:support@goblinreach.live">Support</a>
           <a href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
@@ -148,7 +145,6 @@
       dot.style.boxShadow = on ? '0 0 0 3px rgba(16,185,129,.18)' : '0 0 0 3px rgba(239,68,68,.18)';
     });
 
-    // Download hint if ZIP missing
     document.addEventListener('DOMContentLoaded',()=>{
       fetch('/goblinreach-extension.zip',{method:'HEAD'})
         .then(r=>{ if(!r.ok) throw new Error('missing'); })
