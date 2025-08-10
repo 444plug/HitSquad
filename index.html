@@ -90,8 +90,8 @@
     <h1 class="title">Let AI handle your Instagram DMs — safely, on autopilot.</h1>
     <p class="subtitle">Compliant, human-like pacing with randomizer & scheduling. Built for agencies and creators who want replies, revenue, and full account safety.</p>
     <div class="hero-cta">
-      <!-- IMPORTANT: file must be at /public/downloads/goblinreach.zip in your repo -->
-      <a class="btn primary" id="downloadBtn" href="/downloads/goblinreach.zip" download>Download Extension</a>
+      <!-- Button will auto-detect the correct ZIP path -->
+      <a class="btn primary" id="downloadBtn" href="#" download>Download Extension</a>
       <button class="btn" id="openLearn">Live Preview</button>
     </div>
     <div class="metrics">
@@ -248,6 +248,23 @@
     const $ = (s)=>document.querySelector(s); const $$ = (s)=>document.querySelectorAll(s);
     function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
     function load(k,f){ try{ return JSON.parse(localStorage.getItem(k)) ?? f } catch { return f } }
+
+    // Auto-detect which ZIP path exists and set button href
+    (async () => {
+      const btn = document.getElementById('downloadBtn');
+      const candidates = ['/downloads/goblinreach.zip', '/public/downloads/goblinreach.zip'];
+      for (const p of candidates) {
+        try {
+          const r = await fetch(p, { method: 'HEAD', cache: 'no-store' });
+          if (r.ok) { btn.href = p; return; }
+        } catch(e) {}
+      }
+      // fallback text if neither exists
+      btn.addEventListener('click', (e)=> {
+        e.preventDefault();
+        alert('Could not find goblinreach.zip. Make sure it is uploaded to /downloads/ or /public/downloads/.');
+      });
+    })();
 
     // local demo saves
     $('#saveAcct')?.addEventListener('click', ()=>{
