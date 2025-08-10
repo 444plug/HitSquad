@@ -3,117 +3,184 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GoblinReach — DM Automation</title>
+  <title>GoblinReach.ai — DM Automation</title>
+  <meta name="description" content="GoblinReach.ai — compliant, human‑like Instagram DM automation. 24/7 Cloud • Proxies • VPN Ready." />
   <style>
     :root{
-      --bg:#0b0f0c;
-      --card:#0f1512;
-      --text:#e6ffee;
-      --muted:#9be5b4;
-      --accent:#00ff84;
-      --accent-2:#16ffa0;
-      --danger:#ff5a5a;
+      --bg:#070a08; --panel:#0b1110; --card:#0e1614; --ink:#eafff1; --muted:#b7f2cb;
+      --line:#173f2b; --accent:#00ff84; --accent2:#14ffa2; --soft:#0e1c16;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:linear-gradient(180deg,#090d0a, #0b120e 40%, #0b0f0c);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#060b08,#0a120f 50%,#070a08);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
     a{color:inherit}
-    .wrap{max-width:1100px;margin:0 auto;padding:36px}
-    .badge{display:inline-flex;gap:8px;align-items:center;background:#0d1a14;border:1px solid #133524;color:var(--muted);padding:6px 10px;border-radius:999px;font-size:12px;letter-spacing:.2px}
-    .hero{display:grid;gap:22px;margin:28px 0 34px}
+    .wrap{max-width:1128px;margin:0 auto;padding:28px}
+
+    /* Top bar */
+    .top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .logo{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--accent);color:#032314;font-weight:900}
+    .brand small{opacity:.7;font-weight:600}
+    .badges{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#0d1a14;border:1px solid #164c33;color:var(--muted);font-size:12px}
+    .nav{display:flex;gap:10px}
+    .nav a{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#0d1a14;text-decoration:none}
+
+    /* Hero */
+    .hero{display:grid;gap:16px;margin:18px 0 22px}
     h1{font-size:44px;line-height:1.05;margin:0}
-    p.lead{font-size:18px;color:#c9ffde;margin:4px 0 0}
-    .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
-    .btn{display:inline-block;padding:14px 20px;border-radius:10px;font-weight:700;text-decoration:none}
-    .btn-primary{background:var(--accent);color:#04150d;box-shadow:0 0 0 2px #063d22 inset}
-    .btn-ghost{border:1px solid #234733;background:#0d1a14;color:#c9ffde}
-    .grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
-    .card{grid-column:span 12;background:var(--card);border:1px solid #123524;border-radius:16px;padding:18px}
-    @media(min-width:900px){.card.half{grid-column:span 6}}
-    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
-    .kpi{background:#0c1a13;border:1px solid #133524;border-radius:12px;padding:12px;text-align:center}
+    .sub{font-size:14px;opacity:.8}
+    .lead{font-size:18px;color:#d5ffe6;margin:0}
+    .cta{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{display:inline-block;padding:14px 18px;border-radius:12px;font-weight:750;text-decoration:none}
+    .primary{background:var(--accent);color:#052216;box-shadow:0 0 0 2px #084224 inset,0 8px 30px rgba(0,255,132,.18)}
+    .ghost{border:1px solid var(--line);background:#0d1a14;color:#c8ffdf}
+
+    /* KPIs */
+    .kpis{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .kpi{grid-column:span 4;background:#0c1a13;border:1px solid #154b33;border-radius:14px;padding:12px;text-align:center}
     .kpi b{display:block;font-size:22px}
-    details{background:#0c1511;border:1px dashed #174a31;border-radius:12px;padding:12px}
-    summary{cursor:pointer;font-weight:700;color:var(--muted)}
-    code, .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    @media(max-width:860px){.kpi{grid-column:span 12}}
+
+    /* Preview */
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+    .panel h3{margin:0 0 8px 0}
+    .note{font-size:13px;opacity:.85;margin-bottom:8px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .field{grid-column:span 12;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+    .field.half{grid-column:span 6}
+    .label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;background:#08120e;border:1px solid #1a5239;border-radius:10px;color:var(--ink);padding:10px;outline:none}
+    textarea{min-height:90px;resize:vertical}
+    .toggle{display:inline-flex;align-items:center;gap:10px}
+    .tog{appearance:none;width:44px;height:26px;border-radius:20px;background:#213a2e;border:1px solid #2a6046;position:relative;outline:none;cursor:pointer;transition:.2s}
+    .tog:checked{background:var(--accent)}
+    .tog:before{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:999px;background:#0b120e;transition:.2s}
+    .tog:checked:before{left:22px}
+
+    /* Social Login */
+    .login{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .ig{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:#141019;border:1px solid #3a2852}
+
     footer{opacity:.6;font-size:12px;margin-top:26px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,Monaco,"Courier New",monospace}
+
+    /* tiny icons */
+    .ico{width:14px;height:14px;display:inline-block;vertical-align:-2px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <span class="badge">🕶️ Rotating Proxies • VPN Ready • 24/7 Cloud</span>
+    <!-- Top bar -->
+    <div class="top">
+      <div class="brand">
+        <div class="logo">GR</div>
+        <div>
+          <div>GoblinReach<span style="opacity:.7">.ai</span></div>
+          <div class="badges">
+            <span class="chip">
+              <!-- Cloud (24/7) -->
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M7 18h9a4 4 0 0 0 0-8 5 5 0 0 0-9.7-1.7A3.5 3.5 0 0 0 7 18Z" stroke="#9fe8b8"/></svg>
+              24/7 Cloud
+            </span>
+            <span class="chip">
+              <!-- Proxies -->
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v6H4zM4 15h10v3H4z" stroke="#9fe8b8"/></svg>
+              Proxies
+            </span>
+            <span class="chip">
+              <!-- VPN -->
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4Z" stroke="#9fe8b8"/></svg>
+              VPN Ready
+            </span>
+          </div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="https://www.instagram.com/goblinreach.ai/" target="_blank">Instagram</a>
+        <a href="#auth">Login / Sign Up</a>
+        <!-- Download points to a local zip next to index.html or /public on Vercel -->
+        <a href="/goblinreach.zip" download>Download Extension</a>
+      </nav>
+    </div>
 
+    <!-- Hero -->
     <section class="hero">
-      <h1>GoblinReach</h1>
-      <p class="lead">Compliant, human-like Instagram DM automation. Looks like $1,000/mo tools — priced at $22/mo.</p>
+      <div class="sub">Miracle pricing: $22/mo</div>
+      <h1>Get High‑Ticket Clients on Autopilot.</h1>
+      <p class="lead">Looks like $1,000/mo tools, priced at just $22/mo. Compliant, human‑like DM automation.</p>
       <div class="cta">
-        <!-- ✅ PUT YOUR ZIP NEXT TO THIS FILE AS goblinreach.zip -->
-        <a class="btn btn-primary" href="goblinreach.zip" download>⬇️ Download GoblinReach DM Bot</a>
-        <a class="btn btn-ghost" href="#install">How to install</a>
-      </div>
-      <div class="kpis">
-        <div class="kpi"><b>18–31</b><span class="mono">Avg replies / 100 DMs</span></div>
-        <div class="kpi"><b>1,000+</b><span class="mono">Active users</span></div>
-        <div class="kpi"><b>600s</b><span class="mono">Safe delay / action</span></div>
+        <a class="btn primary" href="#auth">Start Free</a>
+        <a class="btn ghost" href="/goblinreach.zip" download>Download Extension</a>
       </div>
     </section>
 
-    <section class="grid">
-      <div class="card half">
-        <h3 style="margin-top:0">Quick Start</h3>
-        <ol>
-          <li><b>Place your file:</b> Put <span class="mono">goblinreach.zip</span> in the <b>same folder</b> as this <span class="mono">index.html</span>.</li>
-          <li><b>Deploy:</b> Upload this folder to your host (Vercel: drag/drop or push to GitHub).</li>
-          <li><b>Click Download:</b> Visit <span class="mono">goblinreach.live</span> and hit the green button.</li>
-        </ol>
-        <p class="mono">Your file will be at: https://goblinreach.live/goblinreach.zip</p>
-      </div>
+    <!-- KPIs -->
+    <div class="kpis" aria-label="KPIs">
+      <div class="kpi"><span class="mono">Avg. Replies / 100 DMs</span><b>18–31</b></div>
+      <div class="kpi"><span class="mono">Active Users</span><b>1,000+</b></div>
+      <div class="kpi"><span class="mono">Compliance</span><b>Rate‑limits • Randomizer</b></div>
+    </div>
 
-      <div class="card half" id="install">
-        <h3 style="margin-top:0">Install the Extension (Chrome)</h3>
-        <ol>
-          <li>Click <b>Download GoblinReach DM Bot</b> above to get <span class="mono">goblinreach.zip</span>.</li>
-          <li><b>Right-click → Properties → Unblock → Apply</b> (fixes “Windows blocked access”).</li>
-          <li>Right-click the zip → <b>Extract All…</b></li>
-          <li>Open <span class="mono">chrome://extensions</span></li>
-          <li>Toggle <b>Developer mode</b> (top right).</li>
-          <li>Click <b>Load unpacked</b> → select the <b>extracted folder</b> (the one that has the <span class="mono">manifest.json</span> inside).</li>
-          <li>Pin the extension → open Instagram → toggle <b>Automation</b>.</li>
-        </ol>
+    <!-- Preview panel -->
+    <div class="panel" style="margin-top:14px">
+      <h3>LIVE Preview</h3>
+      <div class="note">Stable features only. Recommended pacing: <b>600 seconds</b> between actions for consistent deliverability.</div>
+      <div class="grid">
+        <div class="field half">
+          <label class="label">Automation</label>
+          <label class="toggle"><input id="auto" type="checkbox" class="tog" /> <span>Status</span></label>
+        </div>
+        <div class="field half">
+          <label class="label">Audience Source</label>
+          <select>
+            <option selected>Following of a user</option>
+            <option>Followers of a user</option>
+            <option>People who liked a post</option>
+            <option>CSV upload</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Post URL</label>
+          <input type="url" placeholder="https://instagram.com/p/POST_ID" value="https://instagram.com/p/POST_ID" />
+        </div>
+        <div class="field">
+          <label class="label">Message Template (custom)</label>
+          <textarea placeholder="Hey {{name}} — quick one…"></textarea>
+        </div>
+        <div class="field half">
+          <label class="label">Delay (sec)</label>
+          <input type="number" value="600" />
+        </div>
+        <div class="field half" style="display:flex;align-items:center">Tip: keep ~<b>600s</b> between actions for best results.</div>
       </div>
+    </div>
 
-      <div class="card">
-        <h3 style="margin-top:0">If Windows says “Potentially harmful”</h3>
-        <details open>
-          <summary>Fix the block in 10 seconds</summary>
-          <ul>
-            <li>Find the downloaded <span class="mono">goblinreach.zip</span> in your Downloads.</li>
-            <li><b>Right-click → Properties →</b> check <b>Unblock</b> → <b>Apply</b> → OK.</li>
-            <li>If SmartScreen pops up for an EXE: click <b>More info → Run anyway</b>.</li>
-            <li>We do <b>not</b> need to run an EXE for Chrome extensions — you just extract and <b>Load unpacked</b>.</li>
-          </ul>
-        </details>
+    <!-- Social Login -->
+    <div id="auth" class="panel" style="margin-top:12px">
+      <h3>Social Login</h3>
+      <div class="login">
+        <a class="ig" href="#" onclick="alert('Connect requires backend/extension connection.');return false;">
+          <!-- tiny IG glyph -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#c8a5ff"/><circle cx="12" cy="12" r="4" stroke="#c8a5ff"/><circle cx="17.5" cy="6.5" r="1.2" fill="#c8a5ff"/></svg>
+          Login with Instagram
+        </a>
+        <div class="mono" style="opacity:.8">Connect your Instagram account (requires backend/extension connection).</div>
       </div>
+    </div>
 
-      <div class="card half">
-        <h3 style="margin-top:0">Recommended Safe Pacing</h3>
-        <ul>
-          <li>Delay between actions: <b>~600s</b></li>
-          <li>Randomizer: on</li>
-          <li>Retry failed DMs: on</li>
-        </ul>
-      </div>
-
-      <div class="card half">
-        <h3 style="margin-top:0">Target Sources</h3>
-        <ul>
-          <li>People who liked a post (paste post URL)</li>
-          <li>Followers / Following of @usernames</li>
-          <li>CSV list upload (optional)</li>
-        </ul>
-      </div>
-    </section>
-
-    <footer>© 2025 GoblinReach — Compliant automation with human-like pacing.</footer>
+    <footer>© 2025 GoblinReach.ai — Compliant automation with human‑like pacing.</footer>
   </div>
+
+  <script>
+    // Demo toggle feedback only
+    const auto = document.getElementById('auto');
+    auto?.addEventListener('change', ()=>{
+      if(auto.checked){
+        console.log('Automation: ON');
+      } else {
+        console.log('Automation: OFF');
+      }
+    });
+  </script>
 </body>
 </html>
