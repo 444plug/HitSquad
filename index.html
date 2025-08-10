@@ -1,3 +1,22 @@
+# Create a ready-to-deploy folder with signup/login, payments, download, and a placeholder extension ZIP.
+# We'll package it as goblinreach-site.zip for the user to download.
+import os, zipfile, textwrap, json, io, pathlib
+
+base = "/mnt/data/goblinreach-site"
+public = os.path.join(base, "public")
+os.makedirs(public, exist_ok=True)
+
+# vercel.json to ensure / serves index.html
+vercel_json = {
+    "rewrites": [
+        {"source": "/", "destination": "/index.html"}
+    ]
+}
+with open(os.path.join(base, "vercel.json"), "w") as f:
+    json.dump(vercel_json, f, indent=2)
+
+# index.html with client-side Supabase auth (works once user pastes their keys)
+index_html = textwrap.dedent("""\
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,7 +39,7 @@
     .logo{display:flex;align-items:center;gap:10px;font-weight:800}
     .mark{width:28px;height:28px;border-radius:10px;background:conic-gradient(from 210deg at 50% 50%,#183325,#31f189 40%,#0b1a13 60%);box-shadow:0 0 0 1px #163b2a,0 10px 25px rgba(18,241,137,.12)}
     nav{display:flex;align-items:center;gap:12px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:14px;border:1px solid #1c2a22;background:#0c140f;color:var(--ink);font-weight:600}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:14px;border:1px solid #1c2a22;background:#0c140f;color:var(--ink);font-weight:600;cursor:pointer}
     .btn.primary{background:linear-gradient(180deg,#20d66a,#129a49);border-color:#118844;color:#021307;box-shadow:0 10px 24px rgba(34,197,94,.25)}
     .grid{display:grid;grid-template-columns:1.2fr .95fr;gap:20px}
     .card{background:linear-gradient(180deg,#0d1511,#0b120f);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
@@ -42,7 +61,14 @@
     .statusLight{width:10px;height:10px;border-radius:50%;background:#ff4d4d;box-shadow:0 0 0 3px rgba(239,68,68,.18)}
     footer{padding:28px 0;color:#94caa1}
     @media (max-width:1050px){.grid{grid-template-columns:1fr}.h1{font-size:36px}}
+    .note{background:#0c140f;border:1px dashed #1f2a24;border-radius:12px;padding:10px;color:#a9e0b1;margin-top:8px}
   </style>
+
+  <!-- Paste your Supabase keys here (client-side anon is safe to expose) -->
+  <meta name="supabase-url" content="">
+  <meta name="supabase-anon" content="">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="wrap">
@@ -53,6 +79,7 @@
       </div>
       <nav>
         <a class="btn" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
+        <button class="btn" id="openAuth">Login / Sign Up</button>
       </nav>
     </header>
 
@@ -97,17 +124,22 @@
           <textarea class="input" id="msg" rows="4" placeholder="Hey {{name}} — quick one…"></textarea>
         </div>
 
-        <div class="panel" style="margin-top:12px">
-          <div class="label" style="margin-bottom:8px">Engagement Actions</div>
-          <div class="row" style="gap:18px;align-items:flex-start">
-            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Send Likes (coming soon)</span></label>
-            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Auto‑Comment (coming soon)</span></label>
-          </div>
-          <textarea class="input" rows="3" placeholder="Optional: write your comment template here" disabled></textarea>
-        </div>
-
+        <div class="panel note" id="authNote" style="display:none"></div>
       </section>
     </main>
+
+    <!-- AUTH CARD -->
+    <section class="card" id="authCard" style="margin-top:20px; display:none">
+      <div class="label">Create Account</div>
+      <input class="input" id="signupUsername" placeholder="Username" />
+      <input class="input" id="signupEmail" placeholder="Email" type="email" />
+      <input class="input" id="signupPassword" placeholder="Password" type="password" />
+      <button class="btn primary" id="signupBtn">Sign Up</button>
+      <div class="label" style="margin-top:12px">Login</div>
+      <input class="input" id="loginIdentifier" placeholder="Email or Username" />
+      <input class="input" id="loginPassword" placeholder="Password" type="password" />
+      <button class="btn" id="loginBtn">Login</button>
+    </section>
 
     <!-- PAYMENTS -->
     <section class="card" style="margin-top:20px">
@@ -139,15 +171,79 @@
       dot.style.boxShadow = on ? '0 0 0 3px rgba(16,185,129,.18)' : '0 0 0 3px rgba(239,68,68,.18)';
     });
 
-    // Download hint if ZIP missing
-    document.addEventListener('DOMContentLoaded',()=>{
+    // Auth (client-side Supabase)
+    const SUPABASE_URL = document.querySelector('meta[name=\"supabase-url\"]').content.trim();
+    const SUPABASE_ANON = document.querySelector('meta[name=\"supabase-anon\"]').content.trim();
+    let supa = null;
+
+    function showAuthNote(msg){ const n = $('#authNote'); if(n){ n.style.display='block'; n.textContent = msg; } }
+    function toggleAuthCard(show){ $('#authCard').style.display = show ? 'block' : 'none'; }
+
+    document.getElementById('openAuth').addEventListener('click', ()=> toggleAuthCard(true));
+
+    document.addEventListener('DOMContentLoaded', async() => {
+      // Check ZIP
       fetch('/goblinreach-extension.zip',{method:'HEAD'})
         .then(r=>{ if(!r.ok) throw new Error('missing'); })
         .catch(()=>{
           const btn=$('#downloadBtn');
-          if(btn){btn.insertAdjacentHTML('afterend','<p class="label">Upload <code>public/goblinreach-extension.zip</code> to enable this download.</p>');}
+          if(btn){btn.insertAdjacentHTML('afterend','<p class=\"label\">Upload <code>public/goblinreach-extension.zip</code> to enable this download.</p>');}
         });
+
+      // Setup Supabase (optional until keys are added)
+      if (!SUPABASE_URL || !SUPABASE_ANON) {
+        showAuthNote('Add your Supabase URL and Anon Key at the top of index.html to enable real signup/login.');
+        return;
+      }
+      supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      const { data: { session } } = await supa.auth.getSession();
+      if (session) showAuthNote('Logged in as ' + (session.user.email || session.user.id));
     });
+
+    async function signUp(){ 
+      if (!supa) return showAuthNote('Supabase not configured yet.');
+      const email = $('#signupEmail').value.trim();
+      const password = $('#signupPassword').value;
+      const username = $('#signupUsername').value.trim();
+      if(!email || !password || !username) return showAuthNote('Fill all fields.');
+      const { data, error } = await supa.auth.signUp({ email, password, options: { data: { username } } });
+      if(error) return showAuthNote('Signup failed: ' + error.message);
+      showAuthNote('Account created. Check your email to verify (if required).');
+    }
+
+    async function login(){ 
+      if (!supa) return showAuthNote('Supabase not configured yet.');
+      const id = $('#loginIdentifier').value.trim();
+      const pass = $('#loginPassword').value;
+      if(!id || !pass) return showAuthNote('Enter email/username and password.');
+      // If a non-email is given, we try email anyway (Supabase supports email only here).
+      const { data, error } = await supa.auth.signInWithPassword({ email: id, password: pass });
+      if(error) return showAuthNote('Login failed: ' + error.message);
+      showAuthNote('Logged in.');
+      toggleAuthCard(false);
+    }
+
+    $('#signupBtn').addEventListener('click', signUp);
+    $('#loginBtn').addEventListener('click', login);
   </script>
 </body>
 </html>
+""")
+with open(os.path.join(base, "index.html"), "w", encoding="utf-8") as f:
+    f.write(index_html)
+
+# Create a tiny valid ZIP placeholder for the extension
+placeholder_zip_path = os.path.join(public, "goblinreach-extension.zip")
+with zipfile.ZipFile(placeholder_zip_path, 'w', zipfile.ZIP_DEFLATED) as z:
+    z.writestr("README.txt", "Replace this ZIP with your real Chrome extension files.\nIt is only a placeholder so the Download button works.")
+
+# Now zip the whole folder for the user
+zip_out = "/mnt/data/goblinreach-site.zip"
+with zipfile.ZipFile(zip_out, 'w', zipfile.ZIP_DEFLATED) as z:
+    for root, dirs, files in os.walk(base):
+        for name in files:
+            path = os.path.join(root, name)
+            arcname = os.path.relpath(path, base)
+            z.write(path, arcname)
+
+zip_out
