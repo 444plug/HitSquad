@@ -1,104 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="stripe-payment-link" content="">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GoblinReach — DM Automation for Client Acquisition</title>
+  <meta name="description" content="High-end DM automation that looks like $1,000/mo, priced at just $22/mo." />
+  <!-- (Optional) Hard-code your Stripe Payment Link here later
+  <meta name="stripe-payment-link" content="https://buy.stripe.com/your_link_here" />
+  -->
   <style>
-    body { font-family: Arial, sans-serif; background-color: #0b0f14; color: #fff; margin:0; padding:0; }
-    header { background: #0f1620; padding: 20px; display:flex; align-items:center; justify-content: space-between; }
-    header img { height: 40px; }
-    header h1 { font-size: 24px; margin: 0; }
-    nav a { color: #9fffa6; margin-left: 20px; text-decoration: none; }
-    .hero { text-align:center; padding:40px 20px; }
-    .hero h2 { font-size: 28px; margin-bottom: 10px; }
-    .hero p { font-size: 16px; color: #ccc; }
-    .btn, .btn-ghost {
-      display:inline-block; padding:10px 20px; border-radius:4px; margin:10px; cursor:pointer; text-decoration:none;
+    :root{
+      /* GREEN THEME */
+      --bg:#060b08; --panel:#0b1210; --panel-2:#0e1613; --text:#eafff1;
+      --muted:#b7f2cb; --accent:#17ff84; --accent-2:#06c169; --danger:#ff5b6e;
+      --shadow:0 10px 30px rgba(0,0,0,.55); --line:#174a33;
     }
-    .btn { background:#00c46d; color:#fff; }
-    .btn-ghost { background:transparent; border:1px solid #00c46d; color:#00c46d; }
-    .stats { display:flex; justify-content:center; gap:40px; margin-top:30px; }
-    .stat { text-align:center; }
-    .container { max-width:900px; margin:40px auto; padding:20px; }
-    .card { background:#141b26; padding:20px; border-radius:6px; margin-bottom:20px; }
-    .small { font-size:12px; color:#aaa; }
-    input, textarea { width:100%; padding:8px; margin-top:6px; background:#0f1620; border:1px solid #333; color:#fff; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:radial-gradient(1000px 600px at 70% -10%, #0d2016 0%, var(--bg) 55%), var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
+    a{color:var(--muted);text-decoration:none} a:hover{color:#d7ffe7}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* NAV */
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+    .logo{display:flex;gap:14px;align-items:center}
+    .badge{border:1px solid var(--line);padding:6px 12px;border-radius:999px;background:rgba(23,255,132,.10);color:var(--muted);font-size:12px}
+    .btn{display:inline-block;padding:14px 22px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#032416;font-weight:800;box-shadow:var(--shadow);border:none;cursor:pointer;transition:transform .05s}
+    .btn:active{transform:scale(.98)}
+    .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:12px}
+
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:start;padding:40px 0}
+    .card{background:linear-gradient(180deg,rgba(23,255,132,.08),rgba(0,0,0,0));border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+    .h1{font-size:42px;line-height:1.1;margin:0 0 12px;font-weight:900;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:18px;margin-bottom:18px}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+    .kpi{padding:14px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line);text-align:center}
+    .kpi b{font-size:24px}
+
+    .section{padding:32px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .footer{padding:36px 0;color:#a7e8c4;font-size:14px;text-align:center}
+
+    .input,select,textarea{width:100%;padding:14px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);color:var(--text);outline:none}
+    .input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+    textarea{min-height:110px;resize:vertical}
+    .small{font-size:12px;color:#a7e8c4}
+    .tag{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:6px 6px 0 0;color:#b7f2cb;font-size:12px}
+    hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+
+    /* Switch + status */
+    .toggle{display:flex;align-items:center;gap:12px}
+    .switch{width:62px;height:32px;border-radius:999px;background:#11261c;border:1px solid #1d4e36;position:relative;cursor:pointer;display:flex;align-items:center;padding:0 6px;gap:6px;transition:background .15s,border-color .15s}
+    .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:999px;background:linear-gradient(180deg,#c8ffd8,#9fffc0);box-shadow:0 3px 10px rgba(0,0,0,.35);transition:left .15s}
+    .switch.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));border-color:#2a7a52}
+    .switch.active .knob{left:33px}
+    .lights{display:flex;gap:8px;align-items:center}
+    .light{width:10px;height:10px;border-radius:50%;background:#2a3a31;border:1px solid #1b2b22}
+    .light.green.on{background:#17ff84;box-shadow:0 0 6px #17ff84}
+    .light.red.on{background:#ff5b6e;box-shadow:0 0 6px #ff5b6e}
+
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    section[aria-hidden="true"]{display:none}
   </style>
 </head>
 <body>
-
-<header>
-  <div style="display:flex; align-items:center; gap:10px;">
-    <img src="https://i.imgur.com/5VnZbKq.png" alt="Goblin Logo"/>
-    <h1>GoblinReach.ai</h1>
-  </div>
-  <div style="color:#9fffa6; font-size:14px;">24/7 Cloud • Proxies • VPN Ready</div>
-  <nav>
-    <a href="#" data-nav="home">Home</a>
-    <a href="#" data-nav="dashboard">Dashboard</a>
-    <a href="#" data-nav="auth">Login / Sign Up</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <h2>DM Automation for Client Acquisition</h2>
-  <p>GoblinReach looks like a $1,000/mo tool, but it’s just $22/mo to own your market. Compliant, human-like DM automation.</p>
-  <a id="dl1" class="btn" href="/goblinreach.zip" download>Download Extension</a>
-  <a id="dl2" class="btn-ghost" href="/goblinreach.zip" download>Download Extension</a>
-  <div class="stats">
-    <div class="stat">
-      <div style="font-size:22px;">18–31</div>
-      <div class="small">Avg. Replies / 100 DMs</div>
+<div class="container">
+  <!-- NAV -->
+  <div class="nav">
+    <div class="logo">
+      <!-- Clean inline Goblin logo (no external file) -->
+      <a href="#" data-nav="home" title="GoblinReach Home" aria-label="GoblinReach Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" height="40" role="img" aria-label="GoblinReach">
+          <defs>
+            <linearGradient id="gob-green" x1="0" x2="1">
+              <stop offset="0" stop-color="#17ff84"/>
+              <stop offset="1" stop-color="#06c169"/>
+            </linearGradient>
+          </defs>
+          <rect width="220" height="60" rx="12" fill="#0c1411"/>
+          <!-- Goblin head mark -->
+          <g transform="translate(12,8)">
+            <circle cx="22" cy="22" r="20" fill="url(#gob-green)" opacity="0.95"/>
+            <path d="M14 28l5-16 5 16-5-4z" fill="#0c1411"/>
+            <circle cx="18" cy="22" r="2" fill="#0c1411"/>
+            <circle cx="26" cy="22" r="2" fill="#0c1411"/>
+          </g>
+          <text x="72" y="28" fill="#d8ffe9" font-family="Inter, Arial Black, Arial" font-size="20" font-weight="800">GoblinReach</text>
+          <text x="72" y="45" fill="#b7f2cb" font-family="Inter, Arial" font-size="11">DM Automation for Client Acquisition</text>
+        </svg>
+      </a>
+      <span class="badge">24/7 Cloud • Proxies • VPN Ready</span>
     </div>
-    <div class="stat">
-      <div style="font-size:22px;">1,000+</div>
-      <div class="small">Active Users</div>
-    </div>
-    <div class="stat">
-      <div style="font-size:22px;">Rate-limits • Randomizer</div>
-      <div class="small">Compliance</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="btn-ghost" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
+      <button class="btn-ghost" data-nav="auth">Login / Sign Up</button>
+      <!-- Only ONE Download button (hero contains it) -->
     </div>
   </div>
-</section>
 
-<div class="container" id="home">
-  <div class="card">
-    <h3>Automation Status</h3>
-    <label>Target</label>
-    <input type="text" placeholder="Followers of target account"/>
-    <label>Delay (sec)</label>
-    <input type="number" value="600"/>
-    <label>Message Template (custom)</label>
-    <textarea placeholder="Your message here"></textarea>
-    <div style="margin-top:10px;">
-      <label><input type="checkbox"/> Send Likes</label>
-      <label><input type="checkbox"/> Auto-Comment</label>
+  <!-- HOME -->
+  <section id="home" aria-hidden="false">
+    <div class="hero">
+      <div class="card">
+        <div class="badge">Miracle pricing: $22/mo</div>
+        <h1 class="h1">Get High-Ticket Clients on Autopilot.</h1>
+        <p class="sub">GoblinReach looks like a $1,000/mo tool, but it’s just <b>$22/mo</b> to own your market. Compliant, human-like DM automation.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn" data-nav="auth">Start Free</button>
+          <button id="download-btn" class="btn-ghost" type="button">Download Extension</button>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="small">Avg. Replies / 100 DMs</div><b>18–31</b></div>
+          <div class="kpi"><div class="small">Active Users</div><b>1,000+</b></div>
+          <div class="kpi"><div class="small">Compliance</div><b>Rate-limits • Randomizer</b></div>
+        </div>
+      </div>
+
+      <!-- CLEAN WORKING PANEL -->
+      <div class="card">
+        <div class="notice"><b>LIVE Preview:</b> Stable features only. Keep ~<b>600s</b> between actions across accounts for best deliverability.</div>
+
+        <div class="toggle" style="margin-top:14px;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span class="small" style="opacity:.9">Automation</span>
+            <div class="switch" id="home-switch"><div class="knob"></div></div>
+          </div>
+          <div class="lights">
+            <span class="small">Status</span>
+            <div class="light green" id="light-green-home" title="Running"></div>
+            <div class="light red on" id="light-red-home" title="Stopped"></div>
+          </div>
+        </div>
+
+        <hr/>
+        <div class="grid-2">
+          <div>
+            <label>Target</label>
+            <select class="input">
+              <option>Followers of target account</option>
+              <option>Followers of a competitor</option>
+              <option>People who liked a post</option>
+            </select>
+          </div>
+          <div>
+            <label>Delay (sec)</label>
+            <input class="input" type="number" value="600" min="300" max="1800" />
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px">
+          <div>
+            <label>Message Template (custom)</label>
+            <textarea id="msg-template" class="input" placeholder="Hey {{name}} — quick one…"></textarea>
+          </div>
+          <div class="card" style="background:transparent;border:1px dashed var(--line)">
+            <h4 style="margin:0 0 10px">Engagement Actions</h4>
+            <label><input type="checkbox" id="likes-check"/> Send Likes</label>
+            <label><input type="checkbox" id="comments-check"/> Auto-Comment</label>
+            <textarea id="comments-text" class="input" placeholder="Optional: write your comment template here"></textarea>
+            <p class="small">Tip: Mix DMs + likes + comments with ~600s pacing for best results.</p>
+          </div>
+        </div>
+
+        <div class="card" style="background:#0b1410;margin-top:16px">
+          <h4 style="margin:0 0 10px">Social Login</h4>
+          <button class="btn-ghost" id="ig-login">Login with Instagram</button>
+          <p class="small">You’ll authenticate your Instagram account. (Requires backend/extension connection.)</p>
+        </div>
+      </div>
     </div>
-    <textarea placeholder="Optional: write your comment template here"></textarea>
-    <p class="small">Tip: Mix DMs + likes + comments with ~600s pacing for best results.</p>
-  </div>
+  </section>
 
-  <div class="card">
-    <h3>Social Login</h3>
-    <button class="btn" id="ig-login">Login with Instagram</button>
-    <p class="small">You’ll authenticate your Instagram account. (Requires backend/extension connection.)</p>
-  </div>
+  <!-- AUTH -->
+  <section id="auth" aria-hidden="true">
+    <div class="section">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Create Account</h3>
+          <form id="signup">
+            <label>Username</label>
+            <input id="su-username" class="input" placeholder="yourname" />
+            <label>Email</label>
+            <input id="su-email" type="email" class="input" placeholder="you@domain.com" />
+            <label>Password</label>
+            <input id="su-password" type="password" class="input" placeholder="••••••••" />
+            <button class="btn" type="submit">Create &amp; Go to Dashboard</button>
+          </form>
+          <p class="small">No credit card for trial. Upgrade anytime.</p>
+        </div>
+        <div class="card">
+          <h3>Login</h3>
+          <form id="login">
+            <label>Username</label>
+            <input id="li-username" class="input" placeholder="yourname" />
+            <label>Password</label>
+            <input id="li-password" type="password" class="input" placeholder="••••••••" />
+            <button class="btn" type="submit">Login</button>
+          </form>
+          <p class="small">Or connect via Instagram from the Home preview.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="card">
-    <h3>Payments</h3>
-    <p>Click below to subscribe. (Uses Stripe Payment Link — no secret keys on the site.)</p>
-    <button class="btn" id="subscribe" data-checkout>Subscribe — $22/mo</button>
-    <p class="small">Tip: Paste your real Payment Link once and it will be saved in your browser. You can also set it via &lt;meta name="stripe-payment-link"&gt;.</p>
-  </div>
+  <!-- DASHBOARD -->
+  <section id="dashboard" aria-hidden="true">
+    <div class="section card">
+      <h2 class="h1">Campaign Builder</h2>
+      <p class="sub">Upload a list, choose a script, set pacing. Safety defaults protect your accounts.</p>
+
+      <div class="grid-2">
+        <div>
+          <label>Audience</label>
+          <select class="input">
+            <option>Followers of target account</option>
+            <option>Followers of a competitor</option>
+            <option>People who liked a post</option>
+          </select>
+        </div>
+        <div>
+          <label>Delay (sec)</label>
+          <input class="input" type="number" value="600" />
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:10px">
+        <div>
+          <label>Message Template (custom)</label>
+          <textarea class="input" placeholder=""></textarea>
+        </div>
+        <div class="card" style="background:#0b1410">
+          <h4 style="margin:0 0 10px">Engagement Actions</h4>
+          <label><input type="checkbox"/> Send Likes</label>
+          <label><input type="checkbox"/> Auto-Comment</label>
+          <textarea class="input" placeholder="Optional: write your comment template here"></textarea>
+        </div>
+      </div>
+
+      <hr />
+      <div class="toggle" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div>Automation</div>
+          <div class="switch" id="dash-switch"><div class="knob"></div></div>
+        </div>
+        <div class="lights">
+          <span class="small">Status</span>
+          <div class="light green" id="light-green-dash"></div>
+          <div class="light red on" id="light-red-dash"></div>
+        </div>
+      </div>
+      <p class="small">Status: <b>Ready</b>. For best deliverability, keep ~600s between actions.</p>
+    </div>
+
+    <div class="section grid-3">
+      <div class="card">
+        <h3>Reply Exports</h3>
+        <p>Send replies to Google Sheets or Telegram. (Hook placeholders to be connected in backend.)</p>
+        <div class="notice">Admin note: add your webhooks on the server when ready.</div>
+      </div>
+      <div class="card">
+        <h3>Payments</h3>
+        <p>Click below to subscribe. (Uses Stripe Payment Link — no secret keys on the site.)</p>
+        <button class="btn" id="subscribe" data-checkout>Subscribe — $22/mo</button>
+        <p class="small">Tip: paste your Payment Link on first click; it saves in your browser.</p>
+      </div>
+      <div class="card">
+        <h3>Help</h3>
+        <p>Use the Instagram link in the header or your support email when it’s ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2025 GoblinReach. Compliant automation with human-like pacing.
+  </footer>
 </div>
 
-<footer style="text-align:center; padding:20px; background:#0f1620;">
-  © 2025 GoblinReach. Compliant automation with human-like pacing.
-</footer>
-
 <script>
+  /* ===== SPA nav + front-end auth (localStorage) ===== */
+  const LS_USERS="gr_users", LS_SESSION="gr_session";
+  const loadUsers=()=>{try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}}}
+  const saveUsers=u=>localStorage.setItem(LS_USERS,JSON.stringify(u));
+  const setSession=u=>localStorage.setItem(LS_SESSION,u);
+  const getSession=()=>localStorage.getItem(LS_SESSION);
+  const toast=msg=>{const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500)}
+  function show(id){for(const s of document.querySelectorAll("section"))s.setAttribute("aria-hidden",s.id===id?"false":"true");window.scrollTo({top:0,behavior:"smooth"})}
+  function requireAuthTo(id){ if(getSession()) show(id); else { show("auth"); alert("Please log in first."); } }
+
+  function onSignup(e){
+    e.preventDefault();
+    const u=document.getElementById("su-username").value.trim();
+    const m=document.getElementById("su-email").value.trim();
+    const p=document.getElementById("su-password").value.trim();
+    if(!u||!m||!p){alert("Please fill all fields.");return}
+    const users=loadUsers();
+    if(users[u]){alert("Username already exists.");return}
+    users[u]={email:m,password:p,createdAt:Date.now()}; saveUsers(users); setSession(u);
+    alert("Account created. Opening dashboard..."); setTimeout(()=>show("dashboard"),400);
+  }
+  function onLogin(e){
+    e.preventDefault();
+    const u=document.getElementById("li-username").value.trim();
+    const p=document.getElementById("li-password").value.trim();
+    const users=loadUsers();
+    if(!users[u]||users[u].password!==p){alert("Invalid username or password.");return}
+    setSession(u); show("dashboard");
+  }
+
+  function setLights(scope, running){
+    const g=document.getElementById(`light-green-${scope}`);
+    const r=document.getElementById(`light-red-${scope}`);
+    if(!g||!r) return;
+    g.classList.toggle("on", !!running);
+    r.classList.toggle("on", !running);
+  }
+  function toggleAutomation(id, scope){
+    const sw=document.getElementById(id);
+    sw.classList.toggle("active");
+    const on=sw.classList.contains("active");
+    setLights(scope,on);
+  }
+
+  /* ===== Payments (Stripe Payment Link — set once, saved locally) ===== */
   const LS_CHECKOUT = "gr_checkout_url";
   function getCheckoutUrl(){
     const meta = document.querySelector('meta[name="stripe-payment-link"]');
@@ -121,40 +346,49 @@
   }
 
   function wire(){
-    document.getElementById("subscribe").addEventListener("click", openCheckout);
-    document.getElementById("ig-login").addEventListener("click", ()=>alert("Instagram login requires backend/extension connection."));
+    // Nav
+    document.querySelectorAll("[data-nav]").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        const dest=el.getAttribute("data-nav");
+        if(dest==="dashboard") requireAuthTo("dashboard");
+        else if(dest==="auth") show("auth");
+        else if(dest==="home") show("home");
+      });
+    });
+
+    // Buttons
+    const ig=document.getElementById("ig-login"); if(ig) ig.addEventListener("click", ()=>alert("Instagram login requires your backend/extension connection."));
+    const sub=document.getElementById("subscribe"); if(sub) sub.addEventListener("click", openCheckout);
+
+    // Forms
+    const su=document.getElementById("signup"); if(su) su.addEventListener("submit",onSignup);
+    const li=document.getElementById("login"); if(li) li.addEventListener("submit",onLogin);
+
+    // Switches + default lights
+    const hsw=document.getElementById("home-switch"); if(hsw) hsw.addEventListener("click",()=>toggleAutomation("home-switch","home"));
+    const dsw=document.getElementById("dash-switch"); if(dsw) dsw.addEventListener("click",()=>toggleAutomation("dash-switch","dash"));
+    setLights("home", false); setLights("dash", false);
+
+    show("home");
   }
   document.addEventListener("DOMContentLoaded", wire);
 
-  (function(){
-    const candidates = ["/goblinreach.zip","goblinreach.zip","/public/goblinreach.zip","/static/goblinreach.zip","/assets/goblinreach.zip"];
-    function pill(text, ok){
-      const d=document.createElement('div');
-      d.style.cssText='position:fixed;bottom:14px;right:14px;padding:6px 10px;border-radius:999px;font-size:12px;background:'+(ok?'#0f2a1d':'#2a0f0f')+';border:1px solid '+(ok?'#1f6042':'#603131')+';color:'+(ok?'#b7f2cb':'#ffd0d0')+';opacity:.95;z-index:9999';
-      d.textContent=text; document.body.appendChild(d); setTimeout(()=>d.remove(),8000);
-    }
-    async function firstReachable(urls){
-      for(const u of urls){
-        try{ const r = await fetch(u,{method:'HEAD',cache:'no-store'}); if(r.ok) return u; }catch(_){}
-      }
-      return null;
-    }
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      const a1=document.getElementById('dl1');
-      const a2=document.getElementById('dl2');
-      const found = await firstReachable(candidates);
-      if(found){
-        if(a1) a1.href = found; if(a2) a2.href = found; pill('✅ Download ready', true);
-      } else {
-        pill('❌ goblinreach.zip missing', false);
-        [a1,a2].forEach(a=>a&&a.addEventListener('click', (e)=>{
-          e.preventDefault();
-          alert('Upload goblinreach.zip to the same folder or /public so it can download.');
-        }));
-      }
-    });
-  })();
+  /* ===== Embedded ZIP (so Download works even if you don't upload to /public) ===== */
+  const EXT_B64 = "UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
+  function downloadEmbeddedZip(){
+    try{
+      const byteChars = atob(EXT_B64);
+      const bytes = new Uint8Array(byteChars.length);
+      for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
+      const blob = new Blob([bytes], {type:"application/zip"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "goblinreach-extension.zip";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    }catch(e){ alert("Download failed."); }
+  }
+  document.getElementById("download-btn").addEventListener("click", downloadEmbeddedZip);
 </script>
-
 </body>
 </html>
