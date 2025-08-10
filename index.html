@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GoblinReach — DM Automation</title>
-  <meta name="description" content="Compliant, human‑like Instagram DM automation with rotating proxies, VPN ready, account protection, and 24/7 cloud." />
+  <meta name="description" content="Compliant, human‑like Instagram DM automation with rotating proxies, VPN ready, account protection, exports, and 24/7 cloud." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root { --bg:#0a0a0a; --card:#101214; --fg:#e6f4ea; --muted:#9fb3a6; --accent:#35f18a; --accent-2:#14b866; --shadow:0 10px 30px rgba(8,255,163,.08),0 2px 10px rgba(0,0,0,.6); --radius:16px }
+    :root { --bg:#0a0a0a; --card:#101214; --fg:#e6f4ea; --muted:#9fb3a6; --accent:#35f18a; --accent-2:#14b866; --danger:#ff4d4d; --ok:#29d67d; --shadow:0 10px 30px rgba(8,255,163,.08),0 2px 10px rgba(0,0,0,.6); --radius:16px }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#090909 0%,#070707 100%);color:var(--fg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
@@ -53,6 +53,11 @@
     .input{width:100%;padding:12px;background:#0a0c0b;color:var(--fg);border:1px solid rgba(53,241,138,.22);border-radius:12px;outline:none}
     .row{display:grid;gap:10px;margin:12px 0}
     .note{font-size:12px;color:var(--muted)}
+    /* TESTIMONIAL + BADGES */
+    .testimonial{display:grid;gap:8px;align-items:center;grid-template-columns:56px 1fr;background:linear-gradient(180deg,#0f1311,#0c0f0e);border:1px solid rgba(53,241,138,.12);border-radius:16px;padding:14px}
+    .avatar{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#3cf194 0%,#0bbf67 60%,#0a6b43 100%)}
+    .badges{display:flex;gap:10px;flex-wrap:wrap}
+    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(53,241,138,.22);background:rgba(53,241,138,.06);color:var(--muted)}
     /* FOOTER */
     footer{border-top:1px solid rgba(53,241,138,.12);background:#090a0a;color:var(--muted)}
     .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:26px 0}
@@ -96,8 +101,25 @@
     </div>
   </header>
 
-  <!-- FEATURE GRID -->
   <main class="container">
+    <!-- TRUST / BADGES / TESTIMONIAL -->
+    <section class="badges" aria-label="Badges" style="margin-top:6px">
+      <div class="badge">Secure payments by Stripe</div>
+      <div class="badge">Account Protection</div>
+      <div class="badge">Compliant pacing</div>
+      <div class="badge">Proxy + VPN Ready</div>
+    </section>
+
+    <section style="margin-top:14px" class="testimonial" aria-label="Testimonial">
+      <div class="avatar" aria-hidden="true"></div>
+      <div>
+        <strong>Lisa K.</strong>
+        <div class="small">"Doubled my replies in a week — safer than anything else I tried."
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURE GRID -->
     <section class="grid" aria-label="Core features">
       <div class="card"><h3>Followers of an Account</h3><p>Target all followers of a chosen Instagram account.</p></div>
       <div class="card"><h3>Following of an Account</h3><p>Message accounts a chosen profile follows.</p></div>
@@ -191,6 +213,17 @@
       </div>
     </section>
 
+    <!-- Static Dashboard Preview (right-side style) -->
+    <section class="panel" aria-label="Dashboard Preview">
+      <h3>Dashboard Preview (Static)</h3>
+      <div class="grid">
+        <div class="card"><h3>Automation Status</h3><p>Paused · Safe mode · 600–900s jitter</p></div>
+        <div class="card"><h3>DMs Today</h3><p><span style="color:var(--accent)"><strong>480</strong></span> / 600</p></div>
+        <div class="card"><h3>Replies</h3><p><span style="color:var(--ok)"><strong>93</strong></span> positive · 21 neutral</p></div>
+        <div class="card"><h3>Auto‑Recovery</h3><p>Will resume after rate‑limit cool‑down</p></div>
+      </div>
+    </section>
+
     <section class="panel">
       <h3>Checkout</h3>
       <div class="row">
@@ -219,9 +252,6 @@
     function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
     function load(k,f){ try{ return JSON.parse(localStorage.getItem(k)) ?? f } catch { return f } }
 
-    // ===== Download button points to /downloads/goblinreach.zip =====
-    // Make sure the ZIP exists there (see steps below)
-
     // ===== Local persistence (demo only) =====
     $('#saveAcct').addEventListener('click', ()=>{
       save('goblin_acct', { user: $('#igUser').value.trim(), pass: $('#igPass').value, twoFA: $('#twoFactor').checked, safe: $('#safeMode').checked });
@@ -229,10 +259,7 @@
     });
     (function(){ const a=load('goblin_acct',{}); if(a.user) $('#igUser').value=a.user; if(a.pass) $('#igPass').value=a.pass; $('#twoFactor').checked=!!a.twoFA; $('#safeMode').checked=a.safe!==false; })();
 
-    $('#saveProxy').addEventListener('click', ()=>{
-      save('goblin_proxy', { url: $('#proxyUrl').value.trim(), rotation: $('#rotation').value });
-      alert('Proxy saved locally. Backend should verify/rotate.');
-    });
+    $('#saveProxy').addEventListener('click', ()=>{ save('goblin_proxy', { url: $('#proxyUrl').value.trim(), rotation: $('#rotation').value }); alert('Proxy saved locally. Backend should verify/rotate.'); });
     (function(){ const p=load('goblin_proxy',{}); if(p.url) $('#proxyUrl').value=p.url; if(p.rotation) $('#rotation').value=p.rotation; })();
 
     function getSources(){ return [...$$('.src')].filter(x=>x.checked).map(x=>x.value) }
@@ -278,12 +305,7 @@
       </div>`;
     document.body.appendChild(support);
     $('#supportClose').addEventListener('click', ()=> $('#supportWidget').remove());
-    $('#supSend').addEventListener('click', ()=>{
-      const email=$('#supEmail').value.trim(); const msg=$('#supMsg').value.trim();
-      if(!email || !msg){ alert('Enter email and message.'); return }
-      alert('Support ticket sent (demo). Wire to your backend helpdesk.');
-      $('#supportWidget').remove();
-    });
+    $('#supSend').addEventListener('click', ()=>{ const email=$('#supEmail').value.trim(); const msg=$('#supMsg').value.trim(); if(!email || !msg){ alert('Enter email and message.'); return } alert('Support ticket sent (demo). Wire to your backend helpdesk.'); $('#supportWidget').remove(); });
   </script>
 </body>
 </html>
