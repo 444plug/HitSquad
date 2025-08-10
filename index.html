@@ -8,9 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#070a08; --panel:#0c1210; --panel2:#0b1310; --ink:#e9ffe8; --muted:#9fd6a6; --brand:#22c55e; --accent:#16a34a; --line:#15211a; --glow:rgba(34,197,94,.22);
-    }
+    :root{ --bg:#070a08; --panel:#0c1210; --ink:#e9ffe8; --muted:#9fd6a6; --brand:#22c55e; --line:#15211a; --glow:rgba(34,197,94,.22); }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 800px at 70% -10%,#112218 0%,transparent 60%),linear-gradient(180deg,#0a0f0c,#060807 60%);color:var(--ink)}
@@ -55,24 +53,25 @@
       </div>
       <nav>
         <a class="btn" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
-        <a class="btn" href="#auth">Login / Sign Up</a>
       </nav>
     </header>
 
     <main class="grid">
+      <!-- LEFT HERO -->
       <section class="card">
-        <h1 class="h1">Get High-Ticket Clients<br/>on Autopilot.</h1>
-        <p class="lede">GoblinReach looks like a $1,000/mo tool, but it’s built to own your market. Compliant, human-like DM automation.</p>
+        <h1 class="h1">Get High‑Ticket Clients<br/>on Autopilot.</h1>
+        <p class="lede">GoblinReach looks like a $1,000/mo tool, but it’s built to own your market. Compliant, human‑like DM automation.</p>
         <div class="ctaRow">
           <a class="btn" id="downloadBtn" href="/goblinreach-extension.zip" download>Download Extension</a>
         </div>
         <div class="kpis">
           <div class="k"><div class="label">Avg. Replies / 100 DMs</div><div class="v">18–31</div></div>
           <div class="k"><div class="label">Active Users</div><div class="v">1,000+</div></div>
-          <div class="k"><div class="label">Compliance</div><div class="v">Rate-limits<br/>• Randomizer</div></div>
+          <div class="k"><div class="label">Compliance</div><div class="v">Rate‑limits<br/>• Randomizer</div></div>
         </div>
       </section>
 
+      <!-- RIGHT PREVIEW -->
       <section class="card">
         <div class="row" style="justify-content:space-between;margin-bottom:10px">
           <div class="label"><strong>LIVE Preview:</strong> Stable features only. Keep ~<strong>600s</strong> between actions across accounts for best deliverability.</div>
@@ -102,19 +101,15 @@
           <div class="label" style="margin-bottom:8px">Engagement Actions</div>
           <div class="row" style="gap:18px;align-items:flex-start">
             <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Send Likes (coming soon)</span></label>
-            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Auto-Comment (coming soon)</span></label>
+            <label class="row"><input type="checkbox" disabled style="scale:1.2"/> <span class="label">Auto‑Comment (coming soon)</span></label>
           </div>
           <textarea class="input" rows="3" placeholder="Optional: write your comment template here" disabled></textarea>
         </div>
 
-        <div class="panel" style="margin-top:12px">
-          <div class="label" style="margin-bottom:8px">Social Login</div>
-          <button class="btn" id="doLogin">Login with Instagram</button>
-          <p class="label" style="margin-top:8px">You’ll authenticate your Instagram account. (Requires backend/extension connection.)</p>
-        </div>
       </section>
     </main>
 
+    <!-- PAYMENTS -->
     <section class="card" style="margin-top:20px">
       <div class="label">Payments</div>
       <p class="label">Choose your payment method below. After payment, accounts will be manually activated if not instant.</p>
@@ -124,7 +119,7 @@
 
     <footer>
       <div class="row" style="justify-content:space-between">
-        <div>© 2025 GoblinReach. Compliant automation with human-like pacing.</div>
+        <div>© 2025 GoblinReach. Compliant automation with human‑like pacing.</div>
         <div class="row" style="gap:8px">
           <a href="mailto:support@goblinreach.live">Support</a>
           <a href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
@@ -144,66 +139,13 @@
       dot.style.boxShadow = on ? '0 0 0 3px rgba(16,185,129,.18)' : '0 0 0 3px rgba(239,68,68,.18)';
     });
 
-    // Enable Login/Signup with real backend endpoints
-    async function postJSON(url, data){
-      const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-      const t = await r.json().catch(()=>({}));
-      if(!r.ok) throw new Error(t.error||t.message||('HTTP '+r.status));
-      return t;
-    }
-
-    // Hook up Sign Up and Login fields (in the AUTH card)
-    const suUser = document.createElement('input');
-    const suEmail = document.createElement('input');
-    const suPass = document.createElement('input');
-    // Find existing fields by label text
-    // (We rely on current markup: first two inputs after the preview belong to auth card.)
-    document.addEventListener('DOMContentLoaded',()=>{
-      const authCard = document.querySelector('main + section.card');
-      // Add minimal auth form if missing
-      if(authCard){
-        if(!authCard.querySelector('#signupUser')){
-          authCard.insertAdjacentHTML('beforeend', `
-            <div class="panel" id="auth" style="margin-top:12px">
-              <div class="label">Create Account</div>
-              <input class="input" id="signupUser" placeholder="Username" />
-              <input class="input" id="signupEmail" placeholder="Email" type="email" />
-              <input class="input" id="signupPass" placeholder="Password" type="password" />
-              <button class="btn primary" id="signupBtn">Sign Up</button>
-              <div class="label" style="margin-top:12px">Login</div>
-              <input class="input" id="loginUser" placeholder="Username or Email" />
-              <input class="input" id="loginPass" placeholder="Password" type="password" />
-              <button class="btn" id="loginBtn">Login</button>
-            </div>`);
-        }
-
-        document.getElementById('signupBtn').addEventListener('click', async ()=>{
-          try{
-            const body={ username:$('#signupUser').value.trim(), email:$('#signupEmail').value.trim(), password:$('#signupPass').value };
-            const res = await postJSON('/api/auth/signup', body);
-            localStorage.setItem('gr_token', res.token);
-            alert('Account created. You are logged in.');
-          }catch(e){ alert('Sign up failed: '+e.message); }
-        });
-
-        document.getElementById('loginBtn').addEventListener('click', async ()=>{
-          try{
-            const body={ identifier:$('#loginUser').value.trim(), password:$('#loginPass').value };
-            const res = await postJSON('/api/auth/login', body);
-            localStorage.setItem('gr_token', res.token);
-            alert('Logged in.');
-          }catch(e){ alert('Login failed: '+e.message); }
-        });
-      }
-    });
-
     // Download hint if ZIP missing
     document.addEventListener('DOMContentLoaded',()=>{
       fetch('/goblinreach-extension.zip',{method:'HEAD'})
         .then(r=>{ if(!r.ok) throw new Error('missing'); })
         .catch(()=>{
           const btn=$('#downloadBtn');
-          btn.insertAdjacentHTML('afterend','<p class="label">Upload <code>public/goblinreach-extension.zip</code> to enable this download.</p>');
+          if(btn){btn.insertAdjacentHTML('afterend','<p class="label">Upload <code>public/goblinreach-extension.zip</code> to enable this download.</p>');}
         });
     });
   </script>
