@@ -99,7 +99,7 @@
         <a href="https://www.instagram.com/goblinreach.ai/" target="_blank">Instagram</a>
         <a href="#auth">Login / Sign Up</a>
         <!-- Download points to a local zip next to index.html or /public on Vercel -->
-        <a href="/goblinreach.zip" download>Download Extension</a>
+        <a id="downloadTop" href="#" data-href="goblinreach.zip" class="dl-link">Download Extension</a>
       </nav>
     </div>
 
@@ -110,7 +110,7 @@
       <p class="lead">Looks like $1,000/mo tools, priced at just $22/mo. Compliant, human‑like DM automation.</p>
       <div class="cta">
         <a class="btn primary" href="#auth">Start Free</a>
-        <a class="btn ghost" href="/goblinreach.zip" download>Download Extension</a>
+        <a id="downloadHero" class="btn ghost" href="#" data-href="goblinreach.zip">Download Extension</a>
       </div>
     </section>
 
@@ -181,6 +181,43 @@
         console.log('Automation: OFF');
       }
     });
+  </script>
+  <script>
+    // Simple download verifier: checks if goblinreach.zip exists next to index.html
+    function hookDownload(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        const url = el.getAttribute('data-href') || 'goblinreach.zip';
+        try{
+          const res = await fetch(url, { method:'HEAD', cache:'no-store' });
+          if(res.ok){
+            window.location.href = url;
+          } else {
+            alert('Download not found at '+url+'
+
+Fix: Put goblinreach.zip next to index.html (or in /public on Vercel), then redeploy. After that, https://YOURDOMAIN/goblinreach.zip should open.');
+          }
+        }catch(err){
+          alert('Could not access '+url+' — check that the file is uploaded and the name is exactly "goblinreach.zip" (case sensitive).');
+        }
+      });
+    }
+    hookDownload('downloadTop');
+    hookDownload('downloadHero');
+
+    // On load, show a tiny status pill if file exists
+    (async ()=>{
+      try{
+        const res = await fetch('goblinreach.zip', { method:'HEAD', cache:'no-store' });
+        const pill = document.createElement('div');
+        pill.style.cssText='position:fixed;bottom:14px;right:14px;padding:6px 10px;border-radius:999px;font-size:12px;background:'+(res.ok?'#0f2a1d':'#2a0f0f')+';border:1px solid '+(res.ok?'#1f6042':'#603131')+';color:'+(res.ok?'#b7f2cb':'#ffd0d0')+';opacity:.9;z-index:9999';
+        pill.textContent = res.ok ? '✅ Download ready: goblinreach.zip' : '❌ goblinreach.zip missing — upload next to index.html';
+        document.body.appendChild(pill);
+        setTimeout(()=>pill.remove(), 8000);
+      }catch(_){/*ignore*/}
+    })();
   </script>
 </body>
 </html>
