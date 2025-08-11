@@ -41,4 +41,266 @@
   <style>
     :root { --bg:#0a0a0a; --card:#101214; --fg:#e6f4ea; --muted:#9fb3a6; --accent:#35f18a; --accent-2:#14b866; --ok:#29d67d; --shadow:0 10px 30px rgba(8,255,163,.08),0 2px 10px rgba(0,0,0,.6); --radius:16px }
     *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helveti
+    body{margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#090909 0%,#070707 100%);color:var(--fg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    .container{width:100%;max-width:1120px;margin:0 auto;padding:24px}
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:100;backdrop-filter:saturate(140%) blur(8px);background:rgba(10,10,10,.7);border-bottom:1px solid rgba(53,241,138,.12)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+    .logo-mark{width:28px;height:28px;border-radius:8px;background:radial-gradient(circle at 30% 30%, var(--accent) 0%, var(--accent-2) 45%, #0a6240 70%, #083826 100%);box-shadow:0 0 30px rgba(53,241,138,.3) inset,0 0 10px rgba(53,241,138,.35)}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid rgba(53,241,138,.25);background:linear-gradient(180deg,#0f1412,#0b0f0d);color:var(--fg);box-shadow:var(--shadow);cursor:pointer;font-weight:600;transition:transform .08s ease,border-color .2s ease,background .2s ease}
+    .btn:hover{transform:translateY(-1px);border-color:rgba(53,241,138,.55)}
+    .btn.primary{background:linear-gradient(180deg,var(--accent),#0bbf67);color:#02140a;border-color:transparent;box-shadow:0 8px 30px rgba(53,241,138,.35), inset 0 1px 0 rgba(255,255,255,.2)}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(53,241,138,.08);border:1px solid rgba(53,241,138,.2);color:var(--muted);font-size:12px}
+    /* HERO */
+    .hero{padding:72px 0 24px;text-align:center}
+    .title{font-size:clamp(28px,4.2vw,48px);line-height:1.05;margin:12px 0 10px;font-weight:800;letter-spacing:-.5px}
+    .subtitle{font-size:clamp(14px,2.2vw,18px);color:var(--muted);max-width:860px;margin:0 auto 24px}
+    .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#0f1412;border:1px solid rgba(53,241,138,.4);color:var(--fg);padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:200}
+    /* METRICS + BADGES */
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px auto 0;max-width:880px}
+    .metric{padding:14px 16px;border-radius:14px;background:linear-gradient(180deg,#0f1311,#0c0f0e);border:1px solid rgba(53,241,138,.12);color:var(--muted)}
+    .metric strong{display:block;font-size:18px;color:var(--fg)}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(53,241,138,.22);background:rgba(53,241,138,.06);color:var(--muted)}
+    /* GRID */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:34px 0}
+    .card{padding:18px;border-radius:var(--radius);background:linear-gradient(180deg,#0e1110,#0a0d0c);border:1px solid rgba(53,241,138,.12);box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:16px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    /* PRICING */
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 42px}
+    .price{padding:22px;border-radius:var(--radius);background:linear-gradient(180deg,#0f1412,#0b0f0d);border:1px solid rgba(53,241,138,.18);box-shadow:var(--shadow)}
+    .price h4{margin:0 0 8px;font-size:18px}
+    .price .num{font-size:36px;font-weight:800;color:var(--accent)}
+    .ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
+    /* PANELS */
+    .panel{padding:18px;border-radius:16px;background:linear-gradient(180deg,#0e1110,#0a0d0c);border:1px solid rgba(53,241,138,.12);box-shadow:var(--shadow);margin:16px 0}
+    .panel h3{margin:0 0 6px;font-size:16px}
+    .note{font-size:12px;color:var(--muted)}
+    /* INSTALL */
+    details.install{margin:20px auto;max-width:880px}
+    details.install summary{cursor:pointer;padding:12px 16px;border-radius:12px;border:1px solid rgba(53,241,138,.25);background:#0f1412}
+    details.install .box{padding:14px;border:1px solid rgba(53,241,138,.15);border-radius:12px;margin-top:10px;background:#0b0f0d}
+    /* FOOTER */
+    footer{border-top:1px solid rgba(53,241,138,.12);background:#090a0a;color:var(--muted)}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:26px 0}
+    .small{font-size:12px;color:var(--muted)}
+    .links{display:flex;gap:14px}
+    @media (max-width:960px){.grid,.pricing,.metrics{grid-template-columns:1fr}}
+    .help{font-size:12px;color:var(--muted);margin-top:8px}
+    .debug{font-size:12px;color:#95a89c;margin-top:10px}
+    .debug code{display:block;white-space:pre-wrap;background:#0b0f0d;padding:10px;border-radius:10px;border:1px solid rgba(53,241,138,.15)}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-mark" aria-hidden="true"></div>
+        <span>GoblinReach</span>
+      </div>
+      <div class="nav-actions">
+        <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noreferrer">@goblinreach.ai</a>
+        <button class="btn" id="loginBtn">Log In</button>
+        <button class="btn primary" id="signupBtn">Sign Up</button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="toast" class="toast">Payment confirmed — download below.</div>
+
+  <!-- HERO -->
+  <header class="container hero">
+    <div class="chip">24/7 Cloud • Rotating Proxies • VPN Ready • Account Protection</div>
+    <h1 class="title">Let AI handle your Instagram DMs — safely, on autopilot.</h1>
+    <p class="subtitle">Compliant, human-like pacing with randomizer & scheduling. Built for agencies and creators who want replies, revenue, and full account safety.</p>
+    <div class="hero-cta">
+      <!-- Button will auto-detect the correct ZIP path -->
+      <a class="btn primary" id="downloadBtn" href="#" download>Download Extension</a>
+      <a class="btn" href="#install">How to install</a>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><strong>18–31</strong>Avg. replies / 100 DMs</div>
+      <div class="metric"><strong>1,000+</strong>Active users</div>
+      <div class="metric"><strong>600s</strong>Recommended delay (safe)</div>
+    </div>
+
+    <p class="help">If download doesn’t start, scroll to <a href="#dl-help">Download Help</a>.</p>
+  </header>
+
+  <main class="container">
+    <!-- FEATURES -->
+    <section class="grid" aria-label="Core features">
+      <div class="card"><h3>Followers of an Account</h3><p>Target all followers of a chosen Instagram account.</p></div>
+      <div class="card"><h3>Following of an Account</h3><p>Message accounts a chosen profile follows.</p></div>
+      <div class="card"><h3>Likers of a Post</h3><p>Gather and DM users who liked a specific post.</p></div>
+      <div class="card"><h3>Commenters of a Post</h3><p>Export and engage with those who commented.</p></div>
+      <div class="card"><h3>Export Tools</h3><p>CSV • Google Sheets • Telegram — PhantomBuster-style exports.</p></div>
+      <div class="card"><h3>Proxy & VPN Security</h3><p>Rotating proxies, VPN integration, and device fingerprinting guardrails.</p></div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" aria-label="Pricing tiers">
+      <div class="price">
+        <h4>Starter</h4>
+        <div class="num">$22<span class="small">/mo</span></div>
+        <ul class="ul">
+          <li>Single IG account</li>
+          <li>Scheduler + Randomizer</li>
+          <li>Basic proxy pool</li>
+        </ul>
+        <div><button class="btn primary" id="tier22">Pay with Stripe</button></div>
+      </div>
+      <div class="price">
+        <h4>Pro</h4>
+        <div class="num">$95<span class="small">/mo</span></div>
+        <ul class="ul">
+          <li>2–3 IG accounts</li>
+          <li>Advanced proxy routing</li>
+          <li>Auto export to Sheets</li>
+        </ul>
+        <div><button class="btn" id="tier95">Pay with Stripe</button></div>
+      </div>
+      <div class="price">
+        <h4>VIP</h4>
+        <div class="num">$5,000–$25,000</div>
+        <ul class="ul">
+          <li>Dedicated proxy cluster</li>
+          <li>White-label dashboard</li>
+          <li>Priority support</li>
+          <li>Scale: 5,000–25,000 DMs/month</li>
+        </ul>
+        <div><button class="btn" id="tierVip">VIP — $triple4mgmt</button></div>
+      </div>
+    </section>
+
+    <!-- INSTALL HOW-TO -->
+    <a id="install"></a>
+    <details class="install" open>
+      <summary><strong>Install in 60 seconds (Chrome)</strong></summary>
+      <div class="box">
+        <ol>
+          <li>Click <em>Download Extension</em> above.</li>
+          <li>Unzip the file you downloaded.</li>
+          <li>Open <code>chrome://extensions</code> → turn on <strong>Developer mode</strong>.</li>
+          <li>Click <strong>Load unpacked</strong> → select the <em>unzipped</em> folder (it must contain <code>manifest.json</code>).</li>
+          <li>Pin the extension → click it → use <strong>Open Instagram</strong>, <strong>Check Login</strong>, then <strong>Inject Banner</strong>.</li>
+        </ol>
+        <p class="note">No tokens or cookies needed. Users log in to Instagram normally.</p>
+      </div>
+    </details>
+
+    <!-- DOWNLOAD HELP / DEBUG -->
+    <section id="dl-help" class="panel" aria-label="Download Help">
+      <h3>Download Help</h3>
+      <p class="note">Your file must exist at <code>/downloads/goblinreach.zip</code> or <code>/public/downloads/goblinreach.zip</code>. Or paste a direct link below.</p>
+      <div class="row">
+        <input id="dl-input" class="input" placeholder="Paste full direct ZIP URL (e.g., https://raw.githubusercontent.com/USER/REPO/main/downloads/goblinreach.zip)" />
+        <button id="dl-save" class="btn">Use this download link</button>
+      </div>
+      <div class="debug">
+        <strong>Troubleshooting:</strong>
+        <code id="dl-debug">Trying: /downloads/goblinreach.zip → /public/downloads/goblinreach.zip → /goblinreach.zip</code>
+      </div>
+    </section>
+
+    <!-- Social proof / trust -->
+    <section class="panel">
+      <h3>Why GoblinReach?</h3>
+      <p class="note">Safe pacing (600–900s jitter), rotating proxies, and guided login keep accounts healthy. Respect platform rules and local laws.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="small">© 2025 GoblinReach. Compliant automation with human-like pacing.</div>
+      <div class="links small">
+        <a href="mailto:support@yoursite.com">support@yoursite.com</a>
+        <a href="https://calendly.com/YOUR_HANDLE/intro" target="_blank" rel="noreferrer">Book a setup call</a>
+        <a href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noreferrer">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ====== PAYMENTS ======
+    const STRIPE = {
+      starter: 'https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03', // $22/mo
+      pro:     'https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04', // $95/mo
+      vip:     '$triple4mgmt'                                     // Cash App cashtag
+    };
+
+    const $ = s => document.querySelector(s);
+
+    function go(u){
+      if(!u){ alert('Link missing.'); return }
+      if (u.startsWith('$')) {
+        const tag = u; const url = 'https://cash.app/' + encodeURIComponent(tag);
+        if (navigator.clipboard) { navigator.clipboard.writeText(tag).catch(()=>{}); }
+        window.open(url, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      window.location.href = u;
+    }
+    $('#tier22')?.addEventListener('click', ()=> go(STRIPE.starter));
+    $('#tier95')?.addEventListener('click', ()=> go(STRIPE.pro));
+    $('#tierVip')?.addEventListener('click', ()=> go(STRIPE.vip));
+
+    // ====== DOWNLOAD DETECTOR ======
+    let DOWNLOAD_FALLBACK_URL = ''; // optional direct URL override
+
+    async function tryHEAD(url) {
+      try { const r = await fetch(url, { method: 'HEAD', cache: 'no-store' }); return r.ok; }
+      catch(e) { return false; }
+    }
+
+    (async () => {
+      const btn = $('#downloadBtn');
+      const dbg = $('#dl-debug');
+      const tried = [];
+      const candidates = ['/downloads/goblinreach.zip','/public/downloads/goblinreach.zip','/goblinreach.zip'];
+
+      for (const p of candidates) { tried.push(p); if (await tryHEAD(p)) { btn.href = p; dbg.textContent = 'Using: ' + p; return; } }
+
+      if (DOWNLOAD_FALLBACK_URL) {
+        tried.push(DOWNLOAD_FALLBACK_URL);
+        const ok = await tryHEAD(DOWNLOAD_FALLBACK_URL);
+        btn.href = DOWNLOAD_FALLBACK_URL;
+        dbg.textContent = (ok ? 'Using fallback: ' : 'Set fallback (HEAD not verified): ') + DOWNLOAD_FALLBACK_URL;
+        return;
+      }
+
+      dbg.textContent = 'Not found. Tried: ' + tried.join(' → ');
+      btn.addEventListener('click', (e)=>{ e.preventDefault(); alert('Could not find goblinreach.zip. Upload it to /downloads/ or /public/downloads/, or paste a direct URL below.'); });
+    })();
+
+    // Allow pasting a manual direct link that persists in this session
+    $('#dl-save')?.addEventListener('click', async () => {
+      const v = ($('#dl-input')?.value || '').trim();
+      if (!v) { alert('Paste a full URL to goblinreach.zip'); return; }
+      DOWNLOAD_FALLBACK_URL = v;
+      const btn = $('#downloadBtn'); btn.href = v;
+      $('#dl-debug').textContent = 'Using user-supplied link: ' + v;
+      alert('Download button updated.');
+    });
+
+    // ====== PURCHASE TOAST & PIXELS ======
+    (function(){
+      const q = new URLSearchParams(location.search);
+      if (q.get('paid') === '1') {
+        const t = document.getElementById('toast'); if (t){ t.style.display='block'; setTimeout(()=> t.style.display='none', 5000); }
+        try { window.fbq && fbq('track', 'Purchase', {value: 1, currency: 'USD'}); } catch(e){}
+        try { window.gtag && gtag('event', 'purchase', {value: 1, currency: 'USD'}); } catch(e){}
+        try { window.ttq && ttq.track('CompletePayment', {value: 1, currency: 'USD'}); } catch(e){}
+        const anchor = document.getElementById('install'); if (anchor) anchor.scrollIntoView({behavior:'smooth'});
+      }
+    })();
+  </script>
+</body>
+</html>
