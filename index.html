@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- ✅ Ad/Pixels: replace IDs below with your real ones -->
+  <!-- ✅ Ad/Pixels: replace IDs below with your real ones (optional) -->
   <!-- Meta Pixel -->
   <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -16,7 +16,7 @@
   n.push=n; n.loaded=!0; n.version='2.0'; n.queue=[]; t=b.createElement(e); t.async=!0;
   t.src=v; s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s)
   }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', 'YOUR_META_PIXEL_ID');  // ← REPLACE
+  fbq('init', 'YOUR_META_PIXEL_ID');  // ← REPLACE if using Meta ads
   fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
@@ -28,7 +28,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments)}
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX'); // ← REPLACE
+    gtag('config', 'G-XXXXXXXXXX'); // ← REPLACE if using GA4
   </script>
 
   <!-- TikTok Pixel -->
@@ -40,7 +40,7 @@
     ttq.load=function(e,n){ var i='https://analytics.tiktok.com/i18n/pixel/events.js';
     ttq._i=ttq._i||{}; ttq._i[e]=[]; var o=d.createElement('script'); o.type='text/javascript'; o.async=!0;
     o.src=i+'?sdkid='+e+'&lib='+t; var a=d.getElementsByTagName('script')[0]; a.parentNode.insertBefore(o,a); };
-    ttq.load('YOUR_TIKTOK_PIXEL_ID'); // ← REPLACE
+    ttq.load('YOUR_TIKTOK_PIXEL_ID'); // ← REPLACE if using TikTok
     ttq.page();
   }(window, document, 'ttq');
   </script>
@@ -88,8 +88,6 @@
     /* PANELS */
     .panel{padding:18px;border-radius:16px;background:linear-gradient(180deg,#0e1110,#0a0d0c);border:1px solid rgba(53,241,138,.12);box-shadow:var(--shadow);margin:16px 0}
     .panel h3{margin:0 0 6px;font-size:16px}
-    .input{width:100%;padding:12px;background:#0a0c0b;color:var(--fg);border:1px solid rgba(53,241,138,.22);border-radius:12px;outline:none}
-    .row{display:grid;gap:10px;margin:12px 0}
     .note{font-size:12px;color:var(--muted)}
     /* INSTALL */
     details.install{margin:20px auto;max-width:880px}
@@ -101,6 +99,9 @@
     .small{font-size:12px;color:var(--muted)}
     .links{display:flex;gap:14px}
     @media (max-width:960px){.grid,.pricing,.metrics{grid-template-columns:1fr}}
+    .help{font-size:12px;color:var(--muted);margin-top:8px}
+    .debug{font-size:12px;color:#95a89c;margin-top:10px}
+    .debug code{display:block;white-space:pre-wrap;background:#0b0f0d;padding:10px;border-radius:10px;border:1px solid rgba(53,241,138,.15)}
   </style>
 </head>
 <body>
@@ -138,12 +139,7 @@
       <div class="metric"><strong>600s</strong>Recommended delay (safe)</div>
     </div>
 
-    <div class="badges">
-      <div class="badge">Secure payments by Stripe</div>
-      <div class="badge">Account Protection</div>
-      <div class="badge">Compliant pacing</div>
-      <div class="badge">Proxy + VPN Ready</div>
-    </div>
+    <p class="help">If download doesn’t start, scroll down to the <a href="#dl-help">Download Help</a> box.</p>
   </header>
 
   <main class="container">
@@ -208,6 +204,20 @@
       </div>
     </details>
 
+    <!-- DOWNLOAD HELP / DEBUG -->
+    <section id="dl-help" class="panel" aria-label="Download Help">
+      <h3>Download Help</h3>
+      <p class="note">Your file must exist at <code>/downloads/goblinreach.zip</code> or <code>/public/downloads/goblinreach.zip</code> in your repo. If you prefer, paste a direct link below and we’ll use it.</p>
+      <div class="row">
+        <input id="dl-input" class="input" placeholder="Paste full direct ZIP URL (e.g., https://raw.githubusercontent.com/USER/REPO/main/downloads/goblinreach.zip)" />
+        <button id="dl-save" class="btn">Use this download link</button>
+      </div>
+      <div class="debug">
+        <strong>Troubleshooting:</strong>
+        <code id="dl-debug">Trying: /downloads/goblinreach.zip → /public/downloads/goblinreach.zip → /goblinreach.zip → (optional fallback)</code>
+      </div>
+    </section>
+
     <!-- (Optional) Local demo panels for trust -->
     <section class="panel" aria-label="Dashboard Preview">
       <h3>Dashboard Preview (Static)</h3>
@@ -234,10 +244,14 @@
   <script>
     // ====== CONFIG: set your links here ======
     const STRIPE = {
-      starter: 'https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03',  // ✅ your $22 link
-      pro:     'https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04',  // ✅ your $95 link
-      vip:     '$triple4mgmt'                                      // ✅ your VIP cashtag (Cash App)
+      starter: 'https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03', // ✅ $22/mo
+      pro:     'https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04', // ✅ $95/mo
+      vip:     '$triple4mgmt'                                     // ✅ Cash App cashtag
     };
+
+    // OPTIONAL: paste a direct URL to your ZIP here if your server paths 404.
+    // Example for GitHub raw: https://raw.githubusercontent.com/USER/REPO/main/downloads/goblinreach.zip
+    let DOWNLOAD_FALLBACK_URL = ''; // ← leave empty unless you have a direct link
     // =========================================
 
     const $ = s => document.querySelector(s);
@@ -247,41 +261,74 @@
       if(!u){ alert('Link missing.'); return }
       if (u.startsWith('$')) {
         const tag = u; const url = 'https://cash.app/' + encodeURIComponent(tag);
-        // copy cashtag for the user + open Cash App page
         if (navigator.clipboard) { navigator.clipboard.writeText(tag).catch(()=>{}); }
         window.open(url, '_blank', 'noopener,noreferrer');
         return;
       }
-      if (/REPLACE/.test(u)){ alert('Add your real link in the script at the bottom of index.html.'); return }
       window.location.href = u;
     }
     $('#tier22')?.addEventListener('click', ()=> go(STRIPE.starter));
     $('#tier95')?.addEventListener('click', ()=> go(STRIPE.pro));
     $('#tierVip')?.addEventListener('click', ()=> go(STRIPE.vip));
 
-    // Auto-detect which download path exists and set button href
+    // ====== Robust download auto-detect ======
+    async function tryHEAD(url) {
+      try {
+        const r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+        return r.ok;
+      } catch(e) { return false; }
+    }
+
     (async () => {
-      const btn = document.getElementById('downloadBtn');
-      const candidates = ['/downloads/goblinreach.zip', '/public/downloads/goblinreach.zip'];
+      const btn = $('#downloadBtn');
+      const dbg = $('#dl-debug');
+      const tried = [];
+
+      const candidates = [
+        '/downloads/goblinreach.zip',
+        '/public/downloads/goblinreach.zip',
+        '/goblinreach.zip'
+      ];
+
+      // Try local server paths first
       for (const p of candidates) {
-        try {
-          const r = await fetch(p, { method: 'HEAD', cache: 'no-store' });
-          if (r.ok) { btn.href = p; return; }
-        } catch(e) {}
+        tried.push(p);
+        if (await tryHEAD(p)) { btn.href = p; dbg.textContent = 'Using: ' + p; return; }
       }
-      btn.addEventListener('click', (e)=>{ e.preventDefault(); alert('Could not find goblinreach.zip. Upload it to /downloads/ or /public/downloads/.'); });
+
+      // Then fallback if provided
+      if (DOWNLOAD_FALLBACK_URL) {
+        tried.push(DOWNLOAD_FALLBACK_URL);
+        // Even if HEAD fails due to CORS, still set href so the browser navigates.
+        const ok = await tryHEAD(DOWNLOAD_FALLBACK_URL);
+        btn.href = DOWNLOAD_FALLBACK_URL;
+        dbg.textContent = (ok ? 'Using fallback: ' : 'Set fallback (HEAD not verified): ') + DOWNLOAD_FALLBACK_URL;
+        return;
+      }
+
+      // Nothing found
+      dbg.textContent = 'Not found. Tried: ' + tried.join(' → ');
+      btn.addEventListener('click', (e)=>{ e.preventDefault(); alert('Could not find goblinreach.zip. Upload it to /downloads/ or /public/downloads/, or paste a direct URL below.'); });
     })();
+
+    // Allow pasting a manual direct link that persists in this session
+    $('#dl-save')?.addEventListener('click', async () => {
+      const v = ($('#dl-input')?.value || '').trim();
+      if (!v) { alert('Paste a full URL to goblinreach.zip'); return; }
+      DOWNLOAD_FALLBACK_URL = v;
+      const btn = $('#downloadBtn'); btn.href = v;
+      $('#dl-debug').textContent = 'Using user-supplied link: ' + v;
+      alert('Download button updated.');
+    });
 
     // Thanks mode: if Stripe redirects with ?paid=1, show toast + fire pixels + scroll to install
     (function(){
       const q = new URLSearchParams(location.search);
       if (q.get('paid') === '1') {
-        const t = document.getElementById('toast'); if (t){ t.style.display='block'; setTimeout(()=> t.style.display='none', 5000); }
-        // Fire purchase events
+        const t = $('#toast'); if (t){ t.style.display='block'; setTimeout(()=> t.style.display='none', 5000); }
         try { window.fbq && fbq('track', 'Purchase', {value: 1, currency: 'USD'}); } catch(e){}
         try { window.gtag && gtag('event', 'purchase', {value: 1, currency: 'USD'}); } catch(e){}
         try { window.ttq && ttq.track('CompletePayment', {value: 1, currency: 'USD'}); } catch(e){}
-        // Jump to install section
         const anchor = document.getElementById('install'); if (anchor) anchor.scrollIntoView({behavior:'smooth'});
       }
     })();
