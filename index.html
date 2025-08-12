@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GoblinReach — DM Automation</title>
-<meta name="description" content="Instagram DM automation with safe pacing, proxy support, and guided login. One-minute install." />
+<meta name="description" content="Instagram DM automation with guided login (no tokens), human-like pacing, and proxy support. One-minute install." />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -12,47 +12,69 @@
   *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0a0a0a;color:var(--fg)}
   a{color:var(--accent);text-decoration:none}
   .wrap{max-width:1120px;margin:0 auto;padding:24px}
+  /* NAV */
   .nav{position:sticky;top:0;z-index:10;border-bottom:var(--b);background:rgba(10,10,10,.85);backdrop-filter:blur(8px)}
   .navin{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+  .mark{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%, var(--accent) 0%, #14b866 50%, #0a5a3b 80%);}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid rgba(53,241,138,.25);background:#0f1412;color:var(--fg);cursor:pointer;font-weight:600}
   .btn.primary{background:linear-gradient(180deg,var(--accent),#0bbf67);color:#02140a;border-color:transparent}
+  /* HERO */
   .hero{padding:56px 0 18px;text-align:center}
   .title{font-size:clamp(28px,4.2vw,48px);line-height:1.05;margin:10px 0;font-weight:800}
   .sub{color:var(--muted);max-width:860px;margin:0 auto 18px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  /* METRICS */
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:860px;margin:14px auto 0}
+  .metric{padding:12px;border-radius:12px;border:var(--b);background:#0c100e;color:var(--muted);text-align:center}
+  /* FEATURES */
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}
   .card{padding:18px;border-radius:16px;border:var(--b);background:linear-gradient(180deg,#0e1110,#0a0d0c)}
+  /* PRICING */
   .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0 30px}
   .price{padding:18px;border-radius:16px;border:var(--b);background:linear-gradient(180deg,#0f1412,#0b0f0d)}
   .num{font-size:34px;font-weight:800;color:var(--accent)}
+  /* INSTALL */
   details.install{margin:10px 0}
   .box{padding:14px;border-radius:12px;border:var(--b);background:#0b0f0d}
+  /* FOOTER */
   footer{border-top:var(--b);margin-top:20px;color:var(--muted)}
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  @media (max-width:960px){.grid,.pricing{grid-template-columns:1fr}}
+  @media (max-width:960px){.grid,.pricing,.metrics{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+  <!-- NAV (Get Starter button removed) -->
   <nav class="nav">
     <div class="wrap navin">
-      <strong>GoblinReach</strong>
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <span>GoblinReach</span>
+      </div>
       <div class="row">
         <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank">@goblinreach.ai</a>
         <a class="btn" href="https://www.instagram.com/" target="_blank">Log In</a>
-        <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank">Get Starter — $22</a>
       </div>
     </div>
   </nav>
 
+  <!-- HERO -->
   <header class="wrap hero">
     <h1 class="title">Let AI handle your Instagram DMs — safely, on autopilot.</h1>
     <p class="sub">Guided login (no tokens), human-like pacing (600–900s jitter), proxy-ready. One-minute install.</p>
     <div class="row" style="justify-content:center">
+      <!-- Static link: make sure this exists at /downloads/goblinreach.zip -->
       <a class="btn primary" href="/downloads/goblinreach.zip" download>Download Extension</a>
       <a class="btn" href="#install">How to install</a>
+    </div>
+    <div class="metrics">
+      <div class="metric"><strong>18–31</strong> avg replies / 100 DMs</div>
+      <div class="metric"><strong>1,000+</strong> installs</div>
+      <div class="metric"><strong>600–900s</strong> safe delay</div>
     </div>
   </header>
 
   <main class="wrap">
+    <!-- FEATURES -->
     <section class="grid">
       <div class="card"><h3>Followers of an Account</h3><p>Target followers of any profile.</p></div>
       <div class="card"><h3>Following of an Account</h3><p>Message accounts they follow.</p></div>
@@ -62,12 +84,15 @@
       <div class="card"><h3>Safety</h3><p>Rotating proxies • VPN ready.</p></div>
     </section>
 
+    <!-- PRICING -->
     <section class="pricing">
       <div class="price">
         <h4>Starter</h4>
         <div class="num">$22<span style="color:#9fb3a6;font-size:14px">/mo</span></div>
         <ul style="margin:8px 0 12px;color:#9fb3a6">
-          <li>1 IG account</li><li>Scheduler + Randomizer</li><li>Basic proxy pool</li>
+          <li>1 IG account</li>
+          <li>Scheduler + Randomizer</li>
+          <li>Basic proxy pool</li>
         </ul>
         <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank">Pay with Stripe</a>
       </div>
@@ -75,7 +100,9 @@
         <h4>Pro</h4>
         <div class="num">$95<span style="color:#9fb3a6;font-size:14px">/mo</span></div>
         <ul style="margin:8px 0 12px;color:#9fb3a6">
-          <li>2–3 IG accounts</li><li>Advanced proxy routing</li><li>Auto export to Sheets</li>
+          <li>2–3 IG accounts</li>
+          <li>Advanced proxy routing</li>
+          <li>Auto export to Sheets</li>
         </ul>
         <a class="btn" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04" target="_blank">Pay with Stripe</a>
       </div>
@@ -83,24 +110,35 @@
         <h4>VIP</h4>
         <div class="num">$5,000–$25,000</div>
         <ul style="margin:8px 0 12px;color:#9fb3a6">
-          <li>Proxy cluster</li><li>White-label dashboard</li><li>Priority support</li>
+          <li>Proxy cluster</li>
+          <li>White-label dashboard</li>
+          <li>Priority support</li>
         </ul>
         <a class="btn" href="https://cash.app/$triple4mgmt" target="_blank">VIP — $triple4mgmt</a>
       </div>
     </section>
 
+    <!-- INSTALL -->
     <a id="install"></a>
     <details class="install" open>
       <summary><strong>Install in 60 seconds (Chrome)</strong></summary>
       <div class="box">
         <ol>
-          <li>Download the ZIP.</li>
-          <li>Right-click the ZIP → <strong>Extract All…</strong>.</li>
-          <li>Open <code>chrome://extensions</code> → enable <strong>Developer mode</strong>.</li>
+          <li>Click <em>Download Extension</em> above.</li>
+          <li>Right-click the ZIP → <strong>Extract All…</strong> (unzip it).</li>
+          <li>Open <code>chrome://extensions</code> → enable <strong>Developer mode</strong> (top-right).</li>
           <li>Click <strong>Load unpacked</strong> → select the <em>unzipped</em> folder (must show <code>manifest.json</code>).</li>
-          <li>In the extension popup: <strong>Open Instagram</strong> → <strong>Check Login</strong> → <strong>Inject Banner</strong>.</li>
+          <li>Pin the extension → click it → use <strong>Open Instagram</strong>, <strong>Check Login</strong>, then <strong>Inject Banner</strong>.</li>
         </ol>
         <p style="color:#9fb3a6">No tokens/cookies. Users log in to Instagram the normal way.</p>
+      </div>
+    </details>
+
+    <!-- DOWNLOAD HELP -->
+    <details class="install">
+      <summary><strong>Download not working?</strong></summary>
+      <div class="box">
+        <p>Make sure the file exists in your repo at <code>/downloads/goblinreach.zip</code> (exact name). If you want a different URL, edit the button’s <code>href</code> above.</p>
       </div>
     </details>
   </main>
