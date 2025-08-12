@@ -4,34 +4,35 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GoblinReach.ai — Spy-Grade IG DM Automation</title>
-<meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and cloud 24/7." />
+<meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and 24/7 cloud." />
+
+<!-- JSZip for real ZIP generation -->
+<script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+
 <style>
   :root{
     --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717; --line:#0e1515;
-    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86; --accent-2:#03c473; --danger:#ff4d4d;
-    --glow: 0 0 18px rgba(32,255,134,.35), 0 0 32px rgba(32,255,134,.18);
+    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86; --accent-2:#03c473;
+    --glow:0 0 18px rgba(32,255,134,.35), 0 0 32px rgba(32,255,134,.18);
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    background: radial-gradient(1200px 800px at 70% -10%, rgba(32,255,134,.06), transparent 60%) ,
-                radial-gradient(1200px 800px at 10% 110%, rgba(32,255,134,.07), transparent 60%),
-                var(--bg);
+    background:
+      radial-gradient(1200px 800px at 70% -10%, rgba(32,255,134,.06), transparent 60%),
+      radial-gradient(1200px 800px at 10% 110%, rgba(32,255,134,.07), transparent 60%),
+      var(--bg);
     color:var(--text); overflow-x:hidden;
   }
-
-  /* Subtle scanline overlay */
   .scanlines:before{
     content:""; position:fixed; inset:0; pointer-events:none;
     background: repeating-linear-gradient(to bottom, rgba(32,255,134,.05), rgba(32,255,134,.05) 1px, transparent 2px, transparent 4px);
     mix-blend-mode:soft-light; opacity:.25;
   }
-
-  /* Matrix rain */
   canvas#matrix{position:fixed; inset:0; z-index:0; opacity:.15; pointer-events:none;}
 
-  /* Top bar */
+  /* Header */
   header{
     position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
     border-bottom:1px solid #0d1616; background: rgba(7,10,10,.75);
@@ -39,30 +40,37 @@
   .wrap{max-width:1100px; margin:0 auto; padding:0 18px;}
   .bar{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
   .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text)}
-  .logo{width:28px; height:28px; display:inline-block; border-radius:6px; background:linear-gradient(135deg,var(--accent),#0affb9); box-shadow:var(--glow)}
-  .brand span{letter-spacing:.5px; font-weight:700}
-  nav a{color:var(--muted); text-decoration:none; margin:0 10px; font-weight:600}
-  nav a:hover{color:var(--accent)}
+  .brand-img{height:28px; width:auto; display:block}
+  .logo-fallback{width:28px; height:28px; border-radius:6px; background:linear-gradient(135deg,var(--accent),#0affb9); box-shadow:var(--glow)}
+  .brand-name{letter-spacing:.5px; font-weight:800}
+
+  /* Clean top-right menu */
+  .menu{display:flex; align-items:center; gap:10px}
+  .menu a,.menu button{
+    color:var(--muted); text-decoration:none; font-weight:700;
+    border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917);
+    padding:10px 14px; border-radius:12px; cursor:pointer;
+  }
+  .menu a:hover,.menu button:hover{border-color:#14593f}
+  .ghost{background:transparent}
+  .primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
 
   /* Hero */
   .hero{position:relative; z-index:1; padding:56px 0 18px}
-  .hero h1{font-size:38px; line-height:1.1; margin:8px 0 10px; color:var(--accent); text-shadow:var(--glow)}
+  .badge{display:inline-block; padding:6px 10px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
+  .hero h1{font-size:38px; line-height:1.1; margin:10px 0; color:var(--accent); text-shadow:var(--glow)}
   .hero p{max-width:720px; color:#c4ffe2; font-size:18px}
   .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
   .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917);
-       padding:12px 16px; border-radius:12px; color:var(--text); text-decoration:none; font-weight:700; box-shadow:inset 0 0 0 1px #0b1413}
+       padding:12px 16px; border-radius:12px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413}
   .btn:hover{border-color:#14593f}
-  .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
-  .btn.primary:hover{filter:saturate(1.1)}
-  .badge{display:inline-block; padding:6px 10px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
-
-  /* Stat cards */
+  .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016}
   .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
-  .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px; position:relative}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px}
   .card h3{margin:0; color:var(--accent); font-size:26px}
   .card p{margin:6px 0 0; color:#b0f5d2}
 
-  /* “Terminal” feature grid */
+  /* Grid */
   .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:10px 0 34px}
   .term{background:linear-gradient(180deg,#0a1212,#0b1515); border:1px solid #0f1e1e; border-radius:14px; overflow:hidden}
   .term .top{display:flex; align-items:center; gap:8px; padding:10px 12px; border-bottom:1px solid #0e1a19; background:#0b1313}
@@ -91,11 +99,20 @@
   .x{cursor:pointer; float:right; color:#7bf2b7}
   .ok{background:linear-gradient(180deg,#19ff90,#12d97a); color:#052818; border:0}
   .ok:hover{filter:saturate(1.05)}
-  .ghost{border:1px solid #113a2c}
+  .toggle{display:flex; align-items:center; gap:10px}
 
-  /* Responsive */
+  /* Wiggler pill button */
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px;
+        border-radius:999px; border:1px solid #113a2c; background:#0c1716; color:#b9ffd8; cursor:pointer}
+  .pill:hover{border-color:#14593f}
+
   @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
   @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:30px} }
+
+  /* Tiny ghost cursor that moves when wiggler is on (visual feedback, optional) */
+  .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%;
+    border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
+  .ghost-cursor.on{display:block}
 </style>
 </head>
 <body class="scanlines">
@@ -104,16 +121,25 @@
 <header>
   <div class="wrap bar">
     <a class="brand" href="#">
-      <span class="logo" aria-hidden="true"></span>
-      <span>GoblinReach.ai</span>
+      <!-- Try to use your uploaded logo first; fallback to green square + text -->
+      <img id="brandImg" class="brand-img" src="/logo.png" alt="GoblinReach.ai logo" onerror="this.replaceWith(document.getElementById('brandFall'))">
+      <span id="brandFall" class="logo-fallback" style="display:none"></span>
+      <span class="brand-name">GoblinReach.ai</span>
     </a>
-    <nav>
-      <a href="#how">How to Install</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#" id="signupBtn">Sign Up</a>
-      <a href="#" id="loginBtn">Log In</a>
-    </nav>
+
+    <div class="menu">
+      <a class="ghost" href="#features">Features</a>
+      <a class="ghost" href="#how">Install</a>
+      <a class="ghost" href="#pricing">Pricing</a>
+
+      <!-- Compact wiggler opener -->
+      <button class="pill" id="wiggleOpen" title="Auto Mouse Wiggler">
+        🖱️ Wiggler
+      </button>
+
+      <button id="loginBtn" class="ghost">Log In</button>
+      <button id="signupBtn" class="primary">Sign Up</button>
+    </div>
   </div>
 </header>
 
@@ -123,7 +149,7 @@
     <h1>Let AI handle your Instagram DMs — safely, on autopilot.</h1>
     <p>
       Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans.
-      One-minute setup. Works from the cloud — your laptop can sleep.
+      One-minute setup. Works from the cloud — your device can stay untouched.
     </p>
     <div class="cta">
       <a class="btn primary" id="downloadBtn">⬇ Download Extension</a>
@@ -180,7 +206,7 @@
     <p class="muted">Looks like $1,000/mo tools. Launch price: <b>$22/mo</b> or <b>$95/6mo</b>.</p>
     <div class="cta">
       <a class="btn primary" id="signupBtn2">Get Started — $22/mo</a>
-      <a class="btn ghost" id="loginBtn2">I already have an account</a>
+      <a class="btn" id="loginBtn2">I already have an account</a>
     </div>
   </section>
 </main>
@@ -189,21 +215,47 @@
   <div class="wrap">© 2025 GoblinReach.ai • Compliant automation with human-like pacing.</div>
 </footer>
 
+<!-- WIGGLER MODAL -->
+<div class="modal" id="wiggleModal" aria-hidden="true">
+  <div class="box">
+    <span class="x" data-close="#wiggleModal">✕</span>
+    <h3 style="margin:0 0 6px;color:#baffdc">🖱️ Auto Mouse Wiggler</h3>
+    <p class="muted" style="margin:0 0 10px">
+      Keeps the screen awake and simulates light activity so your session stays alive.
+    </p>
+    <div class="row">
+      <label style="width:40%;align-self:center">Interval</label>
+      <select id="wiggleInterval">
+        <option value="1000">Every 1s (aggressive)</option>
+        <option value="5000">Every 5s</option>
+        <option value="15000">Every 15s</option>
+        <option value="30000">Every 30s</option>
+        <option value="60000">Every 1 min</option>
+        <option value="120000">Every 2 min</option>
+        <option value="180000">Every 3 min</option>
+        <option value="240000">Every 4 min</option>
+        <option value="300000" selected>Every 5 min (safe)</option>
+      </select>
+    </div>
+    <div class="row toggle">
+      <input type="checkbox" id="wiggleOn" />
+      <label for="wiggleOn">Enable Wiggler (requests Screen Wake Lock if available)</label>
+    </div>
+    <p class="muted" id="wiggleStatus" style="margin-top:6px">Status: off</p>
+  </div>
+</div>
+
 <!-- SIGNUP MODAL -->
 <div class="modal" id="signupModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#signupModal">✕</span>
     <h3 style="margin:0 0 6px;color:var(--accent)">Create your account</h3>
-    <p class="muted" style="margin:0 0 12px">No token needed — email + password. (Stored locally here for now.)</p>
-    <div class="row">
-      <input id="su_email" type="email" placeholder="Email" />
-    </div>
-    <div class="row">
-      <input id="su_pass" type="password" placeholder="Password" />
-    </div>
+    <p class="muted" style="margin:0 0 12px">No token needed — email + password (stored locally here for now).</p>
+    <div class="row"><input id="su_email" type="email" placeholder="Email" /></div>
+    <div class="row"><input id="su_pass" type="password" placeholder="Password" /></div>
     <div class="row" style="justify-content:flex-end">
-      <button class="btn ghost" data-close="#signupModal">Cancel</button>
-      <button class="btn ok" id="signupGo">Create</button>
+      <button class="ghost" data-close="#signupModal">Cancel</button>
+      <button class="ok" id="signupGo">Create</button>
     </div>
   </div>
 </div>
@@ -213,21 +265,19 @@
   <div class="box">
     <span class="x" data-close="#loginModal">✕</span>
     <h3 style="margin:0 0 6px;color:#baffdc">Log in</h3>
-    <div class="row">
-      <input id="li_email" type="email" placeholder="Email" />
-    </div>
-    <div class="row">
-      <input id="li_pass" type="password" placeholder="Password" />
-    </div>
+    <div class="row"><input id="li_email" type="email" placeholder="Email" /></div>
+    <div class="row"><input id="li_pass" type="password" placeholder="Password" /></div>
     <div class="row" style="justify-content:flex-end">
-      <button class="btn ghost" data-close="#loginModal">Cancel</button>
-      <button class="btn ok" id="loginGo">Log In</button>
+      <button class="ghost" data-close="#loginModal">Cancel</button>
+      <button class="ok" id="loginGo">Log In</button>
     </div>
   </div>
 </div>
 
+<div class="ghost-cursor" id="ghostCursor"></div>
+
 <script>
-/* Smooth scroll for hash links */
+/* ---------- Smooth scroll for anchor links ---------- */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const id=a.getAttribute('href');
@@ -237,19 +287,24 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* Modals */
+/* ---------- Modal helpers ---------- */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
+
 document.getElementById('signupBtn').onclick=()=>open('#signupModal');
 document.getElementById('signupBtn2').onclick=()=>open('#signupModal');
 document.getElementById('loginBtn').onclick=()=>open('#loginModal');
 document.getElementById('loginBtn2').onclick=()=>open('#loginModal');
+document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
+
 document.querySelectorAll('[data-close]').forEach(x=>{
   x.addEventListener('click', ()=> close(x.getAttribute('data-close')));
 });
-window.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active'));
+});
 
-/* Local “auth” (placeholder so buttons WORK TODAY) */
+/* ---------- Local placeholder auth so buttons WORK TODAY ---------- */
 const USERS_KEY='goblinreach_users';
 function loadUsers(){ try{ return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); }catch{ return {}; } }
 function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
@@ -273,43 +328,142 @@ document.getElementById('loginGo').onclick=()=>{
   alert('Logged in. Dashboard coming next build.');
 };
 
-/* Download button:
-   1) Try to hit /GoblinReach-DM-Bot.zip (if you deploy it under /public).
-   2) If 404, auto-generate a fallback ZIP-named file with install instructions so launch visitors never see a dead link. */
-async function tryRealZip(){
+/* ---------- REAL download handling ---------- */
+async function existsRealZip(){
   try{
     const res = await fetch('/GoblinReach-DM-Bot.zip', { method:'HEAD', cache:'no-store' });
     return res.ok;
   }catch{ return false; }
 }
-function downloadBlob(name, content){
-  const blob = new Blob([content], {type:'application/zip'}); // name mimics zip for user flow
+function saveBlob(filename, blob){
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
-  a.download=name;
+  a.download=filename;
   document.body.appendChild(a); a.click(); a.remove();
 }
-document.getElementById('downloadBtn').onclick=async()=>{
-  if(await tryRealZip()){
+async function buildStarterZip(){
+  // If JSZip failed to load, fall back to a txt blob named .zip (last resort)
+  if(!window.JSZip){
+    const fallback = new Blob([`Install:
+1) Replace this file later with your real extension at /public/GoblinReach-DM-Bot.zip
+2) chrome://extensions → Developer mode → Load unpacked → select folder`], {type:'application/octet-stream'});
+    saveBlob('GoblinReach-DM-Bot.zip', fallback);
+    return;
+  }
+  const zip = new JSZip();
+
+  // Minimal Chrome extension skeleton (so it unzips clean and loads)
+  zip.file("manifest.json", JSON.stringify({
+    "manifest_version": 3,
+    "name": "GoblinReach DM Automator (Starter)",
+    "version": "0.0.1",
+    "description": "Starter scaffold. Replace with full extension build.",
+    "action": { "default_popup": "popup.html" },
+    "permissions": ["storage","activeTab","scripting"],
+    "host_permissions": ["https://*.instagram.com/*"]
+  }, null, 2));
+
+  zip.file("popup.html",
+`<!doctype html><html><head><meta charset="utf-8"><title>GoblinReach Starter</title>
+<style>body{font-family:Inter,Arial;padding:14px;width:280px;background:#0b1414;color:#e6fff2}
+button{padding:8px 12px;border-radius:10px;border:0;background:#19ff90;color:#052818;font-weight:800}</style>
+</head><body>
+<h3>GoblinReach Starter</h3>
+<p>This is a placeholder popup. Your full build goes here.</p>
+<button id="ok">OK</button>
+<script>document.getElementById('ok').onclick=()=>alert('Replace with real build');</script>
+</body></html>`);
+
+  zip.file("README.txt",
+`GoblinReach DM Extension — Starter Package
+------------------------------------------
+This is a valid extension skeleton so your launch visitors never hit a dead link.
+
+Replace with your real build later:
+1) Put your production zip at /public/GoblinReach-DM-Bot.zip on Vercel.
+2) The landing page will automatically serve the real file when present.
+
+Install:
+- Unzip this file.
+- chrome://extensions → Developer mode → Load unpacked → select the folder.
+`);
+
+  const blob = await zip.generateAsync({type:"blob"});
+  saveBlob("GoblinReach-DM-Bot.zip", blob);
+}
+
+document.getElementById('downloadBtn').onclick = async ()=>{
+  if(await existsRealZip()){
+    // Serve your production package if you later upload it
     window.location.href='/GoblinReach-DM-Bot.zip';
   }else{
-    const txt =
-`GoblinReach DM Extension — Placeholder
---------------------------------------
-You clicked Download during launch 🎉
-
-To provide a working link immediately, this file is a temporary package.
-Replace it by uploading your real extension zip to /public/GoblinReach-DM-Bot.zip in your Vercel project.
-
-Install steps:
-1) Unzip the real package once uploaded.
-2) chrome://extensions → Developer mode → Load unpacked → select the folder.
-3) Open the extension, log in, set pacing 600–900s, run.`;
-    downloadBlob('GoblinReach-DM-Bot.zip', txt);
+    // Build a valid starter zip right now
+    await buildStarterZip();
   }
 };
 
-/* Matrix rain background */
+/* ---------- Auto Mouse Wiggler (1s–5m) + Wake Lock ---------- */
+let wakeLock = null;
+let wiggleTimer = null;
+const wiggleOn   = document.getElementById('wiggleOn');
+const wiggleInt  = document.getElementById('wiggleInterval');
+const wiggleStat = document.getElementById('wiggleStatus');
+const ghostCur   = document.getElementById('ghostCursor');
+
+async function requestWakeLock(){
+  try{
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => {
+        // Try to re-acquire if still toggled on
+        if(wiggleOn.checked) requestWakeLock();
+      });
+    }
+  }catch(e){
+    // Ignore; fallback below will still "nudge" the page.
+  }
+}
+function releaseWakeLock(){
+  try{ if(wakeLock){ wakeLock.release(); wakeLock=null; } }catch(e){}
+}
+
+function startWiggler(){
+  stopWiggler(); // clean first
+  requestWakeLock();
+  const interval = parseInt(wiggleInt.value,10);
+  let t=0;
+  wiggleTimer = setInterval(()=>{
+    // Tiny scroll nudge up/down to simulate activity
+    const y = window.scrollY;
+    window.scrollTo({top:y+1, behavior:'instant'});
+    window.scrollTo({top:y, behavior:'instant'});
+
+    // Move tiny ghost cursor for visual feedback (optional)
+    t += 20;
+    const x = 20 + (Math.sin(t/200)*12+12);
+    const y2 = 20 + (Math.cos(t/240)*8+8);
+    ghostCur.style.transform = `translate(${x}px, ${y2}px)`;
+    ghostCur.classList.add('on');
+
+    // Dispatch a synthetic mousemove (some sites react to it)
+    document.dispatchEvent(new MouseEvent('mousemove', {clientX:x, clientY:y2, bubbles:true}));
+  }, interval);
+  wiggleStat.textContent = `Status: on — every ${(interval/1000)}s`;
+}
+function stopWiggler(){
+  clearInterval(wiggleTimer); wiggleTimer=null;
+  releaseWakeLock();
+  wiggleStat.textContent = 'Status: off';
+  ghostCur.classList.remove('on');
+}
+wiggleOn.addEventListener('change', ()=> wiggleOn.checked ? startWiggler() : stopWiggler());
+wiggleInt.addEventListener('change', ()=> { if(wiggleOn.checked) startWiggler(); });
+// Reacquire wake lock if tab becomes visible again
+document.addEventListener('visibilitychange', ()=> {
+  if(document.visibilityState==='visible' && wiggleOn.checked) requestWakeLock();
+});
+
+/* ---------- Matrix rain background ---------- */
 (function(){
   const c=document.getElementById('matrix'), ctx=c.getContext('2d');
   let w,h,cols,ypos;
