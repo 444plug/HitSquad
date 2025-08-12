@@ -1,156 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GoblinReach — DM Automation</title>
-<meta name="description" content="Instagram DM automation with guided login (no tokens), human-like pacing, and proxy support. One-minute install." />
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-  :root { --bg:#0a0a0a; --card:#101214; --fg:#e6f4ea; --muted:#9fb3a6; --accent:#35f18a; --r:16px; --b:1px solid rgba(53,241,138,.18) }
-  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0a0a0a;color:var(--fg)}
-  a{color:var(--accent);text-decoration:none}
-  .wrap{max-width:1120px;margin:0 auto;padding:24px}
-  /* NAV */
-  .nav{position:sticky;top:0;z-index:10;border-bottom:var(--b);background:rgba(10,10,10,.85);backdrop-filter:blur(8px)}
-  .navin{display:flex;justify-content:space-between;align-items:center;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
-  .mark{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%, var(--accent) 0%, #14b866 50%, #0a5a3b 80%);}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid rgba(53,241,138,.25);background:#0f1412;color:var(--fg);cursor:pointer;font-weight:600}
-  .btn.primary{background:linear-gradient(180deg,var(--accent),#0bbf67);color:#02140a;border-color:transparent}
-  /* HERO */
-  .hero{padding:56px 0 18px;text-align:center}
-  .title{font-size:clamp(28px,4.2vw,48px);line-height:1.05;margin:10px 0;font-weight:800}
-  .sub{color:var(--muted);max-width:860px;margin:0 auto 18px}
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  /* METRICS */
-  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:860px;margin:14px auto 0}
-  .metric{padding:12px;border-radius:12px;border:var(--b);background:#0c100e;color:var(--muted);text-align:center}
-  /* FEATURES */
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}
-  .card{padding:18px;border-radius:16px;border:var(--b);background:linear-gradient(180deg,#0e1110,#0a0d0c)}
-  /* PRICING */
-  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0 30px}
-  .price{padding:18px;border-radius:16px;border:var(--b);background:linear-gradient(180deg,#0f1412,#0b0f0d)}
-  .num{font-size:34px;font-weight:800;color:var(--accent)}
-  /* INSTALL */
-  details.install{margin:10px 0}
-  .box{padding:14px;border-radius:12px;border:var(--b);background:#0b0f0d}
-  /* FOOTER */
-  footer{border-top:var(--b);margin-top:20px;color:var(--muted)}
-  @media (max-width:960px){.grid,.pricing,.metrics{grid-template-columns:1fr}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoblinReach - Instagram DM Automation</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        h1 { color: #2c3e50; }
+        .download-btn { padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px; }
+        .download-btn:hover { background-color: #2980b9; }
+        .instructions { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 5px; }
+        .error { color: red; margin-top: 10px; }
+    </style>
 </head>
 <body>
-  <!-- NAV (Get Starter removed) -->
-  <nav class="nav">
-    <div class="wrap navin">
-      <div class="brand">
-        <div class="mark" aria-hidden="true"></div>
-        <span>GoblinReach</span>
-      </div>
-      <div class="row">
-        <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank">@goblinreach.ai</a>
-        <a class="btn" href="https://www.instagram.com/" target="_blank">Log In</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <header class="wrap hero">
-    <h1 class="title">Let AI handle your Instagram DMs — safely, on autopilot.</h1>
-    <p class="sub">Guided login (no tokens), human-like pacing (600–900s jitter), proxy-ready. One-minute install.</p>
-    <div class="row" style="justify-content:center">
-      <!-- 🔽 Point this to your GitHub Releases asset (stable URL) -->
-      <a class="btn primary" href="https://github.com/YOUR_GH_USER/YOUR_REPO/releases/latest/download/goblinreach.zip" download>Download Extension</a>
-      <a class="btn" href="#install">How to install</a>
-    </div>
-    <div class="metrics">
-      <div class="metric"><strong>18–31</strong> avg replies / 100 DMs</div>
-      <div class="metric"><strong>1,000+</strong> installs</div>
-      <div class="metric"><strong>600–900s</strong> safe delay</div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <!-- FEATURES -->
-    <section class="grid">
-      <div class="card"><h3>Followers of an Account</h3><p>Target followers of any profile.</p></div>
-      <div class="card"><h3>Following of an Account</h3><p>Message accounts they follow.</p></div>
-      <div class="card"><h3>Likers of a Post</h3><p>DM users who liked a post.</p></div>
-      <div class="card"><h3>Commenters of a Post</h3><p>Engage with commenters.</p></div>
-      <div class="card"><h3>Exports</h3><p>CSV • Google Sheets • Telegram.</p></div>
-      <div class="card"><h3>Safety</h3><p>Rotating proxies • VPN ready.</p></div>
-    </section>
-
-    <!-- PRICING -->
-    <section class="pricing">
-      <div class="price">
-        <h4>Starter</h4>
-        <div class="num">$22<span style="color:#9fb3a6;font-size:14px">/mo</span></div>
-        <ul style="margin:8px 0 12px;color:#9fb3a6">
-          <li>1 IG account</li>
-          <li>Scheduler + Randomizer</li>
-          <li>Basic proxy pool</li>
-        </ul>
-        <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank">Pay with Stripe</a>
-      </div>
-      <div class="price">
-        <h4>Pro</h4>
-        <div class="num">$95<span style="color:#9fb3a6;font-size:14px">/mo</span></div>
-        <ul style="margin:8px 0 12px;color:#9fb3a6">
-          <li>2–3 IG accounts</li>
-          <li>Advanced proxy routing</li>
-          <li>Auto export to Sheets</li>
-        </ul>
-        <a class="btn" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04" target="_blank">Pay with Stripe</a>
-      </div>
-      <div class="price">
-        <h4>VIP</h4>
-        <div class="num">$5,000–$25,000</div>
-        <ul style="margin:8px 0 12px;color:#9fb3a6">
-          <li>Proxy cluster</li>
-          <li>White-label dashboard</li>
-          <li>Priority support</li>
-        </ul>
-        <a class="btn" href="https://cash.app/$triple4mgmt" target="_blank">VIP — $triple4mgmt</a>
-      </div>
-    </section>
-
-    <!-- INSTALL -->
-    <a id="install"></a>
-    <details class="install" open>
-      <summary><strong>Install in 60 seconds (Chrome)</strong></summary>
-      <div class="box">
+    <h1>GoblinReach: Automate Instagram DMs</h1>
+    <p>Guided login, human-like pacing (600–900s jitter), proxy-ready. Install in 60 seconds!</p>
+    <a href="https://github.com/YOUR_GH_USER/YOUR_REPO/releases/latest/download/goblinreach.zip" class="download-btn">Download Extension</a>
+    <div class="instructions">
+        <h3>Install in Chrome</h3>
         <ol>
-          <li>Click <em>Download Extension</em> above.</li>
-          <li>Right-click the ZIP → <strong>Extract All…</strong> (unzip it).</li>
-          <li>Open <code>chrome://extensions</code> → enable <strong>Developer mode</strong> (top-right).</li>
-          <li>Click <strong>Load unpacked</strong> → select the <em>unzipped</em> folder (must show <code>manifest.json</code>).</li>
-          <li>Pin the extension → click it → use <strong>Open Instagram</strong>, <strong>Check Login</strong>, then <strong>Inject Banner</strong>.</li>
+            <li>Click Download Extension above.</li>
+            <li>Unzip the downloaded file.</li>
+            <li>Open <code>chrome://extensions</code>, enable Developer mode (top-right).</li>
+            <li>Click Load unpacked, select the unzipped folder with <code>manifest.json</code>.</li>
+            <li>Pin the extension, click it, then use Open Instagram, Check Login, Inject Banner.</li>
         </ol>
-        <p style="color:#9fb3a6">No tokens/cookies. Users log in to Instagram the normal way.</p>
-      </div>
-    </details>
-
-    <!-- DOWNLOAD HELP -->
-    <details class="install">
-      <summary><strong>Download not working?</strong></summary>
-      <div class="box">
-        <p>Use the GitHub Releases method: attach <code>goblinreach.zip</code> to a Release and keep the button URL as<br>
-        <code>https://github.com/YOUR_GH_USER/YOUR_REPO/releases/latest/download/goblinreach.zip</code>.</p>
-        <p>Or host it in your repo at <code>/downloads/goblinreach.zip</code> and change the button to <code>/downloads/goblinreach.zip</code>.</p>
-      </div>
-    </details>
-  </main>
-
-  <footer class="wrap" style="display:flex;justify-content:space-between;align-items:center;padding:18px 0">
-    <div style="color:#9fb3a6">© 2025 GoblinReach. Use responsibly and follow platform rules.</div>
-    <div class="row">
-      <a class="btn" href="mailto:support@yoursite.com">Support</a>
-      <a class="btn" href="https://calendly.com/YOUR_HANDLE/intro" target="_blank">Setup Call</a>
+        <p class="error">Download not working? Try: <a href="/downloads/goblinreach.zip">/downloads/goblinreach.zip</a></p>
     </div>
-  </footer>
 </body>
 </html>
