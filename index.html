@@ -6,8 +6,6 @@
 <title>GoblinReach.ai — Spy-Grade IG DM Automation</title>
 <meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and 24/7 cloud." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2320ff86'/%3E%3C/svg%3E">
-
-<!-- JSZip builds a valid .zip in the browser (fallback if your real zip isn’t deployed) -->
 <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
 
 <style>
@@ -15,6 +13,7 @@
     --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717; --line:#0e1515;
     --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86; --accent2:#0affb9;
     --glow:0 0 18px rgba(32,255,134,.35), 0 0 32px rgba(32,255,134,.18);
+    --headerH:64px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -26,16 +25,15 @@
       var(--bg);
     color:var(--text); overflow-x:hidden;
   }
-
-  /* Subtle scanlines + canvas rain/flairs */
+  /* scanlines + canvas fx */
   .scanlines:before{
     content:""; position:fixed; inset:0; pointer-events:none;
-    background: repeating-linear-gradient(to bottom, rgba(32,255,134,.04), rgba(32,255,134,.04) 1px, transparent 3px, transparent 6px);
+    background:repeating-linear-gradient(to bottom, rgba(32,255,134,.04), rgba(32,255,134,.04) 1px, transparent 3px, transparent 6px);
     mix-blend-mode:soft-light; opacity:.18;
   }
   canvas#bgfx{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
-  /* Header like your screenshot */
+  /* header/nav */
   header{
     position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
     border-bottom:1px solid #0d1616; background: rgba(7,10,10,.75);
@@ -43,31 +41,30 @@
   .wrap{max-width:1100px; margin:0 auto; padding:0 18px;}
   .bar{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
   .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
-  .brand svg{height:30px; width:30px; display:block; filter:drop-shadow(0 0 10px rgba(32,255,134,.35))}
+  .brand svg{height:30px;width:30px;filter:drop-shadow(0 0 10px rgba(32,255,134,.35))}
   .brand-name{letter-spacing:.5px; font-weight:800}
-
-  nav a{
-    color:var(--muted); text-decoration:none; margin:0 10px; font-weight:700; white-space:nowrap;
-  }
+  nav a{color:var(--muted); text-decoration:none; margin:0 10px; font-weight:700; white-space:nowrap}
   nav a:hover{color:var(--accent)}
 
-  /* Hero block */
-  .hero{position:relative; z-index:1; padding:56px 0 18px}
+  /* hero full-screen */
+  .hero{position:relative; z-index:1; padding:40px 0 18px; min-height:calc(100vh - var(--headerH)); display:flex; flex-direction:column; justify-content:center}
   .badge{display:inline-block; padding:8px 16px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
-  .hero h1{font-size:40px; line-height:1.1; margin:14px 0; color:var(--accent); text-shadow:var(--glow)}
+  .hero h1{font-size:44px; line-height:1.1; margin:16px 0; color:var(--accent); text-shadow:var(--glow)}
   .hero p{max-width:760px; color:#c4ffe2; font-size:18px}
   .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
-  .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c;
-       background:linear-gradient(180deg,#10201c,#0e1917);
-       padding:12px 16px; border-radius:16px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413}
+  .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917); padding:12px 16px; border-radius:16px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413}
   .btn:hover{border-color:#14593f}
   .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
 
-  /* Stats + feature grid (terminal cards) */
+  /* stats + terminals like your design */
   .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
   .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px}
   .card h3{margin:0; color:var(--accent); font-size:26px}
   .card p{margin:6px 0 0; color:#b0f5d2}
+
+  section{position:relative; z-index:1; padding:38px 0}
+  h2{margin:0 0 8px; color:#baffdc}
+  .muted{color:#93d9b7}
 
   .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:10px 0 34px}
   .term{background:linear-gradient(180deg,#0a1212,#0b1515); border:1px solid #0f1e1e; border-radius:14px; overflow:hidden}
@@ -80,11 +77,7 @@
   .code-kw{color:#79ffb4}
   .hl{color:var(--accent)}
 
-  section{position:relative; z-index:1; padding:38px 0}
-  h2{margin:0 0 8px; color:#baffdc}
-  .muted{color:#93d9b7}
-
-  /* Modals + inputs */
+  /* modals */
   .modal{position:fixed; inset:0; display:none; place-items:center; z-index:20; background:rgba(0,0,0,.55); backdrop-filter: blur(4px)}
   .modal.active{display:grid}
   .box{width:min(560px,92vw); background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a; border-radius:16px; padding:18px}
@@ -95,12 +88,12 @@
   .ok:hover{filter:saturate(1.05)}
   .ghost{border:1px solid #113a2c}
 
-  /* Ghost cursor for wiggler feedback */
+  /* ghost cursor for wiggler */
   .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%;
     border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
   .ghost-cursor.on{display:block}
 
-  /* Responsive */
+  /* responsive */
   @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
   @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:32px} }
 </style>
@@ -108,10 +101,9 @@
 <body class="scanlines">
 <canvas id="bgfx"></canvas>
 
-<header>
+<header id="hdr">
   <div class="wrap bar">
     <a class="brand" href="#">
-      <!-- Inline goblin logo (SVG) -->
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20ff86"/><stop offset="1" stop-color="#0affb9"/></linearGradient></defs>
         <path fill="url(#g)" d="M48 6a6 6 0 1 1 0 12a6 6 0 1 1 0-12Zm33 12a6 6 0 1 1-8 9l-9-9a38 38 0 0 0-34 0l-9 9a6 6 0 1 1-8-9l11-11a6 6 0 0 1 6-1a50 50 0 0 1 34 0a6 6 0 0 1 6 1ZM12 39a6 6 0 1 1 12 0v18a6 6 0 1 1-12 0V39Zm60 0a6 6 0 1 1 12 0v18a6 6 0 1 1-12 0V39ZM48 78a6 6 0 1 1 0 12a6 6 0 1 1 0-12Zm-26-9l-11 11a6 6 0 1 1 8 9l9-9a38 38 0 0 0 34 0l9 9a6 6 0 1 1 8-9L74 69a6 6 0 0 1-6-1a50 50 0 0 1-34 0a6 6 0 0 1-6 1Z"/>
@@ -119,7 +111,6 @@
       </svg>
       <span class="brand-name">GoblinReach.ai</span>
     </a>
-
     <nav>
       <a href="#how">How to Install</a>
       <a href="#features">Features</a>
@@ -153,23 +144,22 @@
   <section id="features">
     <h2>Spy-grade controls</h2>
     <p class="muted">Rotating proxies, VPN compatibility, jittered timing, and a “doesn’t-look-like-a-bot” cadence.</p>
-
     <div class="grid">
       <div class="term">
         <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-        <pre><span class="code-kw">setup</span> --proxies <span class="hl">us1, us2, eu1</span>
+<pre><span class="code-kw">setup</span> --proxies <span class="hl">us1, us2, eu1</span>
 <span class="code-kw">pacing</span> --delay <span class="hl">600..900s</span> --jitter smart
 <span class="code-kw">safety</span> --humanize keystrokes --captcha-guard on</pre>
       </div>
       <div class="term">
         <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-        <pre><span class="code-kw">campaign</span> import followers_of(@yourlead)
+<pre><span class="code-kw">campaign</span> import followers_of(@yourlead)
 <span class="code-kw">message</span> template <span class="hl">"Warm intro + CTA"</span>
 <span class="code-kw">schedule</span> start 09:00 stop 23:00 local</pre>
       </div>
       <div class="term">
         <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-        <pre><span class="code-kw">export</span> replies --> Google Sheets / Telegram
+<pre><span class="code-kw">export</span> replies --> Google Sheets / Telegram
 <span class="code-kw">track</span> seen | opened | responded
 <span class="code-kw">auto-retry</span> failed DMs (smart backoff)</pre>
       </div>
@@ -197,7 +187,7 @@
   </section>
 </main>
 
-<!-- SIGNUP / LOGIN (combined under the hood so links work) -->
+<!-- access modal (used by both Sign Up / Log In) -->
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#accessModal">✕</span>
@@ -211,7 +201,7 @@
   </div>
 </div>
 
-<!-- WIGGLER -->
+<!-- wiggler -->
 <div class="modal" id="wiggleModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#wiggleModal">✕</span>
@@ -238,7 +228,7 @@
   </div>
 </div>
 
-<!-- VPN -->
+<!-- vpn -->
 <div class="modal" id="vpnModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#vpnModal">✕</span>
@@ -260,7 +250,10 @@
 <div class="ghost-cursor" id="ghostCursor"></div>
 
 <script>
-/* ---------- Smooth scroll for hash links ---------- */
+/* keep hero full-screen under sticky header */
+(function(){ const h=document.getElementById('hdr'); const set=()=>document.documentElement.style.setProperty('--headerH',h.offsetHeight+'px'); set(); addEventListener('resize',set); })();
+
+/* smooth hash scroll */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const id=a.getAttribute('href');
@@ -270,232 +263,103 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* ---------- Modal helpers ---------- */
+/* modal helpers */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
-
 document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
 document.getElementById('vpnOpen').onclick=()=>{ open('#vpnModal'); loadIp(); };
 
-const accessTitle = document.getElementById('accessTitle');
-const accessGo = document.getElementById('accessGo');
-let accessMode='signup';
-function openAccess(mode){
-  accessMode=mode;
-  accessTitle.textContent = mode==='signup' ? 'Create your account' : 'Log in';
-  open('#accessModal');
-}
-document.getElementById('signupBtn').onclick=()=>openAccess('signup');
-document.getElementById('signupBtn2').onclick=()=>openAccess('signup');
-document.getElementById('loginBtn').onclick=()=>openAccess('login');
-document.getElementById('loginBtn2').onclick=()=>openAccess('login');
+let mode='signup';
+const accessTitle=document.getElementById('accessTitle');
+document.getElementById('signupBtn').onclick=()=>{ mode='signup'; accessTitle.textContent='Create your account'; open('#accessModal'); };
+document.getElementById('signupBtn2').onclick=()=>{ mode='signup'; accessTitle.textContent='Create your account'; open('#accessModal'); };
+document.getElementById('loginBtn').onclick=()=>{ mode='login'; accessTitle.textContent='Log in'; open('#accessModal'); };
+document.getElementById('loginBtn2').onclick=()=>{ mode='login'; accessTitle.textContent='Log in'; open('#accessModal'); };
 
-document.querySelectorAll('[data-close]').forEach(x=>{
-  x.addEventListener('click', ()=> close(x.getAttribute('data-close')));
-});
-window.addEventListener('keydown',e=>{
-  if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active'));
-});
+document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>close(x.getAttribute('data-close'))));
+addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
 
-/* ---------- Local placeholder access so buttons WORK TODAY ---------- */
+/* local placeholder auth */
 const USERS_KEY='goblinreach_users';
-function loadUsers(){ try{ return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); }catch{ return {}; } }
-function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
-accessGo.onclick=()=>{
+const loadUsers=()=>{ try{ return JSON.parse(localStorage.getItem(USERS_KEY)||'{}'); }catch{ return {}; } };
+const saveUsers=u=>localStorage.setItem(USERS_KEY, JSON.stringify(u));
+document.getElementById('accessGo').onclick=()=>{
   const email=document.getElementById('email').value.trim();
   const pass=document.getElementById('pass').value;
   if(!email||!pass){ alert('Enter email and password'); return; }
   const users=loadUsers();
-  if(accessMode==='signup'){
+  if(mode==='signup'){
     if(users[email]){ alert('Account already exists. Switch to Log in.'); return; }
-    users[email]={ password:pass, created:Date.now() };
-    saveUsers(users);
+    users[email]={password:pass,created:Date.now()}; saveUsers(users);
     close('#accessModal'); alert('Account created! You are now logged in.');
   }else{
-    if(!users[email] || users[email].password!==pass){ alert('Invalid credentials.'); return; }
+    if(!users[email]||users[email].password!==pass){ alert('Invalid credentials.'); return; }
     close('#accessModal'); alert('Logged in. Dashboard coming next build.');
   }
 };
 
-/* ---------- Download handling (instant, no repo required) ---------- */
-async function existsRealZip(){
-  try{ const res = await fetch('/GoblinReach-DM-Bot.zip', { method:'HEAD', cache:'no-store' }); return res.ok; }
-  catch{ return false; }
-}
-function saveBlob(filename, blob){
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=filename;
-  document.body.appendChild(a); a.click(); a.remove();
-}
+/* download: try real zip; else make valid zip (no </script> in strings) */
+async function existsRealZip(){ try{ const r=await fetch('/GoblinReach-DM-Bot.zip',{method:'HEAD',cache:'no-store'}); return r.ok; }catch{ return false; } }
+function saveBlob(name,blob){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
 async function buildStarterZip(){
-  if(!window.JSZip){
-    const fallback = new Blob([`Install:
-- Replace with /public/GoblinReach-DM-Bot.zip
-- chrome://extensions → Developer mode → Load unpacked`], {type:'application/octet-stream'});
-    saveBlob('GoblinReach-DM-Bot.zip', fallback); return;
-  }
-  const zip = new JSZip();
-  zip.file("manifest.json", JSON.stringify({
-    "manifest_version": 3,
-    "name": "GoblinReach DM Automator (Starter)",
-    "version": "0.0.1",
-    "description": "Starter scaffold. Replace with full extension build.",
-    "action": { "default_popup": "popup.html" },
-    "permissions": ["storage","activeTab","scripting"],
-    "host_permissions": ["https://*.instagram.com/*"]
-  }, null, 2));
-
-  /* NOTE: Avoid </script> inside this HTML to prevent breaking outer script. */
-  zip.file("popup.html",
-`<!doctype html><html><head><meta charset="utf-8"><title>GoblinReach Starter</title>
-<style>body{font-family:Inter,Arial;padding:14px;width:280px;background:#0b1414;color:#e6fff2}
-button{padding:8px 12px;border-radius:10px;border:0;background:#19ff90;color:#052818;font-weight:800}</style>
-</head><body>
-<h3>GoblinReach Starter</h3>
-<p>This is a placeholder popup. Replace with your real build.</p>
-<button id="ok" onclick="alert('Replace with real build')">OK</button>
-</body></html>`);
-
-  zip.file("README.txt",
-`This is a valid extension skeleton so launch visitors never hit a dead link.
-Replace with your production zip at /public/GoblinReach-DM-Bot.zip on Vercel.`);
-  const blob = await zip.generateAsync({type:"blob"});
-  saveBlob("GoblinReach-DM-Bot.zip", blob);
+  if(!window.JSZip){ saveBlob('GoblinReach-DM-Bot.zip', new Blob(['Replace with /public/GoblinReach-DM-Bot.zip'],{type:'application/octet-stream'})); return; }
+  const zip=new JSZip();
+  zip.file('manifest.json', JSON.stringify({"manifest_version":3,"name":"GoblinReach DM Automator (Starter)","version":"0.0.1","description":"Starter scaffold. Replace with full extension build.","action":{"default_popup":"popup.html"},"permissions":["storage","activeTab","scripting"],"host_permissions":["https://*.instagram.com/*"]},null,2));
+  zip.file('popup.html','<!doctype html><html><head><meta charset="utf-8"><title>GoblinReach Starter</title><style>body{font-family:Inter,Arial;padding:14px;width:280px;background:#0b1414;color:#e6fff2}button{padding:8px 12px;border-radius:10px;border:0;background:#19ff90;color:#052818;font-weight:800}</style></head><body><h3>GoblinReach Starter</h3><p>This is a placeholder popup. Replace with your real build.</p><button id="ok" onclick="alert(\\'Replace with real build\\')">OK</button></body></html>');
+  zip.file('README.txt','Valid starter so visitors never hit a dead link. Replace with /public/GoblinReach-DM-Bot.zip on Vercel.');
+  const blob=await zip.generateAsync({type:'blob'}); saveBlob('GoblinReach-DM-Bot.zip', blob);
 }
-document.getElementById('downloadBtn').onclick = async ()=>{
-  if(await existsRealZip()){ window.location.href='/GoblinReach-DM-Bot.zip'; }
-  else{ await buildStarterZip(); }
-};
+document.getElementById('downloadBtn').onclick=async()=>{ if(await existsRealZip()) location.href='/GoblinReach-DM-Bot.zip'; else await buildStarterZip(); };
 
-/* ---------- Auto Mouse Wiggler (1s–5m) + Wake Lock ---------- */
-let wakeLock = null, wiggleTimer = null;
-const wiggleOn   = document.getElementById('wiggleOn');
-const wiggleInt  = document.getElementById('wiggleInterval');
-const wiggleStat = document.getElementById('wiggleStatus');
-const ghostCur   = document.getElementById('ghostCursor');
-
-async function requestWakeLock(){
-  try{
-    if ('wakeLock' in navigator) {
-      wakeLock = await navigator.wakeLock.request('screen');
-      wakeLock.addEventListener('release', () => { if(wiggleOn && wiggleOn.checked) requestWakeLock(); });
-    }
-  }catch(e){}
-}
-function releaseWakeLock(){ try{ if(wakeLock){ wakeLock.release(); wakeLock=null; } }catch(e){} }
+/* wiggler */
+let wakeLock=null, wiggleTimer=null;
+const wiggleOn=document.getElementById('wiggleOn'), wiggleInt=document.getElementById('wiggleInterval'), wiggleStatus=document.getElementById('wiggleStatus'), ghost=document.getElementById('ghostCursor');
+async function requestWakeLock(){ try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release',()=>{ if(wiggleOn?.checked) requestWakeLock(); }); } }catch{} }
+function releaseWakeLock(){ try{ wakeLock?.release(); wakeLock=null; }catch{} }
 function startWiggler(){
-  stopWiggler();
-  requestWakeLock();
-  const interval = parseInt(wiggleInt.value,10);
-  let t=0;
-  wiggleTimer = setInterval(()=>{
-    const y = window.scrollY;
-    window.scrollTo(0, y+1);
-    window.scrollTo(0, y);
-    t += 20;
-    const x = 20 + (Math.sin(t/200)*12+12);
-    const y2 = 20 + (Math.cos(t/240)*8+8);
-    ghostCur.style.transform = `translate(${x}px, ${y2}px)`;
-    ghostCur.classList.add('on');
-    document.dispatchEvent(new MouseEvent('mousemove', {clientX:x, clientY:y2, bubbles:true}));
+  stopWiggler(); requestWakeLock();
+  const interval=parseInt(wiggleInt.value,10); let t=0;
+  wiggleTimer=setInterval(()=>{
+    const y=scrollY; scrollTo(0,y+1); scrollTo(0,y);
+    t+=20; const x=20+(Math.sin(t/200)*12+12), y2=20+(Math.cos(t/240)*8+8);
+    ghost.style.transform=`translate(${x}px,${y2}px)`; ghost.classList.add('on');
+    document.dispatchEvent(new MouseEvent('mousemove',{clientX:x,clientY:y2,bubbles:true}));
   }, interval);
-  wiggleStat.textContent = `Status: on — every ${(interval/1000)}s`;
+  wiggleStatus.textContent=`Status: on — every ${interval/1000}s`;
 }
-function stopWiggler(){
-  clearInterval(wiggleTimer); wiggleTimer=null;
-  releaseWakeLock();
-  if(wiggleStat) wiggleStat.textContent = 'Status: off';
-  ghostCur.classList.remove('on');
-}
-if (wiggleOn){
-  wiggleOn.addEventListener('change', ()=> wiggleOn.checked ? startWiggler() : stopWiggler());
-  wiggleInt.addEventListener('change', ()=> { if(wiggleOn.checked) startWiggler(); });
-  document.addEventListener('visibilitychange', ()=> { if(document.visibilityState==='visible' && wiggleOn.checked) requestWakeLock(); });
-}
+function stopWiggler(){ clearInterval(wiggleTimer); wiggleTimer=null; releaseWakeLock(); ghost.classList.remove('on'); wiggleStatus.textContent='Status: off'; }
+if(wiggleOn){ wiggleOn.addEventListener('change',()=>wiggleOn.checked?startWiggler():stopWiggler()); wiggleInt.addEventListener('change',()=>{ if(wiggleOn.checked) startWiggler(); }); addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&wiggleOn.checked) requestWakeLock(); }); }
 
-/* ---------- VPN helper: public IP + WebRTC local candidates ---------- */
+/* vpn */
 async function loadIp(){
-  const ipField = document.getElementById('ipInfo');
-  try{
-    const r = await fetch('https://ipapi.co/json', {cache:'no-store'});
-    const j = await r.json();
-    ipField.value = `${j.ip} • ${j.country_name} • ${j.org||j.asn||'ISP unknown'}`;
-  }catch{
-    try{
-      const r2 = await fetch('https://api.ipify.org?format=json', {cache:'no-store'});
-      const j2 = await r2.json();
-      ipField.value = j2.ip;
-    }catch{
-      ipField.value = 'Could not fetch IP (network blocked).';
-    }
-  }
+  const field=document.getElementById('ipInfo');
+  try{ const r=await fetch('https://ipapi.co/json',{cache:'no-store'}); const j=await r.json(); field.value=`${j.ip} • ${j.country_name} • ${j.org||j.asn||'ISP unknown'}`; }
+  catch{ try{ const r2=await fetch('https://api.ipify.org?format=json',{cache:'no-store'}); const j2=await r2.json(); field.value=j2.ip; } catch{ field.value='Could not fetch IP.'; } }
 }
 document.getElementById('rtcCheck').onclick=async()=>{
-  const out = document.getElementById('rtcOut'); out.value='Running…\n';
-  const pc = new RTCPeerConnection({iceServers:[]});
-  const candSet = new Set();
-  pc.createDataChannel('x');
-  pc.onicecandidate = e=>{
-    if(!e.candidate) return;
-    const m = e.candidate.candidate.match(/candidate:.+ (\d+\.\d+\.\d+\.\d+) /);
-    if(m && !candSet.has(m[1])){ candSet.add(m[1]); out.value += m[1] + "\n"; }
-  };
-  const sdp = await pc.createOffer(); await pc.setLocalDescription(sdp);
-  setTimeout(()=>{ pc.close(); if(!candSet.size) out.value += '(No local candidates exposed)'; }, 2000);
+  const out=document.getElementById('rtcOut'); out.value='Running…\n';
+  const pc=new RTCPeerConnection({iceServers:[]}); const seen=new Set(); pc.createDataChannel('x');
+  pc.onicecandidate=e=>{ if(!e.candidate) return; const m=e.candidate.candidate.match(/candidate:.+ (\\d+\\.\\d+\\.\\d+\\.\\d+) /); if(m&&!seen.has(m[1])){ seen.add(m[1]); out.value+=m[1]+'\\n'; } };
+  const s=await pc.createOffer(); await pc.setLocalDescription(s); setTimeout(()=>{ pc.close(); if(!seen.size) out.value+='(No local candidates exposed)'; },2000);
 };
 
-/* ---------- BG FX: Matrix rain + glowing flare droplets ---------- */
+/* bg matrix + green flares */
 (function(){
-  const c=document.getElementById('bgfx'), ctx=c.getContext('2d');
-  let w,h,cols,ypos,flares=[];
-  const cell=14;
-
-  function resize(){
-    w = c.width = innerWidth;
-    h = c.height = innerHeight;
-    cols = Math.floor(w / cell);
-    ypos = Array(cols).fill(0);
-    const count = Math.max(6, Math.floor(w/300));
-    flares = Array.from({length:count}, ()=> ({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      r: 30 + Math.random()*70,
-      vy: 0.15 + Math.random()*0.35,
-      alpha: 0.10 + Math.random()*0.25
-    }));
-  }
-  resize(); addEventListener('resize', resize);
-
-  function drawFlares(){
-    ctx.save(); ctx.globalCompositeOperation='lighter';
-    for(const f of flares){
-      const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
-      g.addColorStop(0, `rgba(32,255,134,${f.alpha})`);
-      g.addColorStop(1, 'rgba(32,255,134,0)');
-      ctx.fillStyle=g;
-      ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2); ctx.fill();
-      f.y += f.vy; f.x += Math.sin(f.y/80)*0.3;
-      if(f.y - f.r > h){ f.y = -f.r; f.x = Math.random()*w; }
-    }
-    ctx.restore();
-  }
-
-  function drawMatrix(){
-    ctx.fillStyle='rgba(7,10,10,.15)'; ctx.fillRect(0,0,w,h);
-    ctx.fillStyle='#20ff86'; ctx.font='14px monospace';
-    for(let i=0;i<cols;i++){
-      const ch = String.fromCharCode(0x30A0 + Math.random()*96);
-      const x = i*cell, y = ypos[i];
-      ctx.fillText(ch, x, y);
-      ypos[i] = y > h + Math.random()*100 ? 0 : y + cell;
-    }
-  }
-
-  (function loop(){ drawMatrix(); drawFlares(); requestAnimationFrame(loop); })();
+  const c=document.getElementById('bgfx'), ctx=c.getContext('2d'); let w,h,cols,ypos,flares=[]; const cell=14;
+  function resize(){ w=c.width=innerWidth; h=c.height=innerHeight; cols=Math.floor(w/cell); ypos=Array(cols).fill(0);
+    const k=Math.max(6,Math.floor(w/300)); flares=Array.from({length:k},()=>({x:Math.random()*w,y:Math.random()*h,r:30+Math.random()*70,vy:0.15+Math.random()*0.35,alpha:0.10+Math.random()*0.25})); }
+  resize(); addEventListener('resize',resize);
+  function flaresDraw(){ ctx.save(); ctx.globalCompositeOperation='lighter';
+    for(const f of flares){ const g=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r); g.addColorStop(0,`rgba(32,255,134,${f.alpha})`); g.addColorStop(1,'rgba(32,255,134,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2); ctx.fill(); f.y+=f.vy; f.x+=Math.sin(f.y/80)*0.3; if(f.y-f.r>h){ f.y=-f.r; f.x=Math.random()*w; } }
+    ctx.restore(); }
+  function matrix(){ ctx.fillStyle='rgba(7,10,10,.15)'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#20ff86'; ctx.font='14px monospace';
+    for(let i=0;i<cols;i++){ const ch=String.fromCharCode(0x30A0+Math.random()*96); ctx.fillText(ch,i*cell,ypos[i]); ypos[i]=(ypos[i]>h+Math.random()*100)?0:ypos[i]+cell; } }
+  (function loop(){ matrix(); flaresDraw(); requestAnimationFrame(loop); })();
 })();
 </script>
 
+<!-- ghost cursor (for wiggler visual) -->
 <div class="ghost-cursor" id="ghostCursor"></div>
 </body>
 </html>
