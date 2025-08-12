@@ -7,13 +7,13 @@
 <meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and 24/7 cloud." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2320ff86'/%3E%3C/svg%3E">
 
-<!-- JSZip for real ZIP generation (builds a valid .zip in the browser) -->
+<!-- JSZip builds a valid .zip in the browser (fallback if your real zip isn’t deployed) -->
 <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
 
 <style>
   :root{
-    --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717;
-    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86;
+    --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717; --line:#0e1515;
+    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86; --accent2:#0affb9;
     --glow:0 0 18px rgba(32,255,134,.35), 0 0 32px rgba(32,255,134,.18);
   }
   *{box-sizing:border-box}
@@ -26,16 +26,16 @@
       var(--bg);
     color:var(--text); overflow-x:hidden;
   }
-  /* Subtle scanline overlay */
+
+  /* Subtle scanlines + canvas rain/flairs */
   .scanlines:before{
     content:""; position:fixed; inset:0; pointer-events:none;
     background: repeating-linear-gradient(to bottom, rgba(32,255,134,.04), rgba(32,255,134,.04) 1px, transparent 3px, transparent 6px);
     mix-blend-mode:soft-light; opacity:.18;
   }
-  /* Matrix + flares canvas */
   canvas#bgfx{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
-  /* Header */
+  /* Header like your screenshot */
   header{
     position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
     border-bottom:1px solid #0d1616; background: rgba(7,10,10,.75);
@@ -46,25 +46,45 @@
   .brand svg{height:30px; width:30px; display:block; filter:drop-shadow(0 0 10px rgba(32,255,134,.35))}
   .brand-name{letter-spacing:.5px; font-weight:800}
 
-  /* Top-right menu */
-  .menu{display:flex; align-items:center; gap:10px}
-  .menu button,.btn{
-    color:var(--muted); font-weight:800; cursor:pointer;
-    border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917);
-    padding:10px 14px; border-radius:12px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+  nav a{
+    color:var(--muted); text-decoration:none; margin:0 10px; font-weight:700; white-space:nowrap;
   }
-  .menu button:hover,.btn:hover{border-color:#14593f}
-  .primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
+  nav a:hover{color:var(--accent)}
 
-  /* Hero */
-  .hero{position:relative; z-index:1; padding:64px 0 16px; text-align:left}
-  .badge{display:inline-block; padding:6px 10px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
-  .hero h1{font-size:40px; line-height:1.1; margin:12px 0; color:#20ff86; text-shadow:var(--glow)}
+  /* Hero block */
+  .hero{position:relative; z-index:1; padding:56px 0 18px}
+  .badge{display:inline-block; padding:8px 16px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
+  .hero h1{font-size:40px; line-height:1.1; margin:14px 0; color:var(--accent); text-shadow:var(--glow)}
   .hero p{max-width:760px; color:#c4ffe2; font-size:18px}
   .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
-  .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016}
+  .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c;
+       background:linear-gradient(180deg,#10201c,#0e1917);
+       padding:12px 16px; border-radius:16px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413}
+  .btn:hover{border-color:#14593f}
+  .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
 
-  /* Modals */
+  /* Stats + feature grid (terminal cards) */
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px}
+  .card h3{margin:0; color:var(--accent); font-size:26px}
+  .card p{margin:6px 0 0; color:#b0f5d2}
+
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:10px 0 34px}
+  .term{background:linear-gradient(180deg,#0a1212,#0b1515); border:1px solid #0f1e1e; border-radius:14px; overflow:hidden}
+  .term .top{display:flex; align-items:center; gap:8px; padding:10px 12px; border-bottom:1px solid #0e1a19; background:#0b1313}
+  .dot{width:10px; height:10px; border-radius:50%}
+  .dot.r{background:#ff6b6b44; border:1px solid #8f3a3a}
+  .dot.y{background:#ffd16633; border:1px solid #8a6a2a}
+  .dot.g{background:#4cd46a33; border:1px solid #2e7f42}
+  .term pre{margin:0; padding:14px; color:#caffea; font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace; white-space:pre-wrap}
+  .code-kw{color:#79ffb4}
+  .hl{color:var(--accent)}
+
+  section{position:relative; z-index:1; padding:38px 0}
+  h2{margin:0 0 8px; color:#baffdc}
+  .muted{color:#93d9b7}
+
+  /* Modals + inputs */
   .modal{position:fixed; inset:0; display:none; place-items:center; z-index:20; background:rgba(0,0,0,.55); backdrop-filter: blur(4px)}
   .modal.active{display:grid}
   .box{width:min(560px,92vw); background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a; border-radius:16px; padding:18px}
@@ -73,16 +93,16 @@
   .x{cursor:pointer; float:right; color:#7bf2b7}
   .ok{background:linear-gradient(180deg,#19ff90,#12d97a); color:#052818; border:0}
   .ok:hover{filter:saturate(1.05)}
-  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px;
-        border-radius:999px; border:1px solid #113a2c; background:#0c1716; color:#b9ffd8; cursor:pointer}
-  .pill:hover{border-color:#14593f}
+  .ghost{border:1px solid #113a2c}
 
-  /* Tiny ghost cursor shown when wiggler is active */
+  /* Ghost cursor for wiggler feedback */
   .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%;
     border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
   .ghost-cursor.on{display:block}
 
-  @media (max-width:640px){ .hero h1{font-size:32px} }
+  /* Responsive */
+  @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:32px} }
 </style>
 </head>
 <body class="scanlines">
@@ -100,12 +120,15 @@
       <span class="brand-name">GoblinReach.ai</span>
     </a>
 
-    <div class="menu">
-      <button class="pill" id="wiggleOpen" title="Auto Mouse Wiggler">🖱️ Wiggler</button>
-      <button class="pill" id="vpnOpen" title="VPN Helper">🔒 VPN</button>
-      <button id="accessBtn" class="primary">Access</button>
-      <a class="btn" id="downloadBtn">⬇ Download</a>
-    </div>
+    <nav>
+      <a href="#how">How to Install</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#" id="wiggleOpen">Wiggler</a>
+      <a href="#" id="vpnOpen">VPN</a>
+      <a href="#" id="signupBtn">Sign Up</a>
+      <a href="#" id="loginBtn">Log In</a>
+    </nav>
   </div>
 </header>
 
@@ -113,34 +136,82 @@
   <section class="hero">
     <span class="badge">24/7 Cloud • Proxies • VPN-Ready • Human-like pacing (600–900s jitter)</span>
     <h1>Let AI handle your Instagram DMs — safely, on autopilot.</h1>
-    <p>Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans.</p>
+    <p>Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans. One-minute setup. Works from the cloud — your laptop/phone can stay untouched.</p>
     <div class="cta">
-      <a class="btn primary" id="ctaAccess">Get Started</a>
+      <a class="btn primary" id="downloadBtn">⬇ Download Extension</a>
+      <a class="btn" href="#how">⚙️ How to Install</a>
       <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">📸 Instagram</a>
+    </div>
+
+    <div class="stats">
+      <div class="card"><h3>18–31</h3><p>Avg replies per 100 DMs</p></div>
+      <div class="card"><h3>1,000+</h3><p>Live users / installs</p></div>
+      <div class="card"><h3>600–900s</h3><p>Safe randomized delay</p></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>Spy-grade controls</h2>
+    <p class="muted">Rotating proxies, VPN compatibility, jittered timing, and a “doesn’t-look-like-a-bot” cadence.</p>
+
+    <div class="grid">
+      <div class="term">
+        <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+        <pre><span class="code-kw">setup</span> --proxies <span class="hl">us1, us2, eu1</span>
+<span class="code-kw">pacing</span> --delay <span class="hl">600..900s</span> --jitter smart
+<span class="code-kw">safety</span> --humanize keystrokes --captcha-guard on</pre>
+      </div>
+      <div class="term">
+        <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+        <pre><span class="code-kw">campaign</span> import followers_of(@yourlead)
+<span class="code-kw">message</span> template <span class="hl">"Warm intro + CTA"</span>
+<span class="code-kw">schedule</span> start 09:00 stop 23:00 local</pre>
+      </div>
+      <div class="term">
+        <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+        <pre><span class="code-kw">export</span> replies --> Google Sheets / Telegram
+<span class="code-kw">track</span> seen | opened | responded
+<span class="code-kw">auto-retry</span> failed DMs (smart backoff)</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How to install (Chrome)</h2>
+    <ol class="muted">
+      <li>Click <b>Download Extension</b> (green button).</li>
+      <li>Unzip the file.</li>
+      <li>Open <b>chrome://extensions</b> → toggle <b>Developer mode</b>.</li>
+      <li>Click <b>Load unpacked</b> → select the unzipped folder.</li>
+      <li>Open the extension → <b>Log in</b> → start safe automation.</li>
+    </ol>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p class="muted">Looks like $1,000/mo tools. Launch price: <b>$22/mo</b> or <b>$95/6mo</b>.</p>
+    <div class="cta">
+      <a class="btn primary" id="signupBtn2">Get Started — $22/mo</a>
+      <a class="btn ghost" id="loginBtn2">I already have an account</a>
     </div>
   </section>
 </main>
 
-<!-- ACCESS (combined Sign Up / Login) -->
+<!-- SIGNUP / LOGIN (combined under the hood so links work) -->
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#accessModal">✕</span>
-    <h3 style="margin:0 0 6px;color:#baffdc">Access your account</h3>
-    <div class="row">
-      <select id="mode" style="max-width:200px">
-        <option value="signup">Create new account</option>
-        <option value="login">Log in</option>
-      </select>
-    </div>
+    <h3 id="accessTitle" style="margin:0 0 6px;color:#baffdc">Create your account</h3>
     <div class="row"><input id="email" type="email" placeholder="Email" /></div>
     <div class="row"><input id="pass" type="password" placeholder="Password" /></div>
     <div class="row" style="justify-content:flex-end">
-      <button class="ok" id="goAccess">Continue</button>
+      <button class="ghost" data-close="#accessModal">Cancel</button>
+      <button class="ok" id="accessGo">Continue</button>
     </div>
   </div>
 </div>
 
-<!-- WIGGLER MODAL -->
+<!-- WIGGLER -->
 <div class="modal" id="wiggleModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#wiggleModal">✕</span>
@@ -163,11 +234,11 @@
       <input type="checkbox" id="wiggleOn" />
       <label for="wiggleOn">Enable Wiggler (Wake Lock + subtle page nudge)</label>
     </div>
-    <p id="wiggleStatus" style="margin:6px 0 0 0;color:#9fe6c1">Status: off</p>
+    <p id="wiggleStatus" class="muted" style="margin:6px 0 0 0">Status: off</p>
   </div>
 </div>
 
-<!-- VPN MODAL -->
+<!-- VPN -->
 <div class="modal" id="vpnModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#vpnModal">✕</span>
@@ -189,14 +260,35 @@
 <div class="ghost-cursor" id="ghostCursor"></div>
 
 <script>
+/* ---------- Smooth scroll for hash links ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');
+    if(id==="#"||!id.startsWith("#")) return;
+    e.preventDefault();
+    document.querySelector(id)?.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+
 /* ---------- Modal helpers ---------- */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
 
 document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
 document.getElementById('vpnOpen').onclick=()=>{ open('#vpnModal'); loadIp(); };
-document.getElementById('accessBtn').onclick=()=>open('#accessModal');
-document.getElementById('ctaAccess').onclick=()=>open('#accessModal');
+
+const accessTitle = document.getElementById('accessTitle');
+const accessGo = document.getElementById('accessGo');
+let accessMode='signup';
+function openAccess(mode){
+  accessMode=mode;
+  accessTitle.textContent = mode==='signup' ? 'Create your account' : 'Log in';
+  open('#accessModal');
+}
+document.getElementById('signupBtn').onclick=()=>openAccess('signup');
+document.getElementById('signupBtn2').onclick=()=>openAccess('signup');
+document.getElementById('loginBtn').onclick=()=>openAccess('login');
+document.getElementById('loginBtn2').onclick=()=>openAccess('login');
 
 document.querySelectorAll('[data-close]').forEach(x=>{
   x.addEventListener('click', ()=> close(x.getAttribute('data-close')));
@@ -205,20 +297,20 @@ window.addEventListener('keydown',e=>{
   if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active'));
 });
 
-/* ---------- Combined Access (signup/login) placeholder ---------- */
+/* ---------- Local placeholder access so buttons WORK TODAY ---------- */
 const USERS_KEY='goblinreach_users';
 function loadUsers(){ try{ return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); }catch{ return {}; } }
 function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
-document.getElementById('goAccess').onclick=()=>{
-  const mode=document.getElementById('mode').value;
+accessGo.onclick=()=>{
   const email=document.getElementById('email').value.trim();
   const pass=document.getElementById('pass').value;
   if(!email||!pass){ alert('Enter email and password'); return; }
   const users=loadUsers();
-  if(mode==='signup'){
+  if(accessMode==='signup'){
     if(users[email]){ alert('Account already exists. Switch to Log in.'); return; }
     users[email]={ password:pass, created:Date.now() };
-    saveUsers(users); close('#accessModal'); alert('Account created! You are now logged in.'); return;
+    saveUsers(users);
+    close('#accessModal'); alert('Account created! You are now logged in.');
   }else{
     if(!users[email] || users[email].password!==pass){ alert('Invalid credentials.'); return; }
     close('#accessModal'); alert('Logged in. Dashboard coming next build.');
@@ -239,8 +331,8 @@ function saveBlob(filename, blob){
 async function buildStarterZip(){
   if(!window.JSZip){
     const fallback = new Blob([`Install:
-1) Replace this with /public/GoblinReach-DM-Bot.zip
-2) chrome://extensions → Developer mode → Load unpacked`], {type:'application/octet-stream'});
+- Replace with /public/GoblinReach-DM-Bot.zip
+- chrome://extensions → Developer mode → Load unpacked`], {type:'application/octet-stream'});
     saveBlob('GoblinReach-DM-Bot.zip', fallback); return;
   }
   const zip = new JSZip();
@@ -254,7 +346,7 @@ async function buildStarterZip(){
     "host_permissions": ["https://*.instagram.com/*"]
   }, null, 2));
 
-  /* IMPORTANT: no </script> inside this string! Using inline onclick to avoid closing the outer script tag. */
+  /* NOTE: Avoid </script> inside this HTML to prevent breaking outer script. */
   zip.file("popup.html",
 `<!doctype html><html><head><meta charset="utf-8"><title>GoblinReach Starter</title>
 <style>body{font-family:Inter,Arial;padding:14px;width:280px;background:#0b1414;color:#e6fff2}
@@ -268,7 +360,6 @@ button{padding:8px 12px;border-radius:10px;border:0;background:#19ff90;color:#05
   zip.file("README.txt",
 `This is a valid extension skeleton so launch visitors never hit a dead link.
 Replace with your production zip at /public/GoblinReach-DM-Bot.zip on Vercel.`);
-
   const blob = await zip.generateAsync({type:"blob"});
   saveBlob("GoblinReach-DM-Bot.zip", blob);
 }
@@ -365,7 +456,6 @@ document.getElementById('rtcCheck').onclick=async()=>{
     h = c.height = innerHeight;
     cols = Math.floor(w / cell);
     ypos = Array(cols).fill(0);
-    // build flares
     const count = Math.max(6, Math.floor(w/300));
     flares = Array.from({length:count}, ()=> ({
       x: Math.random()*w,
@@ -378,16 +468,14 @@ document.getElementById('rtcCheck').onclick=async()=>{
   resize(); addEventListener('resize', resize);
 
   function drawFlares(){
-    ctx.save();
-    ctx.globalCompositeOperation='lighter';
+    ctx.save(); ctx.globalCompositeOperation='lighter';
     for(const f of flares){
       const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
       g.addColorStop(0, `rgba(32,255,134,${f.alpha})`);
       g.addColorStop(1, 'rgba(32,255,134,0)');
       ctx.fillStyle=g;
       ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2); ctx.fill();
-      f.y += f.vy;
-      f.x += Math.sin(f.y/80)*0.3;
+      f.y += f.vy; f.x += Math.sin(f.y/80)*0.3;
       if(f.y - f.r > h){ f.y = -f.r; f.x = Math.random()*w; }
     }
     ctx.restore();
@@ -397,18 +485,14 @@ document.getElementById('rtcCheck').onclick=async()=>{
     ctx.fillStyle='rgba(7,10,10,.15)'; ctx.fillRect(0,0,w,h);
     ctx.fillStyle='#20ff86'; ctx.font='14px monospace';
     for(let i=0;i<cols;i++){
-      const text = String.fromCharCode(0x30A0 + Math.random()*96);
+      const ch = String.fromCharCode(0x30A0 + Math.random()*96);
       const x = i*cell, y = ypos[i];
-      ctx.fillText(text, x, y);
+      ctx.fillText(ch, x, y);
       ypos[i] = y > h + Math.random()*100 ? 0 : y + cell;
     }
   }
 
-  (function loop(){
-    drawMatrix();
-    drawFlares();
-    requestAnimationFrame(loop);
-  })();
+  (function loop(){ drawMatrix(); drawFlares(); requestAnimationFrame(loop); })();
 })();
 </script>
 
