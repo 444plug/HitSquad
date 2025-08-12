@@ -11,13 +11,11 @@
 <style>
   :root{
     --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717; --line:#0e1515;
-    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86;
+    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86; --accent2:#0affb9;
     --glow:0 0 18px rgba(32,255,134,.35), 0 0 32px rgba(32,255,134,.18);
-    --headerH:64px; /* updated at runtime */
-    --vh:100vh;
+    --headerH:64px; --vh:100vh;
   }
   @supports (height: 100svh){ :root{ --vh:100svh; } }
-
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -28,7 +26,6 @@
       var(--bg);
     color:var(--text); overflow-x:hidden;
   }
-
   /* scanlines + full-viewport FX canvas */
   .scanlines:before{
     content:""; position:fixed; inset:0; pointer-events:none;
@@ -53,11 +50,23 @@
   /* HERO = TRUE FULL SCREEN */
   .hero{
     position:relative; z-index:1;
-    min-height:var(--vh); /* always full screen */
+    min-height:var(--vh);
     padding-top:calc(var(--headerH) + 24px);
     padding-bottom:24px;
     display:flex; flex-direction:column; justify-content:center;
+    overflow:hidden;
   }
+  /* Bond-style green sweep */
+  .hero::after{
+    content:""; position:absolute; inset:-20%;
+    background:linear-gradient(115deg, transparent 45%, rgba(32,255,134,.16) 50%, transparent 55%);
+    mix-blend-mode:screen; filter:blur(0.5px);
+    transform:translateX(-160%);
+    animation:sweep 6s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes sweep{ to{ transform:translateX(160%);} }
+
   .badge{display:inline-block; padding:8px 16px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
   .hero h1{font-size:44px; line-height:1.1; margin:16px 0; color:var(--accent); text-shadow:var(--glow)}
   .hero p{max-width:760px; color:#c4ffe2; font-size:18px}
@@ -66,7 +75,7 @@
   .btn:hover{border-color:#14593f}
   .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
 
-  /* stats + terminals (below the fold — optional scroll) */
+  /* sections below the fold */
   section{position:relative; z-index:1; padding:38px 0}
   .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
   .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px}
@@ -100,7 +109,6 @@
   .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%; border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
   .ghost-cursor.on{display:block}
 
-  /* responsive */
   @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
   @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:32px} }
 </style>
@@ -138,7 +146,8 @@
     <h1>Let AI handle your Instagram DMs — safely, on autopilot.</h1>
     <p>Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans. One-minute setup. Works from the cloud — your laptop/phone can stay untouched.</p>
     <div class="cta">
-      <a class="btn primary" id="downloadBtn">⬇ Download Extension</a>
+      <!-- Replaced top button with the working Get Started -->
+      <a class="btn primary" id="startBtn">Get Started — $22/mo</a>
       <a class="btn" href="#how">⚙️ How to Install</a>
       <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">📸 Instagram</a>
     </div>
@@ -149,7 +158,7 @@
     </div>
   </section>
 
-  <!-- BELOW THE FOLD (scroll if you want) -->
+  <!-- BELOW THE FOLD -->
   <section id="features">
     <h2>Spy-grade controls</h2>
     <p class="muted">Rotating proxies, VPN compatibility, jittered timing, and a “doesn’t-look-like-a-bot” cadence.</p>
@@ -178,8 +187,8 @@
   <section id="how">
     <h2>How to install (Chrome)</h2>
     <ol class="muted">
-      <li>Click <b>Download Extension</b> (green button).</li>
-      <li>Unzip the file.</li>
+      <li>Click <b>Get Started</b> (green button).</li>
+      <li>Create account (2 fields) → download package instantly.</li>
       <li>Open <b>chrome://extensions</b> → toggle <b>Developer mode</b>.</li>
       <li>Click <b>Load unpacked</b> → select the unzipped folder.</li>
       <li>Open the extension → <b>Log in</b> → start safe automation.</li>
@@ -196,7 +205,7 @@
   </section>
 </main>
 
-<!-- ACCESS MODAL -->
+<!-- ACCESS MODAL (used by all Get Started buttons) -->
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#accessModal">✕</span>
@@ -205,8 +214,9 @@
     <div class="row"><input id="pass" type="password" placeholder="Password" /></div>
     <div class="row" style="justify-content:flex-end">
       <button class="ghost" data-close="#accessModal">Cancel</button>
-      <button class="ok" id="accessGo">Continue</button>
+      <button class="ok" id="accessGo">Start & Download</button>
     </div>
+    <p class="muted" style="margin:6px 0 0 0">Already have an account? <a href="#" id="swapLogin">Log in</a></p>
   </div>
 </div>
 
@@ -259,14 +269,10 @@
 <div class="ghost-cursor" id="ghostCursor"></div>
 
 <script>
-/* keep CSS --headerH accurate (ensures hero truly fills screen) */
-(function(){
-  const h=document.getElementById('hdr');
-  const set=()=>document.documentElement.style.setProperty('--headerH', h.offsetHeight+'px');
-  set(); addEventListener('resize', set);
-})();
+/* header height → CSS var (keeps hero truly full-screen) */
+(function(){ const h=document.getElementById('hdr'); const set=()=>document.documentElement.style.setProperty('--headerH',h.offsetHeight+'px'); set(); addEventListener('resize',set); })();
 
-/* smooth scroll for in-page links */
+/* smooth scroll */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const id=a.getAttribute('href'); if(id==="#"||!id.startsWith("#")) return;
@@ -274,54 +280,58 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* modal helpers */
+/* modals */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
 document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
 document.getElementById('vpnOpen').onclick=()=>{ open('#vpnModal'); loadIp(); };
 
-let authMode='signup';
+/* Get Started buttons → access modal */
 const accessTitle=document.getElementById('accessTitle');
-document.getElementById('signupBtn').onclick=()=>{ authMode='signup'; accessTitle.textContent='Create your account'; open('#accessModal'); };
-document.getElementById('signupBtn2').onclick=()=>{ authMode='signup'; accessTitle.textContent='Create your account'; open('#accessModal'); };
-document.getElementById('loginBtn').onclick=()=>{ authMode='login'; accessTitle.textContent='Log in'; open('#accessModal'); };
-document.getElementById('loginBtn2').onclick=()=>{ authMode='login'; accessTitle.textContent='Log in'; open('#accessModal'); };
+let authMode='signup';
+const openSignup=()=>{ authMode='signup'; accessTitle.textContent='Create your account'; open('#accessModal'); };
+const openLogin =()=>{ authMode='login';  accessTitle.textContent='Log in'; open('#accessModal'); };
+document.getElementById('startBtn').onclick=openSignup;
+document.getElementById('signupBtn2').onclick=openSignup;
+document.getElementById('signupBtn').onclick=openSignup;
+document.getElementById('loginBtn').onclick=openLogin;
+document.getElementById('loginBtn2').onclick=openLogin;
+document.getElementById('swapLogin').onclick=(e)=>{ e.preventDefault(); openLogin(); };
 
 document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>close(x.getAttribute('data-close'))));
 addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
 
-/* simple local auth so flows work today */
+/* local placeholder auth + instant product delivery */
 const USERS_KEY='goblinreach_users';
 const loadUsers=()=>{ try{ return JSON.parse(localStorage.getItem(USERS_KEY)||'{}'); }catch{ return {}; } };
 const saveUsers=u=>localStorage.setItem(USERS_KEY, JSON.stringify(u));
-document.getElementById('accessGo').onclick=()=>{
-  const email=document.getElementById('email').value.trim(); const pass=document.getElementById('pass').value;
-  if(!email||!pass){ alert('Enter email and password'); return; }
-  const users=loadUsers();
-  if(authMode==='signup'){
-    if(users[email]){ alert('Account already exists. Switch to Log in.'); return; }
-    users[email]={password:pass,created:Date.now()}; saveUsers(users);
-    close('#accessModal'); alert('Account created! You are now logged in.');
-  }else{
-    if(!users[email]||users[email].password!==pass){ alert('Invalid credentials.'); return; }
-    close('#accessModal'); alert('Logged in. Dashboard coming next build.');
-  }
-};
-
-/* download: serve real zip if present; otherwise build a valid one */
 async function existsRealZip(){ try{ const r=await fetch('/GoblinReach-DM-Bot.zip',{method:'HEAD',cache:'no-store'}); return r.ok; }catch{ return false; } }
 function saveBlob(name,blob){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
 async function buildStarterZip(){
-  if(!window.JSZip){ saveBlob('GoblinReach-DM-Bot.zip', new Blob(['Replace with /public/GoblinReach-DM-Bot.zip'], {type:'application/octet-stream'})); return; }
+  if(!window.JSZip){ saveBlob('GoblinReach-DM-Bot.zip', new Blob(['Replace with /public/GoblinReach-DM-Bot.zip'],{type:'application/octet-stream'})); return; }
   const zip=new JSZip();
   zip.file('manifest.json', JSON.stringify({"manifest_version":3,"name":"GoblinReach DM Automator (Starter)","version":"0.0.1","description":"Starter scaffold. Replace with full extension build.","action":{"default_popup":"popup.html"},"permissions":["storage","activeTab","scripting"],"host_permissions":["https://*.instagram.com/*"]},null,2));
   zip.file('popup.html','<!doctype html><html><head><meta charset="utf-8"><title>GoblinReach Starter</title><style>body{font-family:Inter,Arial;padding:14px;width:280px;background:#0b1414;color:#e6fff2}button{padding:8px 12px;border-radius:10px;border:0;background:#19ff90;color:#052818;font-weight:800}</style></head><body><h3>GoblinReach Starter</h3><p>This is a placeholder popup. Replace with your real build.</p><button id="ok" onclick="alert(\\'Replace with real build\\')">OK</button></body></html>');
   zip.file('README.txt','Valid starter so visitors never hit a dead link. Replace with /public/GoblinReach-DM-Bot.zip on Vercel.');
   const blob=await zip.generateAsync({type:'blob'}); saveBlob('GoblinReach-DM-Bot.zip', blob);
 }
-document.getElementById('downloadBtn').onclick=async()=>{
+async function deliverProduct(){
   if(await existsRealZip()) location.href='/GoblinReach-DM-Bot.zip';
   else await buildStarterZip();
+}
+
+document.getElementById('accessGo').onclick=async()=>{
+  const email=document.getElementById('email').value.trim(); const pass=document.getElementById('pass').value;
+  if(!email||!pass){ alert('Enter email and password'); return; }
+  const users=loadUsers();
+  if(authMode==='signup'){
+    if(users[email]){ alert('Account already exists. Switch to Log in.'); return; }
+    users[email]={password:pass,created:Date.now()}; saveUsers(users);
+    close('#accessModal'); await deliverProduct();
+  }else{
+    if(!users[email]||users[email].password!==pass){ alert('Invalid credentials.'); return; }
+    close('#accessModal'); await deliverProduct();
+  }
 };
 
 /* wiggler */
@@ -360,7 +370,7 @@ document.getElementById('rtcCheck').onclick=async()=>{
   const s=await pc.createOffer(); await pc.setLocalDescription(s); setTimeout(()=>{ pc.close(); if(!seen.size) out.value+='(No local candidates exposed)'; },2000);
 };
 
-/* FULL-SCREEN matrix rain + moving green flares (covers every viewport) */
+/* FULL-SCREEN matrix rain + green flares */
 (function(){
   const c=document.getElementById('bgfx'), ctx=c.getContext('2d'); let w,h,cols,ypos,flares=[]; const cell=14;
   function resize(){
@@ -391,7 +401,6 @@ document.getElementById('rtcCheck').onclick=async()=>{
       ypos[i]=(ypos[i]>h+Math.random()*100)?0:ypos[i]+cell;
     }
   }
-
   (function loop(){ matrix(); drawFlares(); requestAnimationFrame(loop); })();
 })();
 </script>
