@@ -61,7 +61,7 @@
   .hero h1{font-size:44px; line-height:1.1; margin:16px 0; color:var(--accent); text-shadow:var(--glow)}
   .hero p{max-width:760px; color:#c4ffe2; font-size:18px}
   .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
-  .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917); padding:12px 16px; border-radius:16px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413}
+  .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917); padding:12px 16px; border-radius:16px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413; cursor:pointer}
   .btn:hover{border-color:#14593f}
   .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
 
@@ -98,6 +98,16 @@
   .choice strong{font-size:18px}
   .choice .sub{color:#9fe6c1}
 
+  /* World clock widget */
+  .clock{
+    position:fixed; right:14px; bottom:14px; z-index:15;
+    background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a;
+    border-radius:14px; padding:10px 12px; box-shadow:0 0 18px rgba(32,255,134,.15);
+    font-size:12px; color:#baffdc; min-width:210px
+  }
+  .clock h4{margin:0 0 6px; font-size:12px; letter-spacing:.6px; color:#20ff86}
+  .clock .rowc{display:flex; justify-content:space-between; gap:10px; margin:2px 0; color:#9fe6c1}
+
   .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%;
     border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
   .ghost-cursor.on{display:block}
@@ -121,7 +131,6 @@
       <span class="brand-name">GoblinReach.ai</span>
     </a>
     <nav>
-      <a href="#how">How to Install</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#" id="wiggleOpen">Wiggler</a>
@@ -138,11 +147,10 @@
     <h1>Let AI handle your Instagram DMs — safely, on autopilot.</h1>
     <p>Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans. One-minute setup. Works from the cloud — your laptop/phone can stay untouched.</p>
     <div class="cta">
-      <!-- DIRECT LINK (no JS needed) -->
+      <!-- DIRECT to Stripe (no JS) -->
       <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Get Started — $22/mo</a>
-      <a class="btn" href="#how">⚙️ How to Install</a>
-      <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">📸 Instagram</a>
       <a class="btn" href="#" id="seePlans">See Options</a>
+      <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">📸 Instagram</a>
     </div>
     <div class="stats">
       <div class="card"><h3>18–31</h3><p>Avg replies per 100 DMs</p></div>
@@ -170,27 +178,18 @@
     </div>
   </section>
 
-  <section id="how">
-    <h2>How to install (Chrome)</h2>
-    <ol class="muted">
-      <li>Click <b>Get Started</b> (green button).</li>
-      <li>Checkout → download instantly.</li>
-      <li>Open <b>chrome://extensions</b> (Developer mode) → <b>Load unpacked</b>.</li>
-    </ol>
-  </section>
-
   <section id="pricing">
     <h2>Pricing</h2>
-    <p class="muted">Launch pricing: <b>$22/mo</b> or <b>$95/mo</b>.</p>
+    <p class="muted">Launch: <b>$22/mo</b> • <b>$95/mo</b> • <b>$5,000–$25,000</b> (Cash App).</p>
     <div class="cta">
-      <!-- DIRECT LINKS (no JS needed) -->
-      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Get Started — $22/mo</a>
-      <a class="btn" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">Or $95/mo</a>
+      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">$22/mo (Stripe)</a>
+      <a class="btn" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">$95/mo (Stripe)</a>
+      <a class="btn" href="#" id="cashHigh">$5,000–$25,000 (Cash App)</a>
     </div>
   </section>
 </main>
 
-<!-- CHECKOUT MODAL (if they click “See Options”) -->
+<!-- CHECKOUT MODAL (triggered by “See Options”) -->
 <div class="modal" id="checkoutModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#checkoutModal">✕</span>
@@ -205,14 +204,28 @@
         <a class="ok" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">Continue</a>
       </div>
       <div class="choice">
-        <div><strong>Cash App</strong><div class="sub">Pay with Cash App</div></div>
-        <a class="ok" href="https://cash.app/" target="_blank" rel="noopener">Open</a>
+        <div><strong>$5,000–$25,000</strong><div class="sub">Cash App</div></div>
+        <button class="ok" id="openCashModal" type="button">Open</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ACCESS (kept simple so login/signup buttons actually open) -->
+<!-- CASH APP MODAL (enter cashtag once, we open Cash App) -->
+<div class="modal" id="cashModal" aria-hidden="true">
+  <div class="box">
+    <span class="x" data-close="#cashModal">✕</span>
+    <h3 style="margin:0 0 8px;color:#baffdc">Cash App (High-Tier $5,000–$25,000)</h3>
+    <div class="row"><input id="cashTag" placeholder="$yourcashtag" /></div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="ghost" data-close="#cashModal">Cancel</button>
+      <button class="ok" id="cashGo">Open Cash App</button>
+    </div>
+    <p class="muted" style="margin:6px 0 0">We’ll remember your cashtag on this device.</p>
+  </div>
+</div>
+
+<!-- ACCESS (login/signup minimal so buttons work) -->
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#accessModal">✕</span>
@@ -272,6 +285,16 @@
   </div>
 </div>
 
+<!-- WORLD CLOCK -->
+<div class="clock" id="clock">
+  <h4>WORLD CLOCK</h4>
+  <div class="rowc"><span>New York</span><span id="tz-ny">--:--</span></div>
+  <div class="rowc"><span>London</span><span id="tz-lon">--:--</span></div>
+  <div class="rowc"><span>Dubai</span><span id="tz-dxb">--:--</span></div>
+  <div class="rowc"><span>Singapore</span><span id="tz-sg">--:--</span></div>
+  <div class="rowc"><span>Sydney</span><span id="tz-syd">--:--</span></div>
+</div>
+
 <div class="ghost-cursor" id="ghostCursor"></div>
 
 <script>
@@ -288,18 +311,35 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* open modals */
+/* simple modal helpers */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
+
 document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
 document.getElementById('vpnOpen').onclick=()=>{ open('#vpnModal'); loadIp(); };
 document.getElementById('signupBtn').onclick=()=>open('#accessModal');
 document.getElementById('loginBtn').onclick =()=>open('#accessModal');
 document.getElementById('seePlans').onclick =(e)=>{ e.preventDefault(); open('#checkoutModal'); };
+document.getElementById('cashHigh').onclick =(e)=>{ e.preventDefault(); open('#cashModal'); };
+document.getElementById('openCashModal').onclick =()=>open('#cashModal');
+
 document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>close(x.getAttribute('data-close'))));
 addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
 
-/* simple local capture to make Save button do something */
+/* Cash App handling */
+const CASH_KEY='goblin_cash_tag';
+const cashInput=document.getElementById('cashTag');
+cashInput.value = localStorage.getItem(CASH_KEY) || '';
+document.getElementById('cashGo').onclick=()=>{
+  const raw=cashInput.value.trim();
+  if(!raw){ alert('Enter your $cashtag'); return; }
+  const tag=raw.replace(/^\$/,'');
+  localStorage.setItem(CASH_KEY, '$'+tag);
+  window.open(`https://cash.app/${encodeURIComponent(tag)}`,'_blank');
+  close('#cashModal');
+};
+
+/* Access modal (simple save so buttons feel alive) */
 document.getElementById('accessGo').onclick=()=>{
   const email=document.getElementById('email').value.trim();
   const pass=document.getElementById('pass').value;
@@ -313,7 +353,7 @@ document.getElementById('accessGo').onclick=()=>{
   alert('Saved. You can proceed with checkout anytime.');
 };
 
-/* wiggler */
+/* Wiggler */
 let wakeLock=null, wiggleTimer=null;
 const wiggleOn=document.getElementById('wiggleOn'), wiggleInt=document.getElementById('wiggleInterval'), wiggleStatus=document.getElementById('wiggleStatus'), ghost=document.getElementById('ghostCursor');
 async function requestWakeLock(){ try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release',()=>{ if(wiggleOn?.checked) requestWakeLock(); }); } }catch{} }
@@ -348,6 +388,28 @@ document.getElementById('rtcCheck').onclick=async()=>{
   pc.onicecandidate=e=>{ if(!e.candidate) return; const m=e.candidate.candidate.match(/candidate:.+ (\\d+\\.\\d+\\.\\d+\\.\\d+) /); if(m&&!seen.has(m[1])){ seen.add(m[1]); out.value+=m[1]+'\\n'; } };
   const s=await pc.createOffer(); await pc.setLocalDescription(s); setTimeout(()=>{ pc.close(); if(!seen.size) out.value+='(No local candidates exposed)'; },2000);
 };
+
+/* WORLD CLOCK */
+(function(){
+  const zones = [
+    { id:'tz-ny',  tz:'America/New_York' },
+    { id:'tz-lon', tz:'Europe/London' },
+    { id:'tz-dxb', tz:'Asia/Dubai' },
+    { id:'tz-sg',  tz:'Asia/Singapore' },
+    { id:'tz-syd', tz:'Australia/Sydney' },
+  ];
+  function tick(){
+    const now = new Date();
+    for(const z of zones){
+      const el = document.getElementById(z.id);
+      if(!el) continue;
+      try{
+        el.textContent = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:z.tz}).format(now);
+      }catch{ el.textContent='--:--'; }
+    }
+  }
+  tick(); setInterval(tick, 15000);
+})();
 
 /* BG FX: Matrix rain + green flares */
 (function(){
