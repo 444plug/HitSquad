@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GoblinReach.ai — Spy-Grade IG DM Automation</title>
 <meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and 24/7 cloud." />
+
+<!-- OPTIONAL: drop your live checkout links here (or leave blank for instant-download fallback) -->
+<meta name="gr.monthly" content="">   <!-- e.g. https://buy.stripe.com/your-monthly -->
+<meta name="gr.sixmo"  content="">   <!-- e.g. https://buy.stripe.com/your-6mo -->
+<meta name="gr.cashapp" content="">  <!-- e.g. $goblinreach -->
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2320ff86'/%3E%3C/svg%3E">
 <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
 
@@ -26,7 +32,7 @@
       var(--bg);
     color:var(--text); overflow-x:hidden;
   }
-  /* scanlines + full-viewport FX canvas */
+  /* scanlines + canvas FX */
   .scanlines:before{
     content:""; position:fixed; inset:0; pointer-events:none;
     background:repeating-linear-gradient(to bottom, rgba(32,255,134,.04), rgba(32,255,134,.04) 1px, transparent 3px, transparent 6px);
@@ -34,7 +40,7 @@
   }
   #bgfx{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
-  /* header/nav */
+  /* header */
   header{
     position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
     border-bottom:1px solid #0d1616; background: rgba(7,10,10,.75);
@@ -49,21 +55,16 @@
 
   /* HERO = TRUE FULL SCREEN */
   .hero{
-    position:relative; z-index:1;
-    min-height:var(--vh);
-    padding-top:calc(var(--headerH) + 24px);
-    padding-bottom:24px;
-    display:flex; flex-direction:column; justify-content:center;
-    overflow:hidden;
+    position:relative; z-index:1; min-height:var(--vh);
+    padding-top:calc(var(--headerH) + 24px); padding-bottom:24px;
+    display:flex; flex-direction:column; justify-content:center; overflow:hidden;
   }
-  /* Bond-style green sweep */
+  /* Bond-style sweep */
   .hero::after{
     content:""; position:absolute; inset:-20%;
     background:linear-gradient(115deg, transparent 45%, rgba(32,255,134,.16) 50%, transparent 55%);
-    mix-blend-mode:screen; filter:blur(0.5px);
-    transform:translateX(-160%);
-    animation:sweep 6s linear infinite;
-    pointer-events:none;
+    mix-blend-mode:screen; filter:blur(.5px);
+    transform:translateX(-160%); animation:sweep 6s linear infinite; pointer-events:none;
   }
   @keyframes sweep{ to{ transform:translateX(160%);} }
 
@@ -75,7 +76,7 @@
   .btn:hover{border-color:#14593f}
   .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
 
-  /* sections below the fold */
+  /* sections */
   section{position:relative; z-index:1; padding:38px 0}
   .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
   .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px}
@@ -105,8 +106,15 @@
   .ok:hover{filter:saturate(1.05)}
   .ghost{border:1px solid #113a2c}
 
-  /* ghost cursor for wiggler */
-  .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%; border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
+  /* checkout tiles */
+  .choices{display:grid; grid-template-columns:1fr; gap:12px}
+  .choice{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-radius:14px; background:linear-gradient(180deg,#0a1212,#0b1515); border:1px solid #113a2c}
+  .choice strong{font-size:18px}
+  .choice .sub{color:#9fe6c1}
+
+  /* wiggler cursor */
+  .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%;
+    border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
   .ghost-cursor.on{display:block}
 
   @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
@@ -146,7 +154,6 @@
     <h1>Let AI handle your Instagram DMs — safely, on autopilot.</h1>
     <p>Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans. One-minute setup. Works from the cloud — your laptop/phone can stay untouched.</p>
     <div class="cta">
-      <!-- Replaced top button with the working Get Started -->
       <a class="btn primary" id="startBtn">Get Started — $22/mo</a>
       <a class="btn" href="#how">⚙️ How to Install</a>
       <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">📸 Instagram</a>
@@ -158,29 +165,22 @@
     </div>
   </section>
 
-  <!-- BELOW THE FOLD -->
   <section id="features">
     <h2>Spy-grade controls</h2>
     <p class="muted">Rotating proxies, VPN compatibility, jittered timing, and a “doesn’t-look-like-a-bot” cadence.</p>
     <div class="grid">
-      <div class="term">
-        <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-        <pre><span class="code-kw">setup</span> --proxies <span class="hl">us1, us2, eu1</span>
+      <div class="term"><div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+<pre><span class="code-kw">setup</span> --proxies <span class="hl">us1, us2, eu1</span>
 <span class="code-kw">pacing</span> --delay <span class="hl">600..900s</span> --jitter smart
-<span class="code-kw">safety</span> --humanize keystrokes --captcha-guard on</pre>
-      </div>
-      <div class="term">
-        <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-        <pre><span class="code-kw">campaign</span> import followers_of(@yourlead)
+<span class="code-kw">safety</span> --humanize keystrokes --captcha-guard on</pre></div>
+      <div class="term"><div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+<pre><span class="code-kw">campaign</span> import followers_of(@yourlead)
 <span class="code-kw">message</span> template <span class="hl">"Warm intro + CTA"</span>
-<span class="code-kw">schedule</span> start 09:00 stop 23:00 local</pre>
-      </div>
-      <div class="term">
-        <div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-        <pre><span class="code-kw">export</span> replies --> Google Sheets / Telegram
+<span class="code-kw">schedule</span> start 09:00 stop 23:00 local</pre></div>
+      <div class="term"><div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+<pre><span class="code-kw">export</span> replies --> Google Sheets / Telegram
 <span class="code-kw">track</span> seen | opened | responded
-<span class="code-kw">auto-retry</span> failed DMs (smart backoff)</pre>
-      </div>
+<span class="code-kw">auto-retry</span> failed DMs (smart backoff)</pre></div>
     </div>
   </section>
 
@@ -188,10 +188,8 @@
     <h2>How to install (Chrome)</h2>
     <ol class="muted">
       <li>Click <b>Get Started</b> (green button).</li>
-      <li>Create account (2 fields) → download package instantly.</li>
-      <li>Open <b>chrome://extensions</b> → toggle <b>Developer mode</b>.</li>
-      <li>Click <b>Load unpacked</b> → select the unzipped folder.</li>
-      <li>Open the extension → <b>Log in</b> → start safe automation.</li>
+      <li>Checkout → download instantly.</li>
+      <li>Open <b>chrome://extensions</b> (Developer mode) → <b>Load unpacked</b>.</li>
     </ol>
   </section>
 
@@ -205,22 +203,44 @@
   </section>
 </main>
 
-<!-- ACCESS MODAL (used by all Get Started buttons) -->
+<!-- CHECKOUT MODAL -->
+<div class="modal" id="checkoutModal" aria-hidden="true">
+  <div class="box">
+    <span class="x" data-close="#checkoutModal">✕</span>
+    <h3 style="margin:0 0 10px;color:#baffdc">Choose your plan</h3>
+    <div class="choices">
+      <div class="choice">
+        <div><strong>Monthly — $22</strong><div class="sub">Card / Apple Pay</div></div>
+        <button class="ok" id="goMonthly">Continue</button>
+      </div>
+      <div class="choice">
+        <div><strong>6 months — $95</strong><div class="sub">Card / Apple Pay</div></div>
+        <button class="ok" id="goSix">Continue</button>
+      </div>
+      <div class="choice">
+        <div><strong>Cash App</strong><div class="sub">Pay with Cash App</div></div>
+        <button class="ok" id="goCash">Open</button>
+      </div>
+    </div>
+    <p class="muted" style="margin:10px 0 0">After checkout you’ll download instantly.</p>
+  </div>
+</div>
+
+<!-- ACCESS MODAL (fallback email capture for instant download) -->
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#accessModal">✕</span>
-    <h3 id="accessTitle" style="margin:0 0 6px;color:#baffdc">Create your account</h3>
+    <h3 id="accessTitle" style="margin:0 0 6px;color:#baffdc">Quick access</h3>
     <div class="row"><input id="email" type="email" placeholder="Email" /></div>
-    <div class="row"><input id="pass" type="password" placeholder="Password" /></div>
+    <div class="row"><input id="pass" type="password" placeholder="Create a password" /></div>
     <div class="row" style="justify-content:flex-end">
       <button class="ghost" data-close="#accessModal">Cancel</button>
       <button class="ok" id="accessGo">Start & Download</button>
     </div>
-    <p class="muted" style="margin:6px 0 0 0">Already have an account? <a href="#" id="swapLogin">Log in</a></p>
   </div>
 </div>
 
-<!-- WIGGLER MODAL -->
+<!-- WIGGLER -->
 <div class="modal" id="wiggleModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#wiggleModal">✕</span>
@@ -247,7 +267,7 @@
   </div>
 </div>
 
-<!-- VPN MODAL -->
+<!-- VPN -->
 <div class="modal" id="vpnModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#vpnModal">✕</span>
@@ -269,7 +289,7 @@
 <div class="ghost-cursor" id="ghostCursor"></div>
 
 <script>
-/* header height → CSS var (keeps hero truly full-screen) */
+/* -- header height var for true full-screen hero -- */
 (function(){ const h=document.getElementById('hdr'); const set=()=>document.documentElement.style.setProperty('--headerH',h.offsetHeight+'px'); set(); addEventListener('resize',set); })();
 
 /* smooth scroll */
@@ -280,28 +300,56 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* modals */
+/* simple modal helpers */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
 document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
 document.getElementById('vpnOpen').onclick=()=>{ open('#vpnModal'); loadIp(); };
 
-/* Get Started buttons → access modal */
-const accessTitle=document.getElementById('accessTitle');
-let authMode='signup';
-const openSignup=()=>{ authMode='signup'; accessTitle.textContent='Create your account'; open('#accessModal'); };
-const openLogin =()=>{ authMode='login';  accessTitle.textContent='Log in'; open('#accessModal'); };
-document.getElementById('startBtn').onclick=openSignup;
-document.getElementById('signupBtn2').onclick=openSignup;
-document.getElementById('signupBtn').onclick=openSignup;
-document.getElementById('loginBtn').onclick=openLogin;
-document.getElementById('loginBtn2').onclick=openLogin;
-document.getElementById('swapLogin').onclick=(e)=>{ e.preventDefault(); openLogin(); };
+/* -------- Checkout wiring -------- */
+const META = (name)=>document.querySelector(`meta[name="${name}"]`)?.content?.trim()||"";
+const LINK_MONTHLY = META('gr.monthly');
+const LINK_SIXMO   = META('gr.sixmo');
+const CASH_TAG     = META('gr.cashapp'); // like $goblinreach
 
+const startBtn    = document.getElementById('startBtn');
+const signupBtn2  = document.getElementById('signupBtn2');
+const signupBtn   = document.getElementById('signupBtn');
+const loginBtn    = document.getElementById('loginBtn');
+const loginBtn2   = document.getElementById('loginBtn2');
+
+function goCheckoutDirect(){
+  // If a live monthly link is configured, go straight there for max conversion.
+  if (LINK_MONTHLY) { location.href = LINK_MONTHLY; return; }
+  // Otherwise open the clean 3-option modal.
+  open('#checkoutModal');
+}
+startBtn.onclick   = goCheckoutDirect;
+signupBtn2.onclick = goCheckoutDirect;
+signupBtn.onclick  = ()=>open('#accessModal');
+loginBtn.onclick   = ()=>open('#accessModal');
+loginBtn2.onclick  = ()=>open('#accessModal');
+
+function openOrFallback(url, fallback){
+  if(url){ location.href=url; }
+  else{ fallback(); }
+}
+
+document.getElementById('goMonthly').onclick = ()=> openOrFallback(LINK_MONTHLY, ()=>open('#accessModal'));
+document.getElementById('goSix').onclick     = ()=> openOrFallback(LINK_SIXMO,   ()=>open('#accessModal'));
+document.getElementById('goCash').onclick    = ()=>{
+  if(CASH_TAG){
+    // Open Cash App with amount + note
+    const u = `https://cash.app/${encodeURIComponent(CASH_TAG.replace(/^\$/,''))}?amount=22&note=${encodeURIComponent('GoblinReach Monthly')}`;
+    window.open(u, '_blank');
+  }else{
+    open('#accessModal'); // fallback
+  }
+};
 document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>close(x.getAttribute('data-close'))));
 addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
 
-/* local placeholder auth + instant product delivery */
+/* -------- Access fallback (email capture) + instant download so nobody bounces -------- */
 const USERS_KEY='goblinreach_users';
 const loadUsers=()=>{ try{ return JSON.parse(localStorage.getItem(USERS_KEY)||'{}'); }catch{ return {}; } };
 const saveUsers=u=>localStorage.setItem(USERS_KEY, JSON.stringify(u));
@@ -315,26 +363,17 @@ async function buildStarterZip(){
   zip.file('README.txt','Valid starter so visitors never hit a dead link. Replace with /public/GoblinReach-DM-Bot.zip on Vercel.');
   const blob=await zip.generateAsync({type:'blob'}); saveBlob('GoblinReach-DM-Bot.zip', blob);
 }
-async function deliverProduct(){
-  if(await existsRealZip()) location.href='/GoblinReach-DM-Bot.zip';
-  else await buildStarterZip();
-}
+async function deliverProduct(){ if(await existsRealZip()) location.href='/GoblinReach-DM-Bot.zip'; else await buildStarterZip(); }
 
 document.getElementById('accessGo').onclick=async()=>{
-  const email=document.getElementById('email').value.trim(); const pass=document.getElementById('pass').value;
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('pass').value;
   if(!email||!pass){ alert('Enter email and password'); return; }
-  const users=loadUsers();
-  if(authMode==='signup'){
-    if(users[email]){ alert('Account already exists. Switch to Log in.'); return; }
-    users[email]={password:pass,created:Date.now()}; saveUsers(users);
-    close('#accessModal'); await deliverProduct();
-  }else{
-    if(!users[email]||users[email].password!==pass){ alert('Invalid credentials.'); return; }
-    close('#accessModal'); await deliverProduct();
-  }
+  const users=loadUsers(); users[email]={password:pass,created:Date.now()}; saveUsers(users);
+  close('#accessModal'); await deliverProduct();
 };
 
-/* wiggler */
+/* -------- Wiggler -------- */
 let wakeLock=null, wiggleTimer=null;
 const wiggleOn=document.getElementById('wiggleOn'), wiggleInt=document.getElementById('wiggleInterval'), wiggleStatus=document.getElementById('wiggleStatus'), ghost=document.getElementById('ghostCursor');
 async function requestWakeLock(){ try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release',()=>{ if(wiggleOn?.checked) requestWakeLock(); }); } }catch{} }
@@ -357,7 +396,7 @@ if(wiggleOn){
   addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&wiggleOn.checked) requestWakeLock(); });
 }
 
-/* VPN */
+/* -------- VPN -------- */
 async function loadIp(){
   const field=document.getElementById('ipInfo');
   try{ const r=await fetch('https://ipapi.co/json',{cache:'no-store'}); const j=await r.json(); field.value=`${j.ip} • ${j.country_name} • ${j.org||j.asn||'ISP unknown'}`; }
@@ -370,7 +409,7 @@ document.getElementById('rtcCheck').onclick=async()=>{
   const s=await pc.createOffer(); await pc.setLocalDescription(s); setTimeout(()=>{ pc.close(); if(!seen.size) out.value+='(No local candidates exposed)'; },2000);
 };
 
-/* FULL-SCREEN matrix rain + green flares */
+/* -------- BG FX: Matrix rain + green flares -------- */
 (function(){
   const c=document.getElementById('bgfx'), ctx=c.getContext('2d'); let w,h,cols,ypos,flares=[]; const cell=14;
   function resize(){
