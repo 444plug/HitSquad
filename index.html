@@ -6,7 +6,6 @@
 <title>GoblinReach.ai — Spy-Grade IG DM Automation</title>
 <meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and 24/7 cloud." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2320ff86'/%3E%3C/svg%3E">
-<script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
   :root{
     --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717; --line:#0e1515;
@@ -85,11 +84,11 @@
 
   .modal{position:fixed; inset:0; display:none; place-items:center; z-index:20; background:rgba(0,0,0,.55); backdrop-filter: blur(4px)}
   .modal.active{display:grid}
-  .box{width:min(560px,92vw); background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a; border-radius:16px; padding:18px}
+  .box{width:min(680px,92vw); background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a; border-radius:16px; padding:18px}
   .row{display:flex; gap:12px; margin:10px 0}
   input,select,textarea{width:100%; background:#0a1212; border:1px solid #113a2c; color:#e6fff2; border-radius:10px; padding:12px}
   .x{cursor:pointer; float:right; color:#7bf2b7}
-  .ok{background:linear-gradient(180deg,#19ff90,#12d97a); color:#052818; border:0; cursor:pointer}
+  .ok{background:linear-gradient(180deg,#19ff90,#12d97a); color:#052818; border:0; cursor:pointer; border-radius:12px; padding:10px 14px; font-weight:800}
   .ok:hover{filter:saturate(1.05)}
   .ghost{border:1px solid #113a2c}
 
@@ -112,8 +111,20 @@
     border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
   .ghost-cursor.on{display:block}
 
+  /* VPN slider */
+  .slider{position:relative; overflow:hidden; border-radius:16px; border:1px solid #113a2c; background:#07100f}
+  .slides{display:flex; transition:transform .6s ease}
+  .slide{min-width:100%; padding:16px; height:340px; position:relative; color:#caffea}
+  .slide .title{font-weight:900; font-size:20px; color:#20ff86; text-shadow:var(--glow)}
+  .slide .desc{max-width:520px; color:#9fe6c1}
+  .slide .art{position:absolute; inset:0; opacity:.22; background:radial-gradient(450px 300px at 80% 20%, rgba(32,255,134,.55), transparent 60%), radial-gradient(350px 280px at 20% 80%, rgba(10,255,180,.45), transparent 60%)}
+  .navbtn{position:absolute; top:50%; transform:translateY(-50%); background:#0d1a17; border:1px solid #124435; border-radius:10px; padding:8px 10px; color:#8af3c5; cursor:pointer}
+  .navbtn:hover{filter:saturate(1.15)}
+  .navbtn.prev{left:10px}
+  .navbtn.next{right:10px}
+
   @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
-  @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:32px} }
+  @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:32px} .slide{height:280px} }
 </style>
 </head>
 <body class="scanlines">
@@ -122,7 +133,7 @@
 <header id="hdr">
   <div class="wrap bar">
     <a class="brand" href="#">
-      <!-- inline logo -->
+      <!-- Vector logo matching your PNG -->
       <svg viewBox="0 0 96 96" aria-hidden="true">
         <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20ff86"/><stop offset="1" stop-color="#0affb9"/></linearGradient></defs>
         <path fill="url(#g)" d="M48 6a6 6 0 1 1 0 12a6 6 0 1 1 0-12Zm33 12a6 6 0 1 1-8 9l-9-9a38 38 0 0 0-34 0l-9 9a6 6 0 1 1-8-9l11-11a6 6 0 0 1 6-1a50 50 0 0 1 34 0a6 6 0 0 1 6 1ZM12 39a6 6 0 1 1 12 0v18a6 6 0 1 1-12 0V39Zm60 0a6 6 0 1 1 12 0v18a6 6 0 1 1-12 0V39ZM48 78a6 6 0 1 1 0 12a6 6 0 1 1 0-12Zm-26-9l-11 11a6 6 0 1 1 8 9l9-9a38 38 0 0 0 34 0l9 9a6 6 0 1 1 8-9L74 69a6 6 0 0 1-6-1a50 50 0 0 1-34 0a6 6 0 0 1-6 1Z"/>
@@ -189,7 +200,7 @@
   </section>
 </main>
 
-<!-- CHECKOUT MODAL (triggered by “See Options”) -->
+<!-- OPTIONS MODAL -->
 <div class="modal" id="checkoutModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#checkoutModal">✕</span>
@@ -204,28 +215,30 @@
         <a class="ok" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">Continue</a>
       </div>
       <div class="choice">
-        <div><strong>$5,000–$25,000</strong><div class="sub">Cash App</div></div>
+        <div><strong>$5,000–$25,000</strong><div class="sub">Cash App $Triple4mgmt</div></div>
         <button class="ok" id="openCashModal" type="button">Open</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CASH APP MODAL (enter cashtag once, we open Cash App) -->
+<!-- CASH APP (preset to $Triple4mgmt with quick amounts) -->
 <div class="modal" id="cashModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#cashModal">✕</span>
-    <h3 style="margin:0 0 8px;color:#baffdc">Cash App (High-Tier $5,000–$25,000)</h3>
-    <div class="row"><input id="cashTag" placeholder="$yourcashtag" /></div>
-    <div class="row" style="justify-content:flex-end">
-      <button class="ghost" data-close="#cashModal">Cancel</button>
+    <h3 style="margin:0 0 8px;color:#baffdc">Cash App — $Triple4mgmt</h3>
+    <div class="row" style="gap:8px; flex-wrap:wrap">
+      <button class="ok" data-amt="5000">$5,000</button>
+      <button class="ok" data-amt="10000">$10,000</button>
+      <button class="ok" data-amt="25000">$25,000</button>
+      <input id="cashCustom" placeholder="Custom amount" inputmode="numeric" style="max-width:160px">
       <button class="ok" id="cashGo">Open Cash App</button>
     </div>
-    <p class="muted" style="margin:6px 0 0">We’ll remember your cashtag on this device.</p>
+    <p class="muted" style="margin:6px 0 0">Opens Cash App to <b>$Triple4mgmt</b> with your amount + note.</p>
   </div>
 </div>
 
-<!-- ACCESS (login/signup minimal so buttons work) -->
+<!-- ACCESS (login/signup just so buttons do something) -->
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="box">
     <span class="x" data-close="#accessModal">✕</span>
@@ -266,22 +279,55 @@
   </div>
 </div>
 
-<!-- VPN -->
+<!-- VPN SLIDES -->
 <div class="modal" id="vpnModal" aria-hidden="true">
-  <div class="box">
+  <div class="box" style="width:min(920px,92vw)">
     <span class="x" data-close="#vpnModal">✕</span>
-    <h3 style="margin:0 0 6px;color:#baffdc">🔒 VPN Helper</h3>
-    <div class="row"><input id="ipInfo" readonly placeholder="Fetching IP…" /></div>
-    <div class="row" style="gap:8px; flex-wrap:wrap">
-      <a class="btn" href="https://ipapi.co/json" target="_blank" rel="noopener">Open raw IP JSON</a>
-      <a class="btn" href="https://ipleak.net/" target="_blank" rel="noopener">DNS Leak Test</a>
-      <a class="btn" href="https://www.protonvpn.com/" target="_blank" rel="noopener">ProtonVPN</a>
-      <a class="btn" href="https://mullvad.net/" target="_blank" rel="noopener">Mullvad</a>
+    <h3 style="margin:0 0 10px;color:#baffdc">🔒 Stealth Stack — VPN + Proxies</h3>
+    <div class="slider" id="vpnSlider">
+      <div class="slides" id="slides">
+        <div class="slide">
+          <div class="art"></div>
+          <div class="title">Stealth IP Rotation</div>
+          <p class="desc">Blend in with residential & datacenter proxies. Rotate endpoints on schedule to avoid patterns and keep sessions fresh.</p>
+          <svg viewBox="0 0 120 120" style="position:absolute;right:24px;bottom:24px;height:120px;filter:drop-shadow(0 0 18px rgba(32,255,134,.35))">
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#20ff86" stroke-width="6"/>
+            <path d="M35 65l15 15 35-35" fill="none" stroke="#20ff86" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="slide">
+          <div class="art"></div>
+          <div class="title">No Leaks • Kill Switch</div>
+          <p class="desc">DNS/IPv6 leak checks and auto-stop if tunnel drops. Keep activity dark even when networks change.</p>
+          <svg viewBox="0 0 140 120" style="position:absolute;right:24px;bottom:24px;height:120px;">
+            <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20ff86"/><stop offset="1" stop-color="#0affb9"/></linearGradient></defs>
+            <path d="M70 15c25 0 45 10 45 10v30c0 22-18 42-45 50-27-8-45-28-45-50V25s20-10 45-10z" fill="url(#lg1)" opacity=".9"/>
+            <path d="M52 62l12 12 26-26" fill="none" stroke="#07100f" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="slide">
+          <div class="art"></div>
+          <div class="title">Human Cadence</div>
+          <p class="desc">Smart jitter: 600–900s randomized delays, typing noise, and pauses. Looks like a person, not a script.</p>
+          <svg viewBox="0 0 160 120" style="position:absolute;right:24px;bottom:24px;height:120px;">
+            <rect x="10" y="30" width="140" height="60" rx="8" fill="none" stroke="#20ff86" stroke-width="6"/>
+            <circle cx="40" cy="60" r="8" fill="#20ff86"/><circle cx="80" cy="60" r="8" fill="#20ff86"/><circle cx="120" cy="60" r="8" fill="#20ff86"/>
+          </svg>
+        </div>
+        <div class="slide">
+          <div class="art"></div>
+          <div class="title">Cloud 24/7 • Ghost Mode</div>
+          <p class="desc">Run from the cloud so your phone/laptop can sleep. Session isolation and ghost-mode rotations keep you invisible.</p>
+          <svg viewBox="0 0 160 120" style="position:absolute;right:24px;bottom:24px;height:120px;">
+            <circle cx="50" cy="70" r="24" fill="none" stroke="#20ff86" stroke-width="6"/>
+            <circle cx="110" cy="55" r="30" fill="none" stroke="#20ff86" stroke-width="6"/>
+            <rect x="20" y="85" width="120" height="18" rx="9" fill="#20ff86" opacity=".15"/>
+          </svg>
+        </div>
+      </div>
+      <button class="navbtn prev" id="prev">◀</button>
+      <button class="navbtn next" id="next">▶</button>
     </div>
-    <div class="row">
-      <button class="ok" id="rtcCheck">Run WebRTC Local IP check</button>
-    </div>
-    <div class="row"><textarea id="rtcOut" rows="5" placeholder="Local IP candidates will appear here…"></textarea></div>
   </div>
 </div>
 
@@ -311,35 +357,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* simple modal helpers */
+/* modal helpers */
 const open = sel => document.querySelector(sel).classList.add('active');
 const close = sel => document.querySelector(sel).classList.remove('active');
 
 document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
-document.getElementById('vpnOpen').onclick=()=>{ open('#vpnModal'); loadIp(); };
+document.getElementById('vpnOpen').onclick=()=>open('#vpnModal');
 document.getElementById('signupBtn').onclick=()=>open('#accessModal');
 document.getElementById('loginBtn').onclick =()=>open('#accessModal');
 document.getElementById('seePlans').onclick =(e)=>{ e.preventDefault(); open('#checkoutModal'); };
 document.getElementById('cashHigh').onclick =(e)=>{ e.preventDefault(); open('#cashModal'); };
 document.getElementById('openCashModal').onclick =()=>open('#cashModal');
-
 document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>close(x.getAttribute('data-close'))));
 addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
 
-/* Cash App handling */
-const CASH_KEY='goblin_cash_tag';
-const cashInput=document.getElementById('cashTag');
-cashInput.value = localStorage.getItem(CASH_KEY) || '';
-document.getElementById('cashGo').onclick=()=>{
-  const raw=cashInput.value.trim();
-  if(!raw){ alert('Enter your $cashtag'); return; }
-  const tag=raw.replace(/^\$/,'');
-  localStorage.setItem(CASH_KEY, '$'+tag);
-  window.open(`https://cash.app/${encodeURIComponent(tag)}`,'_blank');
-  close('#cashModal');
-};
-
-/* Access modal (simple save so buttons feel alive) */
+/* Access modal (simple save so buttons do something) */
 document.getElementById('accessGo').onclick=()=>{
   const email=document.getElementById('email').value.trim();
   const pass=document.getElementById('pass').value;
@@ -352,6 +384,22 @@ document.getElementById('accessGo').onclick=()=>{
   close('#accessModal');
   alert('Saved. You can proceed with checkout anytime.');
 };
+
+/* Cash App to $Triple4mgmt */
+(function(){
+  const cashtag = 'Triple4mgmt';
+  document.querySelectorAll('#cashModal [data-amt]').forEach(btn=>{
+    btn.addEventListener('click',()=>openCash(btn.getAttribute('data-amt')));
+  });
+  document.getElementById('cashGo').onclick=()=>{
+    const v=document.getElementById('cashCustom').value.replace(/[^0-9]/g,'');
+    openCash(v||'5000');
+  };
+  function openCash(amount){
+    const url = `https://cash.app/${encodeURIComponent(cashtag)}?amount=${encodeURIComponent(amount)}&note=${encodeURIComponent('GoblinReach High Tier')}`;
+    window.open(url,'_blank');
+  }
+})();
 
 /* Wiggler */
 let wakeLock=null, wiggleTimer=null;
@@ -376,19 +424,6 @@ if(wiggleOn){
   addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&wiggleOn.checked) requestWakeLock(); });
 }
 
-/* VPN helper */
-async function loadIp(){
-  const field=document.getElementById('ipInfo');
-  try{ const r=await fetch('https://ipapi.co/json',{cache:'no-store'}); const j=await r.json(); field.value=`${j.ip} • ${j.country_name} • ${j.org||j.asn||'ISP unknown'}`; }
-  catch{ try{ const r2=await fetch('https://api.ipify.org?format=json',{cache:'no-store'}); const j2=await r2.json(); field.value=j2.ip; } catch{ field.value='Could not fetch IP.'; } }
-}
-document.getElementById('rtcCheck').onclick=async()=>{
-  const out=document.getElementById('rtcOut'); out.value='Running…\n';
-  const pc=new RTCPeerConnection({iceServers:[]}); const seen=new Set(); pc.createDataChannel('x');
-  pc.onicecandidate=e=>{ if(!e.candidate) return; const m=e.candidate.candidate.match(/candidate:.+ (\\d+\\.\\d+\\.\\d+\\.\\d+) /); if(m&&!seen.has(m[1])){ seen.add(m[1]); out.value+=m[1]+'\\n'; } };
-  const s=await pc.createOffer(); await pc.setLocalDescription(s); setTimeout(()=>{ pc.close(); if(!seen.size) out.value+='(No local candidates exposed)'; },2000);
-};
-
 /* WORLD CLOCK */
 (function(){
   const zones = [
@@ -409,6 +444,20 @@ document.getElementById('rtcCheck').onclick=async()=>{
     }
   }
   tick(); setInterval(tick, 15000);
+})();
+
+/* VPN slider controls + autoplay */
+(function(){
+  const slides = document.getElementById('slides');
+  const total = slides.children.length;
+  let i=0, timer=null;
+  function show(n){ i=(n+total)%total; slides.style.transform=`translateX(-${i*100}%)`; }
+  function next(){ show(i+1); }
+  function prev(){ show(i-1); }
+  document.getElementById('next').onclick=()=>{ next(); reset(); };
+  document.getElementById('prev').onclick=()=>{ prev(); reset(); };
+  function reset(){ clearInterval(timer); timer=setInterval(next, 4500); }
+  reset();
 })();
 
 /* BG FX: Matrix rain + green flares */
@@ -444,6 +493,5 @@ document.getElementById('rtcCheck').onclick=async()=>{
 })();
 </script>
 
-<div class="ghost-cursor" id="ghostCursor"></div>
 </body>
 </html>
