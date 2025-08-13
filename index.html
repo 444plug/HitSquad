@@ -1,142 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>GoblinReach.ai</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GoblinReach — DM Automation for Client Acquisition</title>
+<meta name="description" content="24/7 Cloud • Proxies • VPN-Ready • Human-like pacing. Looks like a $1,000/mo tool, priced at $22/mo." />
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        color: #00ff00;
-        background: black;
-        overflow-x: hidden;
-    }
-    canvas#matrix {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
-    }
-    h1, h2, p {
-        text-align: center;
-    }
-    .pricing {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin: 30px 0;
-    }
-    .price-box {
-        border: 2px solid #00ff00;
-        padding: 20px;
-        width: 250px;
-        text-align: center;
-        background: rgba(0,0,0,0.7);
-    }
-    button, a {
-        background: #00ff00;
-        color: black;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        text-decoration: none;
-        font-weight: bold;
-    }
-    .vpn-slides img {
-        width: 300px;
-        margin: 10px;
-        border: 2px solid #00ff00;
-    }
+  :root{
+    --bg:#000; --panel:#07110c; --panel2:#0b1a13; --text:#eafff1;
+    --muted:#b7f2cb; --accent:#17ff84; --accent2:#06c169; --line:#1b4e37; --glass:rgba(7,17,12,.65);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#000;color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
+  a{color:var(--muted);text-decoration:none} a:hover{color:#d6ffe7}
+
+  /* Full-page Matrix rain behind EVERYTHING */
+  #matrix{position:fixed; inset:0; z-index:-4; background:#000}
+
+  /* Glow blobs for depth */
+  .blobs{position:fixed; inset:0; z-index:-3; pointer-events:none; filter:blur(52px)}
+  .blob{position:absolute; width:480px; height:480px; border-radius:50%;
+        background:radial-gradient(circle at 40% 40%, rgba(23,255,132,.9), rgba(23,255,132,.06) 60%, transparent 70%);
+        animation: float 18s ease-in-out infinite alternate}
+  .blob.b2{left:60%; top:15%; animation-duration:21s}
+  .blob.b3{left:8%; top:70%; animation-duration:24s}
+  @keyframes float{from{transform:translateY(-24px)} to{transform:translateY(42px)}}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:22px}
+
+  /* NAV */
+  .nav{display:flex; justify-content:space-between; align-items:center; padding:10px 0; position:sticky; top:0; z-index:5; backdrop-filter:blur(6px)}
+  .logo{display:flex; gap:12px; align-items:center}
+  .badge{border:1px solid var(--line); padding:6px 12px; border-radius:999px; background:rgba(23,255,132,.12); color:#bdf8d8; font-size:12px}
+  .navlinks{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+  .btn{display:inline-block; padding:14px 22px; border-radius:16px; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#032416; font-weight:800; border:none; cursor:pointer}
+  .btn-ghost{background:transparent; border:1px solid var(--line); color:var(--text); padding:12px 18px; border-radius:12px}
+
+  /* CARDS / LAYOUT */
+  .hero{display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:start; padding:28px 0}
+  .card{background:linear-gradient(180deg,rgba(23,255,132,.12),rgba(0,0,0,.22)); border:1px solid var(--line); border-radius:22px; padding:22px; backdrop-filter:blur(4px)}
+  .h1{font-size:44px; margin:0 0 12px; font-weight:900; letter-spacing:.2px}
+  .sub{color:#bdf8d8; font-size:18px; margin:0 0 16px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:var(--glass); border:1px solid var(--line); color:#bdf8d8; padding:8px 12px; border-radius:999px; font-size:13px}
+  .kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
+  .kpi{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center}
+  .section{padding:26px 0}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .input,select,textarea{width:100%; padding:12px; border-radius:12px; background:var(--panel2); border:1px solid var(--line); color:var(--text)}
+  textarea{min-height:110px}
+  .small{font-size:12px; color:#a7e8c4}
+  .footer{text-align:center; color:#a7e8c4; padding:36px 0}
+  .chip{display:inline-block; border:1px solid var(--line); border-radius:999px; padding:6px 10px; margin:6px 6px 0 0; color:#bdf8d8; background:var(--glass); font-size:12px}
+  .pricegrid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .clock{min-width:260px}
+  @media (max-width:980px){.hero{grid-template-columns:1fr}.grid-2,.grid-3,.pricegrid{grid-template-columns:1fr}}
+
+  /* Spy modal */
+  .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999}
+  .modal.open{display:flex}
+  .modal .backdrop{position:absolute; inset:0; background:rgba(0,0,0,.7)}
+  .modal .box{position:relative; width:min(900px,92vw); background:linear-gradient(180deg,rgba(23,255,132,.12),rgba(0,0,0,.25)); border:1px solid var(--line); border-radius:20px; padding:18px 18px 4px; box-shadow:0 10px 30px rgba(0,0,0,.6)}
+  .close{position:absolute; right:10px; top:10px; background:transparent; color:#bdf8d8; border:1px solid var(--line); border-radius:10px; padding:6px 10px; cursor:pointer}
+
+  /* Slider inside modal */
+  .slider{position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); background:var(--panel2); margin-top:10px}
+  .slides{display:flex; width:400%}
+  .slide{flex:1 0 100%; padding:18px}
+  .slide h4{margin:0 0 6px}
+  .dots{display:flex; gap:8px; justify-content:center; padding:8px 0 2px}
+  .dot{width:8px; height:8px; border-radius:999px; background:#1c2f24; border:1px solid #2a5b42}
+  .dot.active{background:#17ff84; box-shadow:0 0 8px #17ff84}
 </style>
 </head>
 <body>
-
 <canvas id="matrix"></canvas>
+<div class="blobs"><div class="blob b1" style="left:12%;top:12%"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 
-<h1>GoblinReach.ai</h1>
-<p>DM Automation • VPN/Proxy Ready • Spy-Level Stealth</p>
+<div class="wrap">
+  <!-- NAV -->
+  <div class="nav">
+    <div class="logo">
+      <!-- Goblin mark -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" height="40" role="img" aria-label="GoblinReach">
+        <defs><linearGradient id="gob" x1="0" x2="1"><stop offset="0" stop-color="#17ff84"/><stop offset="1" stop-color="#06c169"/></linearGradient></defs>
+        <rect width="220" height="60" rx="12" fill="#09140f"/>
+        <g transform="translate(12,8)">
+          <circle cx="22" cy="22" r="20" fill="url(#gob)" opacity="0.96"/>
+          <path d="M14 28l5-16 5 16-5-4z" fill="#09140f"/>
+          <circle cx="18" cy="22" r="2" fill="#09140f"/><circle cx="26" cy="22" r="2" fill="#09140f"/>
+        </g>
+        <text x="72" y="28" fill="#d8ffe9" font-size="20" font-weight="800" font-family="Inter, Arial Black">GoblinReach.ai</text>
+        <text x="72" y="45" fill="#b7f2cb" font-size="11" font-family="Inter, Arial">DM Automation for Client Acquisition</text>
+      </svg>
+      <span class="badge">24/7 Cloud • Proxies • VPN-Ready • Human-like pacing (600–900s jitter)</span>
+    </div>
+    <div class="navlinks">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#vpn">VPN</a>
+      <a href="#auth">Sign Up</a>
+      <a href="#auth">Log In</a>
+      <a class="btn" id="stripe-btn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Get Started — $22/mo</a>
+    </div>
+  </div>
 
-<h2>Choose Your Plan</h2>
-<div class="pricing">
-    <div class="price-box">
-        <h3>$22 / month</h3>
-        <form action="https://buy.stripe.com/test_22MonthlyLink" method="POST">
-            <button type="submit">Subscribe</button>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="card">
+      <div class="pill">24/7 Cloud • Proxies • VPN-Ready • Human-like pacing</div>
+      <h1 class="h1">Let AI handle your Instagram DMs — safely, on autopilot.</h1>
+      <p class="sub">Guided login (no tokens), compliant delays, ghost-mode rotations so you land replies, not bans. One-minute setup. Runs from the cloud — your laptop/phone can stay untouched.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button id="download-btn" class="btn" type="button">Download Extension</button>
+        <button id="open-briefing" class="btn-ghost" type="button">🕵️ Spy Briefing (VPN/Proxy)</button>
+        <a class="btn-ghost" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">📸 Instagram</a>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="small">Avg replies per 100 DMs</div><div style="font-size:24px;font-weight:800">18–31</div></div>
+        <div class="kpi"><div class="small">Active Users</div><div style="font-size:24px;font-weight:800">1,000+</div></div>
+        <div class="kpi"><div class="small">Compliance</div><div style="font-size:18px;font-weight:800">Rate-limits • Randomizer</div></div>
+      </div>
+    </div>
+
+    <div class="card" id="features">
+      <div class="sub"><b>LIVE Preview:</b> stable features. Keep <b>600–900s</b> between actions across accounts.</div>
+
+      <!-- Audience modes -->
+      <div class="section grid-2">
+        <div class="card" style="background:var(--panel);border-color:#113c29">
+          <h3 style="margin:0 0 8px">Audience Modes</h3>
+          <div class="chip">Followers of @target</div>
+          <div class="chip">Following of @target</div>
+          <div class="chip">Likes of a Post</div>
+          <div class="chip">Commenters of a Post</div>
+          <p class="small" style="margin-top:8px">Pick any source. Mix DMs with likes/comments + jitter to stay human.</p>
+        </div>
+
+        <div class="card" style="background:var(--panel);border-color:#113c29">
+          <h3 style="margin:0 0 8px">Automation Script</h3>
+<pre style="margin:0;color:#bdf8d8;white-space:pre-wrap">
+<span style="color:#9bf0b6">campaign</span> import followers_of(@yourlead)
+<span style="color:#9bf0b6">message</span> template "Warm intro + CTA"
+<span style="color:#9bf0b6">engage</span> likes=on comments=on
+<span style="color:#9bf0b6">schedule</span> start 09:00  stop 23:00  jitter=600–900s
+local
+</pre>
+        </div>
+      </div>
+
+      <!-- World clock -->
+      <div class="section grid-2">
+        <div class="card" id="clock" style="background:var(--panel)">
+          <h3 style="margin:0 0 8px">WORLD CLOCK</h3>
+          <div class="grid-2 clock">
+            <div>New York</div><div id="ny"></div>
+            <div>London</div><div id="ldn"></div>
+            <div>Dubai</div><div id="dxb"></div>
+            <div>Singapore</div><div id="sin"></div>
+            <div>Sydney</div><div id="syd"></div>
+          </div>
+          <p class="small" style="margin-top:8px">Times auto-update.</p>
+        </div>
+
+        <div class="card" style="background:var(--panel)">
+          <h3 style="margin:0 0 8px">Why VPN/Proxies?</h3>
+          <p class="small">Ghost-mode rotations, geo-aware routing, sticky sessions, human-like jitter. Avoid obvious patterns & rate-limits.</p>
+          <button id="open-briefing-2" class="btn-ghost" type="button">Open Spy Briefing</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section">
+    <div class="card">
+      <h2 style="margin:0 0 10px">Pricing</h2>
+      <p class="small">Launch: <b>$22/mo</b> • <b>$95/6mo</b> • <b>$5,000–$25,000</b> (Cash App for enterprise seats).</p>
+      <div class="pricegrid">
+        <div class="card" style="background:var(--panel)">
+          <h3>$22/mo (Stripe)</h3>
+          <p class="small">Best for solo creators and small teams.</p>
+          <a class="btn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Subscribe — $22/mo</a>
+        </div>
+        <div class="card" style="background:var(--panel)">
+          <h3>$5,000–$25,000 (Cash App)</h3>
+          <p class="small">Enterprise blocks, concierge setup, SLAs.</p>
+          <button class="btn-ghost" id="cashapp">$5k–$25k via Cash App</button>
+          <p class="small" id="cashapp-note" style="margin-top:8px">Pay <b>$triple4mgmt</b>. Add note: <i>“GoblinReach Enterprise — custom work + your email”</i>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTH -->
+  <section id="auth" class="section">
+    <div class="card">
+      <h2 style="margin:0 0 8px">Create Account</h2>
+      <div class="grid-2">
+        <form id="signup">
+          <label>Username</label><input id="su-username" class="input" placeholder="yourname" />
+          <label>Email</label><input id="su-email" type="email" class="input" placeholder="you@domain.com" />
+          <label>Password</label><input id="su-password" type="password" class="input" placeholder="••••••••" />
+          <button class="btn" type="submit">Create &amp; Go to Dashboard</button>
         </form>
-    </div>
-    <div class="price-box">
-        <h3>$95 / 6 months</h3>
-        <form action="https://buy.stripe.com/test_95SixMonthLink" method="POST">
-            <button type="submit">Subscribe</button>
+        <form id="login">
+          <label>Username</label><input id="li-username" class="input" placeholder="yourname" />
+          <label>Password</label><input id="li-password" type="password" class="input" placeholder="••••••••" />
+          <button class="btn" type="submit">Login</button>
         </form>
+      </div>
+      <p class="small">Instagram login/auth happens in the extension (requires backend/extension connection).</p>
     </div>
-    <div class="price-box">
-        <h3>$5,000 – $25,000</h3>
-        <p>Cash App: <b>$triple4mgmt</b><br>Note: Custom Work</p>
-    </div>
+  </section>
+
+  <footer class="footer">© 2025 GoblinReach. Compliant automation with human-like pacing.</footer>
 </div>
 
-<h2>Targeting Modes</h2>
-<ul style="text-align:center; list-style:none;">
-    <li>Followers of a user</li>
-    <li>Following of a user</li>
-    <li>Likes of a post</li>
-    <li>Commenters of a post</li>
-</ul>
-
-<h2>VPN & Proxy Spy Slides</h2>
-<div class="vpn-slides" style="text-align:center;">
-    <img src="https://via.placeholder.com/300x200/000000/00ff00?text=VPN+1">
-    <img src="https://via.placeholder.com/300x200/000000/00ff00?text=VPN+2">
-    <img src="https://via.placeholder.com/300x200/000000/00ff00?text=VPN+3">
+<!-- Spy Briefing Modal -->
+<div class="modal" id="briefing">
+  <div class="backdrop"></div>
+  <div class="box">
+    <button class="close" id="close-briefing">✕ Close</button>
+    <h3 style="margin:6px 4px 10px">🕵️ Spy Briefing — VPN & Proxies</h3>
+    <div class="slider">
+      <div class="slides" id="slides">
+        <div class="slide">
+          <h4>Ghost-Mode Rotations</h4>
+          <p class="small">Rotate mobile 4G/5G proxies per account. Keep IP age, avoid reuse windows, and randomize ASN where possible.</p>
+          <div class="chip">Mobile 4G/5G</div><div class="chip">Pooled</div><div class="chip">ASN Random</div>
+        </div>
+        <div class="slide">
+          <h4>Geo-Aware Routing</h4>
+          <p class="small">Match claimed location to IP. Spread across subnets. Respect time windows per geo to mimic real usage.</p>
+          <div class="chip">Geo match</div><div class="chip">Subnet spread</div><div class="chip">Local hours</div>
+        </div>
+        <div class="slide">
+          <h4>Human Jitter + Sleep</h4>
+          <p class="small">600–900s delays, variance per session, and night sleeps. Mix DM + likes + comments to look organic.</p>
+          <div class="chip">Jitter 600–900s</div><div class="chip">Sleep windows</div><div class="chip">Mixed actions</div>
+        </div>
+        <div class="slide">
+          <h4>Fail-safe Backoff</h4>
+          <p class="small">Auto-pause on captcha. Exponential backoff after soft blocks. Resume only when safe.</p>
+          <div class="chip">Captcha-pause</div><div class="chip">Backoff</div><div class="chip">Retry budget</div>
+        </div>
+      </div>
+      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+  </div>
 </div>
-
-<h2>Download Extension</h2>
-<a href="#" id="download-btn">Download GoblinReach</a>
 
 <script>
-/* Matrix Effect */
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-const chars = "アァイィウヴエェオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#0F0";
-    ctx.font = fontSize + "px monospace";
-    for(let i=0; i<drops.length; i++){
-        const text = chars.charAt(Math.floor(Math.random() * chars.length));
-        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
+/* =================== MATRIX BACKGROUND (always on) =================== */
+(function matrix(){
+  const c=document.getElementById('matrix'), x=c.getContext('2d');
+  let w,h,cols,drops,fs=16;
+  const chars='ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛ0123456789';
+  function size(){ w=c.width=innerWidth; h=c.height=innerHeight; cols=Math.floor(w/fs); drops=Array(cols).fill(0); }
+  addEventListener('resize', size); size();
+  (function draw(){
+    x.fillStyle='rgba(0,0,0,0.08)'; x.fillRect(0,0,w,h);
+    x.fillStyle='#17ff84'; x.font=fs+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const t=chars[Math.floor(Math.random()*chars.length)];
+      x.fillText(t,i*fs,drops[i]*fs);
+      if(drops[i]*fs>h && Math.random()>0.975) drops[i]=0; drops[i]++;
     }
-}
-setInterval(drawMatrix, 33);
+    requestAnimationFrame(draw);
+  })();
+})();
 
-/* Embedded ZIP Download */
-const EXT_B64 = "UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
-function downloadEmbeddedZip(){
-    try{
-        const byteChars = atob(EXT_B64);
-        const bytes = new Uint8Array(byteChars.length);
-        for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
-        const blob = new Blob([bytes], {type:"application/zip"});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "goblinreach.zip";
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(()=>URL.revokeObjectURL(url), 1500);
-    }catch(e){ alert("Download failed."); }
-}
-document.getElementById("download-btn").addEventListener("click", e=>{
-    e.preventDefault();
-    downloadEmbeddedZip();
+/* =================== WORLD CLOCK =================== */
+(function clock(){
+  const fmt=(z)=>new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:z}).format(new Date());
+  function tick(){
+    [['ny','America/New_York'],['ldn','Europe/London'],['dxb','Asia/Dubai'],['sin','Asia/Singapore'],['syd','Australia/Sydney']]
+      .forEach(([id,tz])=>{const el=document.getElementById(id); if(el) el.textContent=fmt(tz);});
+  }
+  tick(); setInterval(tick, 30000);
+})();
+
+/* =================== SIMPLE AUTH (local demo) =================== */
+const LS_USERS="gr_users",LS_SESSION="gr_session";
+const loadUsers=()=>{try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}}}
+const saveUsers=(u)=>localStorage.setItem(LS_USERS,JSON.stringify(u));
+const setSession=(u)=>localStorage.setItem(LS_SESSION,u);
+
+document.getElementById("signup").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const u=su_username.value.trim(), m=su_email.value.trim(), p=su_password.value.trim();
+  if(!u||!m||!p){alert("Fill all fields.");return}
+  const users=loadUsers(); if(users[u]){alert("Username exists.");return}
+  users[u]={email:m,password:p,createdAt:Date.now()}; saveUsers(users); setSession(u); alert("Account created.");
 });
+document.getElementById("login").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const u=li_username.value.trim(), p=li_password.value.trim(), users=loadUsers();
+  if(!users[u]||users[u].password!==p){alert("Invalid credentials.");return}
+  setSession(u); alert("Logged in.");
+});
+
+/* =================== PAYMENTS =================== */
+document.getElementById("stripe-btn").setAttribute("href","https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03");
+/* Cash App $triple4mgmt with custom-work note */
+document.getElementById("cashapp").addEventListener("click", ()=>{
+  window.open("https://cash.app/triple4mgmt","_blank");
+  document.getElementById("cashapp-note").innerHTML =
+    'Pay <b>$triple4mgmt</b>. Note: <i>"GoblinReach Enterprise — custom work + your email"</i>.';
+});
+
+/* =================== INSTANT DOWNLOAD (embedded ZIP; no /public needed) =================== */
+/* Replace EXT_B64 with your real zip’s Base64 later if you want. */
+const EXT_B64 =
+"UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
+
+function downloadEmbeddedZip(){
+  try{
+    const s=atob(EXT_B64), b=new Uint8Array(s.length);
+    for(let i=0;i<s.length;i++) b[i]=s.charCodeAt(i);
+    const blob=new Blob([b],{type:"application/zip"}), url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download="goblinreach.zip";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(e){ alert("Download failed."); }
+}
+document.getElementById("download-btn").addEventListener("click", (e)=>{ e.preventDefault(); downloadEmbeddedZip(); });
+
+/* =================== Spy Briefing Modal (auto slider) =================== */
+(function(){
+  const modal=document.getElementById('briefing');
+  const openers=[document.getElementById('open-briefing'), document.getElementById('open-briefing-2')];
+  const closer=document.getElementById('close-briefing');
+  const backdrop=modal.querySelector('.backdrop');
+  const slides=document.getElementById('slides');
+  const dots=[...modal.querySelectorAll('.dot')];
+  let idx=0, timer=null;
+
+  function setSlide(i){
+    idx=(i+dots.length)%dots.length;
+    slides.style.transform=`translateX(-${idx*100}%)`;
+    dots.forEach((d,j)=>d.classList.toggle('active', j===idx));
+  }
+  function start(){ timer=setInterval(()=>setSlide(idx+1), 3500); }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+
+  openers.forEach(b=>b&&b.addEventListener('click', ()=>{ modal.classList.add('open'); setSlide(0); start(); }));
+  [closer, backdrop].forEach(el=>el&&el.addEventListener('click', ()=>{ modal.classList.remove('open'); stop(); }));
+})();
 </script>
 </body>
 </html>
