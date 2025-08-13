@@ -14,11 +14,11 @@
   html,body{margin:0;padding:0;background:#000;color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
   a{color:var(--muted);text-decoration:none} a:hover{color:#d6ffe7}
 
-  /* Matrix canvas behind EVERYTHING */
-  #matrix{position:fixed; inset:0; z-index:-2; background:#000}
+  /* Full-page Matrix rain behind EVERYTHING */
+  #matrix{position:fixed; inset:0; z-index:-3; background:#000}
 
-  /* Glow blobs behind content for depth */
-  .blobs{position:fixed; inset:0; z-index:-1; pointer-events:none; filter:blur(52px)}
+  /* Glow blobs */
+  .blobs{position:fixed; inset:0; z-index:-2; pointer-events:none; filter:blur(52px)}
   .blob{position:absolute; width:440px; height:440px; border-radius:50%;
         background:radial-gradient(circle at 40% 40%, rgba(23,255,132,.9), rgba(23,255,132,.06) 60%, transparent 70%);
         animation: float 18s ease-in-out infinite alternate}
@@ -29,7 +29,7 @@
   .wrap{max-width:1100px; margin:0 auto; padding:22px}
 
   /* NAV */
-  .nav{display:flex; justify-content:space-between; align-items:center; padding:10px 0}
+  .nav{display:flex; justify-content:space-between; align-items:center; padding:10px 0; position:sticky; top:0; z-index:5; backdrop-filter:blur(6px)}
   .logo{display:flex; gap:12px; align-items:center}
   .badge{border:1px solid var(--line); padding:6px 12px; border-radius:999px; background:rgba(23,255,132,.12); color:#bdf8d8; font-size:12px}
   .navlinks{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
@@ -55,6 +55,19 @@
   .pricegrid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
   .clock{min-width:260px}
   @media (max-width:980px){.hero{grid-template-columns:1fr}.grid-2,.grid-3,.pricegrid{grid-template-columns:1fr}}
+
+  /* VPN “spy slider” */
+  .slider{position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); background:var(--panel2)}
+  .slides{display:flex; width:400%; animation:slide 18s infinite}
+  .slide{flex:1 0 100%; padding:18px}
+  .slide h4{margin:0 0 6px}
+  @keyframes slide{
+    0%,20%{transform:translateX(0)}
+    25%,45%{transform:translateX(-100%)}
+    50%,70%{transform:translateX(-200%)}
+    75%,95%{transform:translateX(-300%)}
+    100%{transform:translateX(0)}
+  }
 </style>
 </head>
 <body>
@@ -65,7 +78,7 @@
   <!-- NAV -->
   <div class="nav">
     <div class="logo">
-      <!-- clean Goblin mark -->
+      <!-- Goblin mark -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" height="40" role="img" aria-label="GoblinReach">
         <defs><linearGradient id="gob" x1="0" x2="1"><stop offset="0" stop-color="#17ff84"/><stop offset="1" stop-color="#06c169"/></linearGradient></defs>
         <rect width="220" height="60" rx="12" fill="#09140f"/>
@@ -106,30 +119,33 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="features">
       <div class="sub"><b>LIVE Preview:</b> Stable features only. Recommended pacing: <b>600–900s</b> between actions across accounts.</div>
+
+      <!-- Audience modes -->
       <div class="section grid-2">
-        <div>
-          <div class="pill" style="margin-bottom:10px">captcha-guard on</div>
-          <div class="card" style="background:var(--panel);border-color:#113c29">
-            <pre style="margin:0;color:#bdf8d8;white-space:pre-wrap">
-<span style="color:#9bf0b6">campaign</span> import
-followers_of(@yourlead)
-<span style="color:#9bf0b6">message</span> template "Warm intro + CTA"
-<span style="color:#9bf0b6">schedule</span> start 09:00  stop 23:00
-local</pre>
-          </div>
+        <div class="card" style="background:var(--panel);border-color:#113c29">
+          <h3 style="margin:0 0 8px">Audience Modes</h3>
+          <div class="chip">Followers of @target</div>
+          <div class="chip">Following of @target</div>
+          <div class="chip">Likes of a Post</div>
+          <div class="chip">Commenters of a Post</div>
+          <p class="small" style="margin-top:8px">Choose any source. Mix with likes/comments and human-pacing for best deliverability.</p>
         </div>
-        <div>
-          <div class="card" style="background:var(--panel);border-color:#113c29">
-            <pre style="margin:0;color:#bdf8d8;white-space:pre-wrap">
-<span style="color:#9bf0b6">export</span> replies → Google Sheets / Telegram
-<span style="color:#9bf0b6">track</span> seen | opened | responded
-<span style="color:#9bf0b6">auto-retry</span> failed DMs (smart backoff)</pre>
-          </div>
+
+        <div class="card" style="background:var(--panel);border-color:#113c29">
+          <h3 style="margin:0 0 8px">Automation Script</h3>
+<pre style="margin:0;color:#bdf8d8;white-space:pre-wrap">
+<span style="color:#9bf0b6">campaign</span> import followers_of(@yourlead)
+<span style="color:#9bf0b6">message</span> template "Warm intro + CTA"
+<span style="color:#9bf0b6">engage</span> likes=on comments=on
+<span style="color:#9bf0b6">schedule</span> start 09:00  stop 23:00  jitter=600–900s
+local
+</pre>
         </div>
       </div>
 
+      <!-- World clock + VPN slider -->
       <div class="section grid-2">
         <div class="card" id="clock" style="background:var(--panel)">
           <h3 style="margin:0 0 8px">WORLD CLOCK</h3>
@@ -142,13 +158,26 @@ local</pre>
           </div>
           <p class="small" style="margin-top:8px">Times auto-update.</p>
         </div>
-        <div class="card" id="vpn">
-          <h3 style="margin:0 0 8px">VPN / Proxies (recommended)</h3>
-          <p class="small">Use rotating mobile proxies or ISP proxies per account. Ghost-mode swaps, geo-aware routing, and human pacing keep accounts safe.</p>
-          <span class="chip">Mobile 4G/5G</span>
-          <span class="chip">Rotating Pool</span>
-          <span class="chip">Sticky Sessions</span>
-          <span class="chip">Geo Matching</span>
+
+        <div class="slider" id="vpn">
+          <div class="slides">
+            <div class="slide">
+              <h4>🕵️‍♂️ Ghost-Mode Rotations</h4>
+              <p class="small">Rotate mobile proxies per account. Stick sessions for longer threads. Avoid obvious patterns.</p>
+            </div>
+            <div class="slide">
+              <h4>🛰️ Geo-Aware Routing</h4>
+              <p class="small">Match claimed location to IP region. Spread load across subnets; randomize ASN when possible.</p>
+            </div>
+            <div class="slide">
+              <h4>🧩 Human-Like Jitter</h4>
+              <p class="small">600–900s delays with variance and sleep windows. Mix DMs with likes/comments.</p>
+            </div>
+            <div class="slide">
+              <h4>🛡️ Fail-safe Backoff</h4>
+              <p class="small">Auto-retry on soft blocks with exponential backoff; pause on captchas until solved.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -169,7 +198,7 @@ local</pre>
           <h3>$5,000–$25,000 (Cash App)</h3>
           <p class="small">Enterprise blocks, concierge setup, SLAs.</p>
           <button class="btn-ghost" id="cashapp">$5k–$25k via Cash App</button>
-          <p class="small" id="cashapp-note" style="margin-top:8px"></p>
+          <p class="small" id="cashapp-note" style="margin-top:8px">Pay <b>$triple4mgmt</b> and add a note: <i>“GoblinReach Enterprise — custom work + email”</i>.</p>
         </div>
       </div>
     </div>
@@ -200,7 +229,7 @@ local</pre>
 </div>
 
 <script>
-/* =================== MATRIX BACKGROUND EVERYWHERE =================== */
+/* =================== MATRIX BACKGROUND (always on) =================== */
 (function matrix(){
   const c=document.getElementById('matrix'), x=c.getContext('2d');
   let w,h,cols,drops,fs=16;
@@ -249,20 +278,18 @@ document.getElementById("login").addEventListener("submit",(e)=>{
   setSession(u); alert("Logged in.");
 });
 
-/* =================== PAYMENTS (no setup needed) =================== */
-/* Stripe is a plain link; you don’t need to configure redirects. */
+/* =================== PAYMENTS =================== */
 document.getElementById("stripe-btn").setAttribute("href","https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03");
-
-/* Cash App helper — set your tag if you want */
-const CASH_TAG = "$YourCashTag";
+/* Cash App $triple4mgmt with custom-work note */
 document.getElementById("cashapp").addEventListener("click", ()=>{
-  const url=`https://cash.app/${CASH_TAG.replace('$','')}`;
-  document.getElementById("cashapp-note").textContent=`Open Cash App and pay ${CASH_TAG}. Include your email in the note for license delivery.`;
-  window.open(url,"_blank");
+  const tag = "triple4mgmt";
+  window.open("https://cash.app/"+tag, "_blank");
+  document.getElementById("cashapp-note").innerHTML =
+    'Pay <b>$triple4mgmt</b>. Note: <i>"GoblinReach Enterprise — custom work + your email"</i>.';
 });
 
-/* =================== INSTANT DOWNLOAD (NO /public NEEDED) =================== */
-/* Replace EXT_B64 below with your real zip’s Base64 when ready (optional). */
+/* =================== INSTANT DOWNLOAD (embedded ZIP; no /public needed) =================== */
+/* Replace EXT_B64 with your real zip’s Base64 later if you want. */
 const EXT_B64 =
 "UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
 
