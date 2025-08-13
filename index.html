@@ -15,11 +15,11 @@
   a{color:var(--muted);text-decoration:none} a:hover{color:#d6ffe7}
 
   /* Full-page Matrix rain behind EVERYTHING */
-  #matrix{position:fixed; inset:0; z-index:-3; background:#000}
+  #matrix{position:fixed; inset:0; z-index:-4; background:#000}
 
-  /* Glow blobs */
-  .blobs{position:fixed; inset:0; z-index:-2; pointer-events:none; filter:blur(52px)}
-  .blob{position:absolute; width:440px; height:440px; border-radius:50%;
+  /* Glow blobs for depth */
+  .blobs{position:fixed; inset:0; z-index:-3; pointer-events:none; filter:blur(52px)}
+  .blob{position:absolute; width:480px; height:480px; border-radius:50%;
         background:radial-gradient(circle at 40% 40%, rgba(23,255,132,.9), rgba(23,255,132,.06) 60%, transparent 70%);
         animation: float 18s ease-in-out infinite alternate}
   .blob.b2{left:60%; top:15%; animation-duration:21s}
@@ -38,7 +38,7 @@
 
   /* CARDS / LAYOUT */
   .hero{display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:start; padding:28px 0}
-  .card{background:linear-gradient(180deg,rgba(23,255,132,.10),rgba(0,0,0,.22)); border:1px solid var(--line); border-radius:22px; padding:22px; backdrop-filter:blur(4px)}
+  .card{background:linear-gradient(180deg,rgba(23,255,132,.12),rgba(0,0,0,.22)); border:1px solid var(--line); border-radius:22px; padding:22px; backdrop-filter:blur(4px)}
   .h1{font-size:44px; margin:0 0 12px; font-weight:900; letter-spacing:.2px}
   .sub{color:#bdf8d8; font-size:18px; margin:0 0 16px}
   .pill{display:inline-flex; align-items:center; gap:8px; background:var(--glass); border:1px solid var(--line); color:#bdf8d8; padding:8px 12px; border-radius:999px; font-size:13px}
@@ -56,18 +56,21 @@
   .clock{min-width:260px}
   @media (max-width:980px){.hero{grid-template-columns:1fr}.grid-2,.grid-3,.pricegrid{grid-template-columns:1fr}}
 
-  /* VPN “spy slider” */
-  .slider{position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); background:var(--panel2)}
-  .slides{display:flex; width:400%; animation:slide 18s infinite}
+  /* Spy modal */
+  .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999}
+  .modal.open{display:flex}
+  .modal .backdrop{position:absolute; inset:0; background:rgba(0,0,0,.7)}
+  .modal .box{position:relative; width:min(900px,92vw); background:linear-gradient(180deg,rgba(23,255,132,.12),rgba(0,0,0,.25)); border:1px solid var(--line); border-radius:20px; padding:18px 18px 4px; box-shadow:0 10px 30px rgba(0,0,0,.6)}
+  .close{position:absolute; right:10px; top:10px; background:transparent; color:#bdf8d8; border:1px solid var(--line); border-radius:10px; padding:6px 10px; cursor:pointer}
+
+  /* Slider inside modal */
+  .slider{position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); background:var(--panel2); margin-top:10px}
+  .slides{display:flex; width:400%}
   .slide{flex:1 0 100%; padding:18px}
   .slide h4{margin:0 0 6px}
-  @keyframes slide{
-    0%,20%{transform:translateX(0)}
-    25%,45%{transform:translateX(-100%)}
-    50%,70%{transform:translateX(-200%)}
-    75%,95%{transform:translateX(-300%)}
-    100%{transform:translateX(0)}
-  }
+  .dots{display:flex; gap:8px; justify-content:center; padding:8px 0 2px}
+  .dot{width:8px; height:8px; border-radius:999px; background:#1c2f24; border:1px solid #2a5b42}
+  .dot.active{background:#17ff84; box-shadow:0 0 8px #17ff84}
 </style>
 </head>
 <body>
@@ -110,6 +113,7 @@
       <p class="sub">Guided login (no tokens), compliant delays, ghost-mode rotations so you land replies, not bans. One-minute setup. Runs from the cloud — your laptop/phone can stay untouched.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
         <button id="download-btn" class="btn" type="button">Download Extension</button>
+        <button id="open-briefing" class="btn-ghost" type="button">🕵️ Spy Briefing (VPN/Proxy)</button>
         <a class="btn-ghost" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">📸 Instagram</a>
       </div>
       <div class="kpis">
@@ -120,7 +124,7 @@
     </div>
 
     <div class="card" id="features">
-      <div class="sub"><b>LIVE Preview:</b> Stable features only. Recommended pacing: <b>600–900s</b> between actions across accounts.</div>
+      <div class="sub"><b>LIVE Preview:</b> stable features. Keep <b>600–900s</b> between actions across accounts.</div>
 
       <!-- Audience modes -->
       <div class="section grid-2">
@@ -130,7 +134,7 @@
           <div class="chip">Following of @target</div>
           <div class="chip">Likes of a Post</div>
           <div class="chip">Commenters of a Post</div>
-          <p class="small" style="margin-top:8px">Choose any source. Mix with likes/comments and human-pacing for best deliverability.</p>
+          <p class="small" style="margin-top:8px">Pick any source. Mix DMs with likes/comments + jitter to stay human.</p>
         </div>
 
         <div class="card" style="background:var(--panel);border-color:#113c29">
@@ -145,7 +149,7 @@ local
         </div>
       </div>
 
-      <!-- World clock + VPN slider -->
+      <!-- World clock -->
       <div class="section grid-2">
         <div class="card" id="clock" style="background:var(--panel)">
           <h3 style="margin:0 0 8px">WORLD CLOCK</h3>
@@ -159,25 +163,10 @@ local
           <p class="small" style="margin-top:8px">Times auto-update.</p>
         </div>
 
-        <div class="slider" id="vpn">
-          <div class="slides">
-            <div class="slide">
-              <h4>🕵️‍♂️ Ghost-Mode Rotations</h4>
-              <p class="small">Rotate mobile proxies per account. Stick sessions for longer threads. Avoid obvious patterns.</p>
-            </div>
-            <div class="slide">
-              <h4>🛰️ Geo-Aware Routing</h4>
-              <p class="small">Match claimed location to IP region. Spread load across subnets; randomize ASN when possible.</p>
-            </div>
-            <div class="slide">
-              <h4>🧩 Human-Like Jitter</h4>
-              <p class="small">600–900s delays with variance and sleep windows. Mix DMs with likes/comments.</p>
-            </div>
-            <div class="slide">
-              <h4>🛡️ Fail-safe Backoff</h4>
-              <p class="small">Auto-retry on soft blocks with exponential backoff; pause on captchas until solved.</p>
-            </div>
-          </div>
+        <div class="card" style="background:var(--panel)">
+          <h3 style="margin:0 0 8px">Why VPN/Proxies?</h3>
+          <p class="small">Ghost-mode rotations, geo-aware routing, sticky sessions, human-like jitter. Avoid obvious patterns & rate-limits.</p>
+          <button id="open-briefing-2" class="btn-ghost" type="button">Open Spy Briefing</button>
         </div>
       </div>
     </div>
@@ -198,7 +187,7 @@ local
           <h3>$5,000–$25,000 (Cash App)</h3>
           <p class="small">Enterprise blocks, concierge setup, SLAs.</p>
           <button class="btn-ghost" id="cashapp">$5k–$25k via Cash App</button>
-          <p class="small" id="cashapp-note" style="margin-top:8px">Pay <b>$triple4mgmt</b> and add a note: <i>“GoblinReach Enterprise — custom work + email”</i>.</p>
+          <p class="small" id="cashapp-note" style="margin-top:8px">Pay <b>$triple4mgmt</b>. Add note: <i>“GoblinReach Enterprise — custom work + your email”</i>.</p>
         </div>
       </div>
     </div>
@@ -226,6 +215,40 @@ local
   </section>
 
   <footer class="footer">© 2025 GoblinReach. Compliant automation with human-like pacing.</footer>
+</div>
+
+<!-- Spy Briefing Modal -->
+<div class="modal" id="briefing">
+  <div class="backdrop"></div>
+  <div class="box">
+    <button class="close" id="close-briefing">✕ Close</button>
+    <h3 style="margin:6px 4px 10px">🕵️ Spy Briefing — VPN & Proxies</h3>
+    <div class="slider">
+      <div class="slides" id="slides">
+        <div class="slide">
+          <h4>Ghost-Mode Rotations</h4>
+          <p class="small">Rotate mobile 4G/5G proxies per account. Keep IP age, avoid reuse windows, and randomize ASN where possible.</p>
+          <div class="chip">Mobile 4G/5G</div><div class="chip">Pooled</div><div class="chip">ASN Random</div>
+        </div>
+        <div class="slide">
+          <h4>Geo-Aware Routing</h4>
+          <p class="small">Match claimed location to IP. Spread across subnets. Respect time windows per geo to mimic real usage.</p>
+          <div class="chip">Geo match</div><div class="chip">Subnet spread</div><div class="chip">Local hours</div>
+        </div>
+        <div class="slide">
+          <h4>Human Jitter + Sleep</h4>
+          <p class="small">600–900s delays, variance per session, and night sleeps. Mix DM + likes + comments to look organic.</p>
+          <div class="chip">Jitter 600–900s</div><div class="chip">Sleep windows</div><div class="chip">Mixed actions</div>
+        </div>
+        <div class="slide">
+          <h4>Fail-safe Backoff</h4>
+          <p class="small">Auto-pause on captcha. Exponential backoff after soft blocks. Resume only when safe.</p>
+          <div class="chip">Captcha-pause</div><div class="chip">Backoff</div><div class="chip">Retry budget</div>
+        </div>
+      </div>
+      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -282,8 +305,7 @@ document.getElementById("login").addEventListener("submit",(e)=>{
 document.getElementById("stripe-btn").setAttribute("href","https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03");
 /* Cash App $triple4mgmt with custom-work note */
 document.getElementById("cashapp").addEventListener("click", ()=>{
-  const tag = "triple4mgmt";
-  window.open("https://cash.app/"+tag, "_blank");
+  window.open("https://cash.app/triple4mgmt","_blank");
   document.getElementById("cashapp-note").innerHTML =
     'Pay <b>$triple4mgmt</b>. Note: <i>"GoblinReach Enterprise — custom work + your email"</i>.';
 });
@@ -304,6 +326,28 @@ function downloadEmbeddedZip(){
   }catch(e){ alert("Download failed."); }
 }
 document.getElementById("download-btn").addEventListener("click", (e)=>{ e.preventDefault(); downloadEmbeddedZip(); });
+
+/* =================== Spy Briefing Modal (auto slider) =================== */
+(function(){
+  const modal=document.getElementById('briefing');
+  const openers=[document.getElementById('open-briefing'), document.getElementById('open-briefing-2')];
+  const closer=document.getElementById('close-briefing');
+  const backdrop=modal.querySelector('.backdrop');
+  const slides=document.getElementById('slides');
+  const dots=[...modal.querySelectorAll('.dot')];
+  let idx=0, timer=null;
+
+  function setSlide(i){
+    idx=(i+dots.length)%dots.length;
+    slides.style.transform=`translateX(-${idx*100}%)`;
+    dots.forEach((d,j)=>d.classList.toggle('active', j===idx));
+  }
+  function start(){ timer=setInterval(()=>setSlide(idx+1), 3500); }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+
+  openers.forEach(b=>b&&b.addEventListener('click', ()=>{ modal.classList.add('open'); setSlide(0); start(); }));
+  [closer, backdrop].forEach(el=>el&&el.addEventListener('click', ()=>{ modal.classList.remove('open'); stop(); }));
+})();
 </script>
 </body>
 </html>
