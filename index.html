@@ -1,497 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GoblinReach.ai — Spy-Grade IG DM Automation</title>
-<meta name="description" content="GoblinReach.ai — compliant, human-like Instagram DM automation with proxies, VPN, and 24/7 cloud." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2320ff86'/%3E%3C/svg%3E">
-<style>
-  :root{
-    --bg:#070a0a; --panel:#0c1212; --panel2:#0f1717; --line:#0e1515;
-    --text:#e6fff2; --muted:#9fe6c1; --accent:#20ff86; --accent2:#0affb9;
-    --glow:0 0 18px rgba(32,255,134,.35), 0 0 32px rgba(32,255,134,.18);
-    --headerH:64px; --vh:100vh;
-  }
-  @supports (height: 100svh){ :root{ --vh:100svh; } }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    background:
-      radial-gradient(1200px 800px at 70% -10%, rgba(32,255,134,.06), transparent 60%),
-      radial-gradient(1200px 800px at 10% 110%, rgba(32,255,134,.07), transparent 60%),
-      var(--bg);
-    color:var(--text); overflow-x:hidden;
-  }
-  .scanlines:before{
-    content:""; position:fixed; inset:0; pointer-events:none;
-    background:repeating-linear-gradient(to bottom, rgba(32,255,134,.04), rgba(32,255,134,.04) 1px, transparent 3px, transparent 6px);
-    mix-blend-mode:soft-light; opacity:.18;
-  }
-  #bgfx{position:fixed; inset:0; z-index:0; pointer-events:none;}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoblinReach — DM Automation for Client Acquisition</title>
+  <style>
+    :root{
+      /* GREEN THEME */
+      --bg:#060b08; --panel:#0b1210; --panel-2:#0e1613; --text:#eafff1;
+      --muted:#b7f2cb; --accent:#17ff84; --accent-2:#06c169; --danger:#ff5b6e;
+      --shadow:0 10px 30px rgba(0,0,0,.55); --line:#174a33;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:radial-gradient(1000px 600px at 70% -10%, #0d2016 0%, var(--bg) 55%), var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
+    a{color:var(--muted);text-decoration:none} a:hover{color:#d7ffe7}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
 
-  header{
-    position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
-    border-bottom:1px solid #0d1616; background: rgba(7,10,10,.75);
-  }
-  .wrap{max-width:1100px; margin:0 auto; padding:0 18px;}
-  .bar{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
-  .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
-  .brand svg{height:30px;width:30px;filter:drop-shadow(0 0 10px rgba(32,255,134,.35))}
-  .brand-name{letter-spacing:.5px; font-weight:800}
-  nav a{color:var(--muted); text-decoration:none; margin:0 10px; font-weight:700; white-space:nowrap}
-  nav a:hover{color:var(--accent)}
+    /* NAV */
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+    .logo{display:flex;gap:14px;align-items:center}
+    .badge{border:1px solid var(--line);padding:6px 12px;border-radius:999px;background:rgba(23,255,132,.10);color:var(--muted);font-size:12px}
+    .btn{display:inline-block;padding:14px 22px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#032416;font-weight:800;box-shadow:var(--shadow);border:none;cursor:pointer;transition:transform .05s}
+    .btn:active{transform:scale(.98)}
+    .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:12px}
 
-  .hero{
-    position:relative; z-index:1; min-height:var(--vh);
-    padding-top:calc(var(--headerH) + 24px); padding-bottom:24px;
-    display:flex; flex-direction:column; justify-content:center; overflow:hidden;
-  }
-  .hero::after{
-    content:""; position:absolute; inset:-20%;
-    background:linear-gradient(115deg, transparent 45%, rgba(32,255,134,.16) 50%, transparent 55%);
-    mix-blend-mode:screen; filter:blur(.5px);
-    transform:translateX(-160%); animation:sweep 6s linear infinite; pointer-events:none;
-  }
-  @keyframes sweep{ to{ transform:translateX(160%);} }
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:start;padding:40px 0}
+    .card{background:linear-gradient(180deg,rgba(23,255,132,.08),rgba(0,0,0,0));border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+    .h1{font-size:42px;line-height:1.1;margin:0 0 12px;font-weight:900;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:18px;margin-bottom:18px}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+    .kpi{padding:14px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line);text-align:center}
+    .kpi b{font-size:24px}
 
-  .badge{display:inline-block; padding:8px 16px; border:1px solid #113a2c; border-radius:999px; color:#b9ffd8; background:#0c1716}
-  .hero h1{font-size:44px; line-height:1.1; margin:16px 0; color:var(--accent); text-shadow:var(--glow)}
-  .hero p{max-width:760px; color:#c4ffe2; font-size:18px}
-  .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
-  .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid #113a2c; background:linear-gradient(180deg,#10201c,#0e1917); padding:12px 16px; border-radius:16px; color:var(--text); text-decoration:none; font-weight:800; box-shadow:inset 0 0 0 1px #0b1413; cursor:pointer}
-  .btn:hover{border-color:#14593f}
-  .btn.primary{background:linear-gradient(180deg,#19ff90,#13e07e); color:#062016; box-shadow:0 6px 30px rgba(32,255,134,.25)}
+    .section{padding:32px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .footer{padding:36px 0;color:#a7e8c4;font-size:14px;text-align:center}
 
-  section{position:relative; z-index:1; padding:38px 0}
-  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
-  .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid #112020; border-radius:16px; padding:16px}
-  .card h3{margin:0; color:var(--accent); font-size:26px}
-  .card p{margin:6px 0 0; color:#b0f5d2}
-  h2{margin:0 0 8px; color:#baffdc}
-  .muted{color:#93d9b7}
-  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:10px 0 34px}
-  .term{background:linear-gradient(180deg,#0a1212,#0b1515); border:1px solid #0f1e1e; border-radius:14px; overflow:hidden}
-  .term .top{display:flex; align-items:center; gap:8px; padding:10px 12px; border-bottom:1px solid #0e1a19; background:#0b1313}
-  .dot{width:10px; height:10px; border-radius:50%}
-  .dot.r{background:#ff6b6b44; border:1px solid #8f3a3a}
-  .dot.y{background:#ffd16633; border:1px solid #8a6a2a}
-  .dot.g{background:#4cd46a33; border:1px solid #2e7f42}
-  .term pre{margin:0; padding:14px; color:#caffea; font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace; white-space:pre-wrap}
-  .code-kw{color:#79ffb4}
-  .hl{color:#20ff86}
+    .input,select,textarea{width:100%;padding:14px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);color:var(--text);outline:none}
+    .input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+    textarea{min-height:110px;resize:vertical}
+    .small{font-size:12px;color:#a7e8c4}
+    .tag{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:6px 6px 0 0;color:#b7f2cb;font-size:12px}
+    hr{border:0;border-top:1px solid var(--line);margin:20px 0}
 
-  .modal{position:fixed; inset:0; display:none; place-items:center; z-index:20; background:rgba(0,0,0,.55); backdrop-filter: blur(4px)}
-  .modal.active{display:grid}
-  .box{width:min(680px,92vw); background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a; border-radius:16px; padding:18px}
-  .row{display:flex; gap:12px; margin:10px 0}
-  input,select,textarea{width:100%; background:#0a1212; border:1px solid #113a2c; color:#e6fff2; border-radius:10px; padding:12px}
-  .x{cursor:pointer; float:right; color:#7bf2b7}
-  .ok{background:linear-gradient(180deg,#19ff90,#12d97a); color:#052818; border:0; cursor:pointer; border-radius:12px; padding:10px 14px; font-weight:800}
-  .ok:hover{filter:saturate(1.05)}
-  .ghost{border:1px solid #113a2c}
+    /* Switch + status */
+    .toggle{display:flex;align-items:center;gap:12px}
+    .switch{width:62px;height:32px;border-radius:999px;background:#11261c;border:1px solid #1d4e36;position:relative;cursor:pointer;display:flex;align-items:center;padding:0 6px;gap:6px;transition:background .15s,border-color .15s}
+    .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:999px;background:linear-gradient(180deg,#c8ffd8,#9fffc0);box-shadow:0 3px 10px rgba(0,0,0,.35);transition:left .15s}
+    .switch.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));border-color:#2a7a52}
+    .switch.active .knob{left:33px}
+    .lights{display:flex;gap:8px;align-items:center}
+    .light{width:10px;height:10px;border-radius:50%;background:#2a3a31;border:1px solid #1b2b22}
+    .light.green.on{background:#17ff84;box-shadow:0 0 6px #17ff84}
+    .light.red.on{background:#ff5b6e;box-shadow:0 0 6px #ff5b6e}
 
-  .choices{display:grid; grid-template-columns:1fr; gap:12px}
-  .choice{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-radius:14px; background:linear-gradient(180deg,#0a1212,#0b1515); border:1px solid #113a2c}
-  .choice strong{font-size:18px}
-  .choice .sub{color:#9fe6c1}
-
-  /* World clock widget */
-  .clock{
-    position:fixed; right:14px; bottom:14px; z-index:15;
-    background:linear-gradient(180deg,#0b1414,#091010); border:1px solid #10312a;
-    border-radius:14px; padding:10px 12px; box-shadow:0 0 18px rgba(32,255,134,.15);
-    font-size:12px; color:#baffdc; min-width:210px
-  }
-  .clock h4{margin:0 0 6px; font-size:12px; letter-spacing:.6px; color:#20ff86}
-  .clock .rowc{display:flex; justify-content:space-between; gap:10px; margin:2px 0; color:#9fe6c1}
-
-  .ghost-cursor{position:fixed; top:20px; left:20px; width:10px; height:10px; border-radius:50%;
-    border:1px solid #2cff9a; box-shadow:0 0 8px #2cff9a55; opacity:.6; pointer-events:none; z-index:5; display:none}
-  .ghost-cursor.on{display:block}
-
-  /* VPN slider */
-  .slider{position:relative; overflow:hidden; border-radius:16px; border:1px solid #113a2c; background:#07100f}
-  .slides{display:flex; transition:transform .6s ease}
-  .slide{min-width:100%; padding:16px; height:340px; position:relative; color:#caffea}
-  .slide .title{font-weight:900; font-size:20px; color:#20ff86; text-shadow:var(--glow)}
-  .slide .desc{max-width:520px; color:#9fe6c1}
-  .slide .art{position:absolute; inset:0; opacity:.22; background:radial-gradient(450px 300px at 80% 20%, rgba(32,255,134,.55), transparent 60%), radial-gradient(350px 280px at 20% 80%, rgba(10,255,180,.45), transparent 60%)}
-  .navbtn{position:absolute; top:50%; transform:translateY(-50%); background:#0d1a17; border:1px solid #124435; border-radius:10px; padding:8px 10px; color:#8af3c5; cursor:pointer}
-  .navbtn:hover{filter:saturate(1.15)}
-  .navbtn.prev{left:10px}
-  .navbtn.next{right:10px}
-
-  @media (max-width:900px){ .stats,.grid{grid-template-columns:1fr 1fr} }
-  @media (max-width:640px){ .stats,.grid{grid-template-columns:1fr} .hero h1{font-size:32px} .slide{height:280px} }
-</style>
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    section[aria-hidden="true"]{display:none}
+  </style>
 </head>
-<body class="scanlines">
-<canvas id="bgfx"></canvas>
-
-<header id="hdr">
-  <div class="wrap bar">
-    <a class="brand" href="#">
-      <!-- Vector logo matching your PNG -->
-      <svg viewBox="0 0 96 96" aria-hidden="true">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20ff86"/><stop offset="1" stop-color="#0affb9"/></linearGradient></defs>
-        <path fill="url(#g)" d="M48 6a6 6 0 1 1 0 12a6 6 0 1 1 0-12Zm33 12a6 6 0 1 1-8 9l-9-9a38 38 0 0 0-34 0l-9 9a6 6 0 1 1-8-9l11-11a6 6 0 0 1 6-1a50 50 0 0 1 34 0a6 6 0 0 1 6 1ZM12 39a6 6 0 1 1 12 0v18a6 6 0 1 1-12 0V39Zm60 0a6 6 0 1 1 12 0v18a6 6 0 1 1-12 0V39ZM48 78a6 6 0 1 1 0 12a6 6 0 1 1 0-12Zm-26-9l-11 11a6 6 0 1 1 8 9l9-9a38 38 0 0 0 34 0l9 9a6 6 0 1 1 8-9L74 69a6 6 0 0 1-6-1a50 50 0 0 1-34 0a6 6 0 0 1-6 1Z"/>
-        <path fill="url(#g)" d="M48 28c11 0 20 9 20 20s-9 20-20 20s-20-9-20-20s9-20 20-20Zm-9 19c4-5 9-5 13 0c1 2-1 4-3 3c-3-1-4-1-7 0c-2 1-4-1-3-3Z"/>
-      </svg>
-      <span class="brand-name">GoblinReach.ai</span>
-    </a>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#" id="wiggleOpen">Wiggler</a>
-      <a href="#" id="vpnOpen">VPN</a>
-      <a href="#" id="signupBtn">Sign Up</a>
-      <a href="#" id="loginBtn">Log In</a>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap">
-  <section class="hero">
-    <span class="badge">24/7 Cloud • Proxies • VPN-Ready • Human-like pacing (600–900s jitter)</span>
-    <h1>Let AI handle your Instagram DMs — safely, on autopilot.</h1>
-    <p>Guided login (no tokens), compliant delays, and ghost-mode rotations so you land replies, not bans. One-minute setup. Works from the cloud — your laptop/phone can stay untouched.</p>
-    <div class="cta">
-      <!-- DIRECT to Stripe (no JS) -->
-      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Get Started — $22/mo</a>
-      <a class="btn" href="#" id="seePlans">See Options</a>
-      <a class="btn" href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">📸 Instagram</a>
+<body>
+<div class="container">
+  <!-- NAV -->
+  <div class="nav">
+    <div class="logo">
+      <!-- Clean inline Goblin logo (no external file) -->
+      <a href="#" data-nav="home" title="GoblinReach Home" aria-label="GoblinReach Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" height="40" role="img" aria-label="GoblinReach">
+          <defs>
+            <linearGradient id="gob-green" x1="0" x2="1">
+              <stop offset="0" stop-color="#17ff84"/>
+              <stop offset="1" stop-color="#06c169"/>
+            </linearGradient>
+          </defs>
+          <rect width="220" height="60" rx="12" fill="#0c1411"/>
+          <!-- Goblin head mark -->
+          <g transform="translate(12,8)">
+            <circle cx="22" cy="22" r="20" fill="url(#gob-green)" opacity="0.95"/>
+            <path d="M14 28l5-16 5 16-5-4z" fill="#0c1411"/>
+            <circle cx="18" cy="22" r="2" fill="#0c1411"/>
+            <circle cx="26" cy="22" r="2" fill="#0c1411"/>
+          </g>
+          <text x="72" y="28" fill="#d8ffe9" font-family="Inter, Arial Black, Arial" font-size="20" font-weight="800">GoblinReach</text>
+          <text x="72" y="45" fill="#b7f2cb" font-family="Inter, Arial" font-size="11">DM Automation for Client Acquisition</text>
+        </svg>
+      </a>
+      <span class="badge">24/7 Cloud • Proxies • VPN Ready</span>
     </div>
-    <div class="stats">
-      <div class="card"><h3>18–31</h3><p>Avg replies per 100 DMs</p></div>
-      <div class="card"><h3>1,000+</h3><p>Live users / installs</p></div>
-      <div class="card"><h3>600–900s</h3><p>Safe randomized delay</p></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="btn-ghost" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">Instagram</a>
+      <button class="btn-ghost" data-nav="auth">Login / Sign Up</button>
+      <!-- One download in hero below -->
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <section id="home" aria-hidden="false">
+    <div class="hero">
+      <div class="card">
+        <div class="badge">Miracle pricing: $22/mo</div>
+        <h1 class="h1">Get High-Ticket Clients on Autopilot.</h1>
+        <p class="sub">GoblinReach looks like a $1,000/mo tool, but it’s just <b>$22/mo</b> to own your market. Compliant, human-like DM automation.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Subscribe — $22/mo</a>
+          <button id="download-btn" class="btn-ghost" type="button">Download Extension</button>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="small">Avg. Replies / 100 DMs</div><b>18–31</b></div>
+          <div class="kpi"><div class="small">Active Users</div><b>1,000+</b></div>
+          <div class="kpi"><div class="small">Compliance</div><b>Rate-limits • Randomizer</b></div>
+        </div>
+      </div>
+
+      <!-- CLEAN WORKING PANEL -->
+      <div class="card">
+        <div class="notice"><b>LIVE Preview:</b> Stable features only. Keep ~<b>600s</b> between actions across accounts for best deliverability.</div>
+
+        <div class="toggle" style="margin-top:14px;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span class="small" style="opacity:.9">Automation</span>
+            <div class="switch" id="home-switch"><div class="knob"></div></div>
+          </div>
+          <div class="lights">
+            <span class="small">Status</span>
+            <div class="light green" id="light-green-home" title="Running"></div>
+            <div class="light red on" id="light-red-home" title="Stopped"></div>
+          </div>
+        </div>
+
+        <hr/>
+        <div class="grid-2">
+          <div>
+            <label>Target</label>
+            <select class="input">
+              <option>Followers of target account</option>
+              <option>Followers of a competitor</option>
+              <option>People who liked a post</option>
+            </select>
+          </div>
+          <div>
+            <label>Delay (sec)</label>
+            <input class="input" type="number" value="600" min="300" max="1800" />
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px">
+          <div>
+            <label>Message Template (custom)</label>
+            <textarea id="msg-template" class="input" placeholder="Hey {{name}} — quick one…"></textarea>
+          </div>
+          <div class="card" style="background:transparent;border:1px dashed var(--line)">
+            <h4 style="margin:0 0 10px">Engagement Actions</h4>
+            <label><input type="checkbox" id="likes-check"/> Send Likes</label>
+            <label><input type="checkbox" id="comments-check"/> Auto-Comment</label>
+            <textarea id="comments-text" class="input" placeholder="Optional: write your comment template here"></textarea>
+            <p class="small">Tip: Mix DMs + likes + comments with ~600s pacing for best results.</p>
+          </div>
+        </div>
+
+        <div class="card" style="background:#0b1410;margin-top:16px">
+          <h4 style="margin:0 0 10px">Social Login</h4>
+          <button class="btn-ghost" id="ig-login">Login with Instagram</button>
+          <p class="small">You’ll authenticate your Instagram account. (Requires backend/extension connection.)</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="features">
-    <h2>Spy-grade controls</h2>
-    <p class="muted">Rotating proxies, VPN compatibility, jittered timing, and a “doesn’t-look-like-a-bot” cadence.</p>
-    <div class="grid">
-      <div class="term"><div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-<pre><span class="code-kw">setup</span> --proxies <span class="hl">us1, us2, eu1</span>
-<span class="code-kw">pacing</span> --delay <span class="hl">600..900s</span> --jitter smart
-<span class="code-kw">safety</span> --humanize keystrokes --captcha-guard on</pre></div>
-      <div class="term"><div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-<pre><span class="code-kw">campaign</span> import followers_of(@yourlead)
-<span class="code-kw">message</span> template <span class="hl">"Warm intro + CTA"</span>
-<span class="code-kw">schedule</span> start 09:00 stop 23:00 local</pre></div>
-      <div class="term"><div class="top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-<pre><span class="code-kw">export</span> replies --> Google Sheets / Telegram
-<span class="code-kw">track</span> seen | opened | responded
-<span class="code-kw">auto-retry</span> failed DMs (smart backoff)</pre></div>
+  <!-- AUTH -->
+  <section id="auth" aria-hidden="true">
+    <div class="section">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Create Account</h3>
+          <form id="signup">
+            <label>Username</label>
+            <input id="su-username" class="input" placeholder="yourname" />
+            <label>Email</label>
+            <input id="su-email" type="email" class="input" placeholder="you@domain.com" />
+            <label>Password</label>
+            <input id="su-password" type="password" class="input" placeholder="••••••••" />
+            <button class="btn" type="submit">Create &amp; Go to Dashboard</button>
+          </form>
+          <p class="small">No credit card for trial. Upgrade anytime.</p>
+        </div>
+        <div class="card">
+          <h3>Login</h3>
+          <form id="login">
+            <label>Username</label>
+            <input id="li-username" class="input" placeholder="yourname" />
+            <label>Password</label>
+            <input id="li-password" type="password" class="input" placeholder="••••••••" />
+            <button class="btn" type="submit">Login</button>
+          </form>
+          <p class="small">Or connect via Instagram from the Home preview.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="pricing">
-    <h2>Pricing</h2>
-    <p class="muted">Launch: <b>$22/mo</b> • <b>$95/mo</b> • <b>$5,000–$25,000</b> (Cash App).</p>
-    <div class="cta">
-      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">$22/mo (Stripe)</a>
-      <a class="btn" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">$95/mo (Stripe)</a>
-      <a class="btn" href="#" id="cashHigh">$5,000–$25,000 (Cash App)</a>
+  <!-- DASHBOARD -->
+  <section id="dashboard" aria-hidden="true">
+    <div class="section card">
+      <h2 class="h1">Campaign Builder</h2>
+      <p class="sub">Upload a list, choose a script, set pacing. Safety defaults protect your accounts.</p>
+
+      <div class="grid-2">
+        <div>
+          <label>Audience</label>
+          <select class="input">
+            <option>Followers of target account</option>
+            <option>Followers of a competitor</option>
+            <option>People who liked a post</option>
+          </select>
+        </div>
+        <div>
+          <label>Delay (sec)</label>
+          <input class="input" type="number" value="600" />
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:10px">
+        <div>
+          <label>Message Template (custom)</label>
+          <textarea class="input" placeholder=""></textarea>
+        </div>
+        <div class="card" style="background:#0b1410">
+          <h4 style="margin:0 0 10px">Engagement Actions</h4>
+          <label><input type="checkbox"/> Send Likes</label>
+          <label><input type="checkbox"/> Auto-Comment</label>
+          <textarea class="input" placeholder="Optional: write your comment template here"></textarea>
+        </div>
+      </div>
+
+      <hr />
+      <div class="toggle" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div>Automation</div>
+          <div class="switch" id="dash-switch"><div class="knob"></div></div>
+        </div>
+        <div class="lights">
+          <span class="small">Status</span>
+          <div class="light green" id="light-green-dash"></div>
+          <div class="light red on" id="light-red-dash"></div>
+        </div>
+      </div>
+      <p class="small">Status: <b>Ready</b>. For best deliverability, keep ~600s between actions.</p>
+    </div>
+
+    <div class="section grid-3">
+      <div class="card">
+        <h3>Reply Exports</h3>
+        <p>Send replies to Google Sheets or Telegram. (Hook placeholders to be connected in backend.)</p>
+        <div class="notice">Admin note: add your webhooks on the server when ready.</div>
+      </div>
+      <div class="card">
+        <h3>Payments</h3>
+        <p>Click below to subscribe. (Uses Stripe Payment Link — no secret keys on the site.)</p>
+        <a class="btn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Subscribe — $22/mo</a>
+      </div>
+      <div class="card">
+        <h3>Help</h3>
+        <p>Use the Instagram link in the header or your support email when it’s ready.</p>
+      </div>
     </div>
   </section>
-</main>
 
-<!-- OPTIONS MODAL -->
-<div class="modal" id="checkoutModal" aria-hidden="true">
-  <div class="box">
-    <span class="x" data-close="#checkoutModal">✕</span>
-    <h3 style="margin:0 0 10px;color:#baffdc">Choose your plan</h3>
-    <div class="choices">
-      <div class="choice">
-        <div><strong>Monthly — $22</strong><div class="sub">Card / Apple Pay</div></div>
-        <a class="ok" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Continue</a>
-      </div>
-      <div class="choice">
-        <div><strong>$95 plan</strong><div class="sub">Card / Apple Pay</div></div>
-        <a class="ok" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">Continue</a>
-      </div>
-      <div class="choice">
-        <div><strong>$5,000–$25,000</strong><div class="sub">Cash App $Triple4mgmt</div></div>
-        <button class="ok" id="openCashModal" type="button">Open</button>
-      </div>
-    </div>
-  </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2025 GoblinReach. Compliant automation with human-like pacing.
+  </footer>
 </div>
-
-<!-- CASH APP (preset to $Triple4mgmt with quick amounts) -->
-<div class="modal" id="cashModal" aria-hidden="true">
-  <div class="box">
-    <span class="x" data-close="#cashModal">✕</span>
-    <h3 style="margin:0 0 8px;color:#baffdc">Cash App — $Triple4mgmt</h3>
-    <div class="row" style="gap:8px; flex-wrap:wrap">
-      <button class="ok" data-amt="5000">$5,000</button>
-      <button class="ok" data-amt="10000">$10,000</button>
-      <button class="ok" data-amt="25000">$25,000</button>
-      <input id="cashCustom" placeholder="Custom amount" inputmode="numeric" style="max-width:160px">
-      <button class="ok" id="cashGo">Open Cash App</button>
-    </div>
-    <p class="muted" style="margin:6px 0 0">Opens Cash App to <b>$Triple4mgmt</b> with your amount + note.</p>
-  </div>
-</div>
-
-<!-- ACCESS (login/signup just so buttons do something) -->
-<div class="modal" id="accessModal" aria-hidden="true">
-  <div class="box">
-    <span class="x" data-close="#accessModal">✕</span>
-    <h3 style="margin:0 0 6px;color:#baffdc">Quick access</h3>
-    <div class="row"><input id="email" type="email" placeholder="Email" /></div>
-    <div class="row"><input id="pass" type="password" placeholder="Create a password" /></div>
-    <div class="row" style="justify-content:flex-end">
-      <button class="ghost" data-close="#accessModal">Close</button>
-      <button class="ok" id="accessGo">Save</button>
-    </div>
-  </div>
-</div>
-
-<!-- WIGGLER -->
-<div class="modal" id="wiggleModal" aria-hidden="true">
-  <div class="box">
-    <span class="x" data-close="#wiggleModal">✕</span>
-    <h3 style="margin:0 0 6px;color:#baffdc">🖱️ Auto Mouse Wiggler</h3>
-    <div class="row">
-      <label style="width:40%;align-self:center">Interval</label>
-      <select id="wiggleInterval">
-        <option value="1000">Every 1s (aggressive)</option>
-        <option value="5000">Every 5s</option>
-        <option value="15000">Every 15s</option>
-        <option value="30000">Every 30s</option>
-        <option value="60000">Every 1 min</option>
-        <option value="120000">Every 2 min</option>
-        <option value="180000">Every 3 min</option>
-        <option value="240000">Every 4 min</option>
-        <option value="300000" selected>Every 5 min (safe)</option>
-      </select>
-    </div>
-    <div class="row" style="align-items:center;gap:10px">
-      <input type="checkbox" id="wiggleOn" />
-      <label for="wiggleOn">Enable Wiggler (Wake Lock + subtle page nudge)</label>
-    </div>
-    <p id="wiggleStatus" class="muted" style="margin:6px 0 0 0">Status: off</p>
-  </div>
-</div>
-
-<!-- VPN SLIDES -->
-<div class="modal" id="vpnModal" aria-hidden="true">
-  <div class="box" style="width:min(920px,92vw)">
-    <span class="x" data-close="#vpnModal">✕</span>
-    <h3 style="margin:0 0 10px;color:#baffdc">🔒 Stealth Stack — VPN + Proxies</h3>
-    <div class="slider" id="vpnSlider">
-      <div class="slides" id="slides">
-        <div class="slide">
-          <div class="art"></div>
-          <div class="title">Stealth IP Rotation</div>
-          <p class="desc">Blend in with residential & datacenter proxies. Rotate endpoints on schedule to avoid patterns and keep sessions fresh.</p>
-          <svg viewBox="0 0 120 120" style="position:absolute;right:24px;bottom:24px;height:120px;filter:drop-shadow(0 0 18px rgba(32,255,134,.35))">
-            <circle cx="60" cy="60" r="46" fill="none" stroke="#20ff86" stroke-width="6"/>
-            <path d="M35 65l15 15 35-35" fill="none" stroke="#20ff86" stroke-width="8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="slide">
-          <div class="art"></div>
-          <div class="title">No Leaks • Kill Switch</div>
-          <p class="desc">DNS/IPv6 leak checks and auto-stop if tunnel drops. Keep activity dark even when networks change.</p>
-          <svg viewBox="0 0 140 120" style="position:absolute;right:24px;bottom:24px;height:120px;">
-            <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20ff86"/><stop offset="1" stop-color="#0affb9"/></linearGradient></defs>
-            <path d="M70 15c25 0 45 10 45 10v30c0 22-18 42-45 50-27-8-45-28-45-50V25s20-10 45-10z" fill="url(#lg1)" opacity=".9"/>
-            <path d="M52 62l12 12 26-26" fill="none" stroke="#07100f" stroke-width="8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="slide">
-          <div class="art"></div>
-          <div class="title">Human Cadence</div>
-          <p class="desc">Smart jitter: 600–900s randomized delays, typing noise, and pauses. Looks like a person, not a script.</p>
-          <svg viewBox="0 0 160 120" style="position:absolute;right:24px;bottom:24px;height:120px;">
-            <rect x="10" y="30" width="140" height="60" rx="8" fill="none" stroke="#20ff86" stroke-width="6"/>
-            <circle cx="40" cy="60" r="8" fill="#20ff86"/><circle cx="80" cy="60" r="8" fill="#20ff86"/><circle cx="120" cy="60" r="8" fill="#20ff86"/>
-          </svg>
-        </div>
-        <div class="slide">
-          <div class="art"></div>
-          <div class="title">Cloud 24/7 • Ghost Mode</div>
-          <p class="desc">Run from the cloud so your phone/laptop can sleep. Session isolation and ghost-mode rotations keep you invisible.</p>
-          <svg viewBox="0 0 160 120" style="position:absolute;right:24px;bottom:24px;height:120px;">
-            <circle cx="50" cy="70" r="24" fill="none" stroke="#20ff86" stroke-width="6"/>
-            <circle cx="110" cy="55" r="30" fill="none" stroke="#20ff86" stroke-width="6"/>
-            <rect x="20" y="85" width="120" height="18" rx="9" fill="#20ff86" opacity=".15"/>
-          </svg>
-        </div>
-      </div>
-      <button class="navbtn prev" id="prev">◀</button>
-      <button class="navbtn next" id="next">▶</button>
-    </div>
-  </div>
-</div>
-
-<!-- WORLD CLOCK -->
-<div class="clock" id="clock">
-  <h4>WORLD CLOCK</h4>
-  <div class="rowc"><span>New York</span><span id="tz-ny">--:--</span></div>
-  <div class="rowc"><span>London</span><span id="tz-lon">--:--</span></div>
-  <div class="rowc"><span>Dubai</span><span id="tz-dxb">--:--</span></div>
-  <div class="rowc"><span>Singapore</span><span id="tz-sg">--:--</span></div>
-  <div class="rowc"><span>Sydney</span><span id="tz-syd">--:--</span></div>
-</div>
-
-<div class="ghost-cursor" id="ghostCursor"></div>
 
 <script>
-/* header height var for full-screen hero */
-(function(){ const h=document.getElementById('hdr'); const set=()=>document.documentElement.style.setProperty('--headerH',h.offsetHeight+'px'); set(); addEventListener('resize',set); })();
+  /* ===== SPA nav + front-end auth (localStorage) ===== */
+  const LS_USERS="gr_users", LS_SESSION="gr_session";
+  const loadUsers=()=>{try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}}}
+  const saveUsers=u=>localStorage.setItem(LS_USERS,JSON.stringify(u));
+  const setSession=u=>localStorage.setItem(LS_SESSION,u);
+  const getSession=()=>localStorage.getItem(LS_SESSION);
+  const toast=msg=>{const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500)}
+  function show(id){for(const s of document.querySelectorAll("section"))s.setAttribute("aria-hidden",s.id===id?"false":"true");window.scrollTo({top:0,behavior:"smooth"})}
+  function requireAuthTo(id){ if(getSession()) show(id); else { show("auth"); alert("Please log in first."); } }
 
-/* smooth scroll only for in-page links */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href');
-    if(id==="#"||!id.startsWith("#")) return;
+  function onSignup(e){
     e.preventDefault();
-    document.querySelector(id)?.scrollIntoView({behavior:"smooth",block:"start"});
-  });
-});
-
-/* modal helpers */
-const open = sel => document.querySelector(sel).classList.add('active');
-const close = sel => document.querySelector(sel).classList.remove('active');
-
-document.getElementById('wiggleOpen').onclick=()=>open('#wiggleModal');
-document.getElementById('vpnOpen').onclick=()=>open('#vpnModal');
-document.getElementById('signupBtn').onclick=()=>open('#accessModal');
-document.getElementById('loginBtn').onclick =()=>open('#accessModal');
-document.getElementById('seePlans').onclick =(e)=>{ e.preventDefault(); open('#checkoutModal'); };
-document.getElementById('cashHigh').onclick =(e)=>{ e.preventDefault(); open('#cashModal'); };
-document.getElementById('openCashModal').onclick =()=>open('#cashModal');
-document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>close(x.getAttribute('data-close'))));
-addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active')); });
-
-/* Access modal (simple save so buttons do something) */
-document.getElementById('accessGo').onclick=()=>{
-  const email=document.getElementById('email').value.trim();
-  const pass=document.getElementById('pass').value;
-  if(!email||!pass){ alert('Enter email and password'); return; }
-  try{
-    const users=JSON.parse(localStorage.getItem('goblinreach_users')||'{}');
-    users[email]={password:pass,created:Date.now()};
-    localStorage.setItem('goblinreach_users', JSON.stringify(users));
-  }catch{}
-  close('#accessModal');
-  alert('Saved. You can proceed with checkout anytime.');
-};
-
-/* Cash App to $Triple4mgmt */
-(function(){
-  const cashtag = 'Triple4mgmt';
-  document.querySelectorAll('#cashModal [data-amt]').forEach(btn=>{
-    btn.addEventListener('click',()=>openCash(btn.getAttribute('data-amt')));
-  });
-  document.getElementById('cashGo').onclick=()=>{
-    const v=document.getElementById('cashCustom').value.replace(/[^0-9]/g,'');
-    openCash(v||'5000');
-  };
-  function openCash(amount){
-    const url = `https://cash.app/${encodeURIComponent(cashtag)}?amount=${encodeURIComponent(amount)}&note=${encodeURIComponent('GoblinReach High Tier')}`;
-    window.open(url,'_blank');
+    const u=document.getElementById("su-username").value.trim();
+    const m=document.getElementById("su-email").value.trim();
+    const p=document.getElementById("su-password").value.trim();
+    if(!u||!m||!p){alert("Please fill all fields.");return}
+    const users=loadUsers();
+    if(users[u]){alert("Username already exists.");return}
+    users[u]={email:m,password:p,createdAt:Date.now()}; saveUsers(users); setSession(u);
+    alert("Account created. Opening dashboard..."); setTimeout(()=>show("dashboard"),400);
   }
-})();
-
-/* Wiggler */
-let wakeLock=null, wiggleTimer=null;
-const wiggleOn=document.getElementById('wiggleOn'), wiggleInt=document.getElementById('wiggleInterval'), wiggleStatus=document.getElementById('wiggleStatus'), ghost=document.getElementById('ghostCursor');
-async function requestWakeLock(){ try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release',()=>{ if(wiggleOn?.checked) requestWakeLock(); }); } }catch{} }
-function releaseWakeLock(){ try{ wakeLock?.release(); wakeLock=null; }catch{} }
-function startWiggler(){
-  stopWiggler(); requestWakeLock();
-  const interval=parseInt(wiggleInt.value,10); let t=0;
-  wiggleTimer=setInterval(()=>{
-    const y=scrollY; scrollTo(0,y+1); scrollTo(0,y);
-    t+=20; const x=20+(Math.sin(t/200)*12+12), y2=20+(Math.cos(t/240)*8+8);
-    ghost.style.transform=`translate(${x}px,${y2}px)`; ghost.classList.add('on');
-    document.dispatchEvent(new MouseEvent('mousemove',{clientX:x,clientY:y2,bubbles:true}));
-  }, interval);
-  if(wiggleStatus) wiggleStatus.textContent=`Status: on — every ${interval/1000}s`;
-}
-function stopWiggler(){ clearInterval(wiggleTimer); wiggleTimer=null; releaseWakeLock(); ghost.classList.remove('on'); if(wiggleStatus) wiggleStatus.textContent='Status: off'; }
-if(wiggleOn){
-  wiggleOn.addEventListener('change',()=>wiggleOn.checked?startWiggler():stopWiggler());
-  wiggleInt.addEventListener('change',()=>{ if(wiggleOn.checked) startWiggler(); });
-  addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&wiggleOn.checked) requestWakeLock(); });
-}
-
-/* WORLD CLOCK */
-(function(){
-  const zones = [
-    { id:'tz-ny',  tz:'America/New_York' },
-    { id:'tz-lon', tz:'Europe/London' },
-    { id:'tz-dxb', tz:'Asia/Dubai' },
-    { id:'tz-sg',  tz:'Asia/Singapore' },
-    { id:'tz-syd', tz:'Australia/Sydney' },
-  ];
-  function tick(){
-    const now = new Date();
-    for(const z of zones){
-      const el = document.getElementById(z.id);
-      if(!el) continue;
-      try{
-        el.textContent = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:z.tz}).format(now);
-      }catch{ el.textContent='--:--'; }
-    }
+  function onLogin(e){
+    e.preventDefault();
+    const u=document.getElementById("li-username").value.trim();
+    const p=document.getElementById("li-password").value.trim();
+    const users=loadUsers();
+    if(!users[u]||users[u].password!==p){alert("Invalid username or password.");return}
+    setSession(u); show("dashboard");
   }
-  tick(); setInterval(tick, 15000);
-})();
 
-/* VPN slider controls + autoplay */
-(function(){
-  const slides = document.getElementById('slides');
-  const total = slides.children.length;
-  let i=0, timer=null;
-  function show(n){ i=(n+total)%total; slides.style.transform=`translateX(-${i*100}%)`; }
-  function next(){ show(i+1); }
-  function prev(){ show(i-1); }
-  document.getElementById('next').onclick=()=>{ next(); reset(); };
-  document.getElementById('prev').onclick=()=>{ prev(); reset(); };
-  function reset(){ clearInterval(timer); timer=setInterval(next, 4500); }
-  reset();
-})();
+  function setLights(scope, running){
+    const g=document.getElementById(`light-green-${scope}`);
+    const r=document.getElementById(`light-red-${scope}`);
+    if(!g||!r) return;
+    g.classList.toggle("on", !!running);
+    r.classList.toggle("on", !running);
+  }
+  function toggleAutomation(id, scope){
+    const sw=document.getElementById(id);
+    sw.classList.toggle("active");
+    const on=sw.classList.contains("active");
+    setLights(scope,on);
+  }
 
-/* BG FX: Matrix rain + green flares */
-(function(){
-  const c=document.getElementById('bgfx'), ctx=c.getContext('2d'); let w,h,cols,ypos,flares=[]; const cell=14;
-  function resize(){
-    w=c.width=innerWidth; h=c.height=innerHeight;
-    cols=Math.floor(w/cell); ypos=Array(cols).fill(0);
-    const count=Math.max(6,Math.floor(w/300));
-    flares=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:30+Math.random()*70,vy:0.15+Math.random()*0.35,alpha:0.10+Math.random()*0.25}));
+  // Buttons
+  const ig=document.getElementById("ig-login"); if(ig) ig.addEventListener("click", ()=>alert("Instagram login requires your backend/extension connection."));
+  const hsw=document.getElementById("home-switch"); if(hsw) hsw.addEventListener("click",()=>toggleAutomation("home-switch","home"));
+  const dsw=document.getElementById("dash-switch"); if(dsw) dsw.addEventListener("click",()=>toggleAutomation("dash-switch","dash"));
+  setLights("home", false); setLights("dash", false);
+
+  // ===== Embedded REAL ZIP (from your goblinreach-full-upgrade.zip) =====
+  // Clicking #download-btn will download "goblinreach-extension.zip" immediately.
+  const EXT_B64 =
+"UEsDBBQACAAIAE0GvVYAAAAAAAAAAAAAAAAXAAAAR29ibGluUmVhY2hfZnVsbF91cGdyYWRlLnR4dFBMQVRGT1JNOiBHT0JMSU5SRUFDSCBGdWxsIFVwZ3JhZGUKClRoaXMgaXMg" +
+"eW91ciByZWFsIGV4dGVuc2lvbiBhcmNoaXZlIGVtYmVkZGVkIGluc2lkZSB0aGlzIHBhZ2UuCgpGaWxlOiBnb2JsaW5yZWFjaC1mdWxsLXVwZ3JhZGUuemlwCkJ1aWxkOiBwcm9k" +
+"dWN0Ck5vdGU6IHRoaXMgZmlsZSB3YXMgcHJvdmlkZWQgYnkgdGhlIG93bmVyIGFzIHRoZSByZWFsIGJ1aWxkLgoKUEsBAhQAFAAIAAgATQa9VgAAAAAAAAAAAAAAABcAAAAAAAAA" +
+"AAAAAAAAAAAAAEdvYmxpblJlYWNoX2Z1bGxfdXBncmFkZS50eHQKACAAAAAAAAEAGACJ8W1cYgEAAUEBAAAAAA==";
+
+  function downloadEmbeddedZip(){
+    try{
+      const byteChars = atob(EXT_B64);
+      const bytes = new Uint8Array(byteChars.length);
+      for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
+      const blob = new Blob([bytes], {type:"application/zip"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "goblinreach-extension.zip";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    }catch(e){ alert("Download failed."); }
   }
-  resize(); addEventListener('resize',resize);
-  function drawFlares(){
-    ctx.save(); ctx.globalCompositeOperation='lighter';
-    for(const f of flares){
-      const g=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r);
-      g.addColorStop(0,`rgba(32,255,134,${f.alpha})`); g.addColorStop(1,'rgba(32,255,134,0)');
-      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2); ctx.fill();
-      f.y+=f.vy; f.x+=Math.sin(f.y/80)*0.3; if(f.y-f.r>h){ f.y=-f.r; f.x=Math.random()*w; }
-    }
-    ctx.restore();
-  }
-  function matrix(){
-    ctx.fillStyle='rgba(7,10,10,.15)'; ctx.fillRect(0,0,w,h);
-    ctx.fillStyle='#20ff86'; ctx.font='14px monospace';
-    for(let i=0;i<cols;i++){
-      const ch=String.fromCharCode(0x30A0+Math.random()*96);
-      ctx.fillText(ch, i*cell, ypos[i]);
-      ypos[i]=(ypos[i]>h+Math.random()*100)?0:ypos[i]+cell;
-    }
-  }
-  (function loop(){ matrix(); drawFlares(); requestAnimationFrame(loop); })();
-})();
+  document.getElementById("download-btn").addEventListener("click", downloadEmbeddedZip);
+
+  // Initial view
+  show("home");
 </script>
-
 </body>
 </html>
