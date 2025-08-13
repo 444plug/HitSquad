@@ -7,61 +7,59 @@
 <meta name="description" content="24/7 Cloud • Proxies • VPN-Ready • Human-like pacing. Looks like a $1,000/mo tool, priced at $22/mo." />
 <style>
   :root{
-    --bg:#020402; --panel:#08110c; --panel2:#0c1912; --text:#eafff1;
-    --muted:#b7f2cb; --accent:#17ff84; --accent2:#06c169; --line:#1a4a34;
-    --glass:rgba(8,17,12,.65);
+    --bg:#000; --panel:#07110c; --panel2:#0b1a13; --text:#eafff1;
+    --muted:#b7f2cb; --accent:#17ff84; --accent2:#06c169; --line:#1b4e37; --glass:rgba(7,17,12,.65);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:#000;color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
-  a{color:var(--muted);text-decoration:none}
-  a:hover{color:#d6ffe7}
-  /* Matrix + blobs behind content */
-  #matrix{position:fixed;inset:0;z-index:-2;background:#000}
-  .blobs{position:fixed;inset:0;z-index:-1;pointer-events:none;filter:blur(48px)}
-  .blob{position:absolute;width:420px;height:420px;border-radius:50%;
-        background:radial-gradient(circle at 40% 40%, rgba(23,255,132,.9), rgba(23,255,132,.06) 60%, transparent 70%);
-        animation: float 16s ease-in-out infinite alternate;}
-  .blob.b2{left:60%;top:20%;animation-duration:19s}
-  .blob.b3{left:10%;top:70%;animation-duration:22s}
-  @keyframes float{from{transform:translateY(-20px)}to{transform:translateY(40px)}}
+  a{color:var(--muted);text-decoration:none} a:hover{color:#d6ffe7}
 
-  .wrap{max-width:1100px;margin:0 auto;padding:22px}
+  /* Matrix canvas behind EVERYTHING */
+  #matrix{position:fixed; inset:0; z-index:-2; background:#000}
+
+  /* Glow blobs behind content for depth */
+  .blobs{position:fixed; inset:0; z-index:-1; pointer-events:none; filter:blur(52px)}
+  .blob{position:absolute; width:440px; height:440px; border-radius:50%;
+        background:radial-gradient(circle at 40% 40%, rgba(23,255,132,.9), rgba(23,255,132,.06) 60%, transparent 70%);
+        animation: float 18s ease-in-out infinite alternate}
+  .blob.b2{left:60%; top:15%; animation-duration:21s}
+  .blob.b3{left:8%; top:70%; animation-duration:24s}
+  @keyframes float{from{transform:translateY(-24px)} to{transform:translateY(42px)}}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:22px}
+
   /* NAV */
-  .nav{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
-  .logo{display:flex;align-items:center;gap:12px}
-  .badge{border:1px solid var(--line);padding:6px 12px;border-radius:999px;background:rgba(23,255,132,.10);color:var(--muted);font-size:12px}
-  .navlinks{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-  .btn{display:inline-block;padding:14px 22px;border-radius:16px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#032416;font-weight:800;border:none;cursor:pointer}
-  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:12px}
-  /* HERO */
-  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:start;padding:28px 0}
-  .card{background:linear-gradient(180deg,rgba(23,255,132,.10),rgba(0,0,0,.22));border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter: blur(4px)}
-  .h1{font-size:44px;margin:0 0 12px;font-weight:900;letter-spacing:.2px}
-  .sub{color:var(--muted);font-size:18px;margin:0 0 16px}
-  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--line);color:#bdf8d8;padding:8px 12px;border-radius:999px;font-size:13px}
-  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-  .kpi{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  .nav{display:flex; justify-content:space-between; align-items:center; padding:10px 0}
+  .logo{display:flex; gap:12px; align-items:center}
+  .badge{border:1px solid var(--line); padding:6px 12px; border-radius:999px; background:rgba(23,255,132,.12); color:#bdf8d8; font-size:12px}
+  .navlinks{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+  .btn{display:inline-block; padding:14px 22px; border-radius:16px; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#032416; font-weight:800; border:none; cursor:pointer}
+  .btn-ghost{background:transparent; border:1px solid var(--line); color:var(--text); padding:12px 18px; border-radius:12px}
+
+  /* CARDS / LAYOUT */
+  .hero{display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:start; padding:28px 0}
+  .card{background:linear-gradient(180deg,rgba(23,255,132,.10),rgba(0,0,0,.22)); border:1px solid var(--line); border-radius:22px; padding:22px; backdrop-filter:blur(4px)}
+  .h1{font-size:44px; margin:0 0 12px; font-weight:900; letter-spacing:.2px}
+  .sub{color:#bdf8d8; font-size:18px; margin:0 0 16px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:var(--glass); border:1px solid var(--line); color:#bdf8d8; padding:8px 12px; border-radius:999px; font-size:13px}
+  .kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
+  .kpi{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center}
   .section{padding:26px 0}
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .input,select,textarea{width:100%;padding:12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);color:var(--text)}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .input,select,textarea{width:100%; padding:12px; border-radius:12px; background:var(--panel2); border:1px solid var(--line); color:var(--text)}
   textarea{min-height:110px}
-  .notice{background:#0d1913;border-left:4px solid var(--accent);padding:12px;border-radius:12px}
-  .small{font-size:12px;color:#a7e8c4}
-  .footer{text-align:center;color:#a7e8c4;padding:36px 0}
-  .pricegrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:6px 6px 0 0;color:#bdf8d8;background:var(--glass);font-size:12px}
+  .small{font-size:12px; color:#a7e8c4}
+  .footer{text-align:center; color:#a7e8c4; padding:36px 0}
+  .chip{display:inline-block; border:1px solid var(--line); border-radius:999px; padding:6px 10px; margin:6px 6px 0 0; color:#bdf8d8; background:var(--glass); font-size:12px}
+  .pricegrid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
   .clock{min-width:260px}
   @media (max-width:980px){.hero{grid-template-columns:1fr}.grid-2,.grid-3,.pricegrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
-<div class="blobs">
-  <div class="blob b1" style="left:10%;top:15%"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
+<div class="blobs"><div class="blob b1" style="left:12%;top:12%"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 
 <div class="wrap">
   <!-- NAV -->
@@ -87,7 +85,7 @@
       <a href="#vpn">VPN</a>
       <a href="#auth">Sign Up</a>
       <a href="#auth">Log In</a>
-      <a class="btn" data-subscribe href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Get Started — $22/mo</a>
+      <a class="btn" id="stripe-btn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Get Started — $22/mo</a>
     </div>
   </div>
 
@@ -98,8 +96,7 @@
       <h1 class="h1">Let AI handle your Instagram DMs — safely, on autopilot.</h1>
       <p class="sub">Guided login (no tokens), compliant delays, ghost-mode rotations so you land replies, not bans. One-minute setup. Runs from the cloud — your laptop/phone can stay untouched.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a class="btn" data-subscribe href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">$22/mo (Stripe)</a>
-        <button id="download-btn" class="btn-ghost" type="button">Download Extension</button>
+        <button id="download-btn" class="btn" type="button">Download Extension</button>
         <a class="btn-ghost" href="https://instagram.com/goblinreach.ai" target="_blank" rel="noopener">📸 Instagram</a>
       </div>
       <div class="kpis">
@@ -110,7 +107,7 @@
     </div>
 
     <div class="card">
-      <div class="notice"><b>LIVE Preview:</b> Stable features only. Recommended pacing: <b>600–900s</b> between actions across accounts for consistent deliverability.</div>
+      <div class="sub"><b>LIVE Preview:</b> Stable features only. Recommended pacing: <b>600–900s</b> between actions across accounts.</div>
       <div class="section grid-2">
         <div>
           <div class="pill" style="margin-bottom:10px">captcha-guard on</div>
@@ -132,6 +129,7 @@ local</pre>
           </div>
         </div>
       </div>
+
       <div class="section grid-2">
         <div class="card" id="clock" style="background:var(--panel)">
           <h3 style="margin:0 0 8px">WORLD CLOCK</h3>
@@ -165,7 +163,7 @@ local</pre>
         <div class="card" style="background:var(--panel)">
           <h3>$22/mo (Stripe)</h3>
           <p class="small">Best for solo creators and small teams.</p>
-          <a class="btn" data-subscribe href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Subscribe — $22/mo</a>
+          <a class="btn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Subscribe — $22/mo</a>
         </div>
         <div class="card" style="background:var(--panel)">
           <h3>$5,000–$25,000 (Cash App)</h3>
@@ -202,13 +200,13 @@ local</pre>
 </div>
 
 <script>
-/* ======================= MATRIX BACKGROUND ======================= */
+/* =================== MATRIX BACKGROUND EVERYWHERE =================== */
 (function matrix(){
-  const c=document.getElementById('matrix'),x=c.getContext('2d');
+  const c=document.getElementById('matrix'), x=c.getContext('2d');
   let w,h,cols,drops,fs=16;
-  const chars='アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ﾊﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛ';
-  function size(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/fs);drops=Array(cols).fill(0)}
-  addEventListener('resize',size); size();
+  const chars='ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛ0123456789';
+  function size(){ w=c.width=innerWidth; h=c.height=innerHeight; cols=Math.floor(w/fs); drops=Array(cols).fill(0); }
+  addEventListener('resize', size); size();
   (function draw(){
     x.fillStyle='rgba(0,0,0,0.08)'; x.fillRect(0,0,w,h);
     x.fillStyle='#17ff84'; x.font=fs+'px monospace';
@@ -221,17 +219,17 @@ local</pre>
   })();
 })();
 
-/* ======================= WORLD CLOCK ======================= */
+/* =================== WORLD CLOCK =================== */
 (function clock(){
   const fmt=(z)=>new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:z}).format(new Date());
   function tick(){
-    const ids=[['ny','America/New_York'],['ldn','Europe/London'],['dxb','Asia/Dubai'],['sin','Asia/Singapore'],['syd','Australia/Sydney']];
-    ids.forEach(([id,tz])=>{const el=document.getElementById(id); if(el) el.textContent=fmt(tz);});
+    [['ny','America/New_York'],['ldn','Europe/London'],['dxb','Asia/Dubai'],['sin','Asia/Singapore'],['syd','Australia/Sydney']]
+      .forEach(([id,tz])=>{const el=document.getElementById(id); if(el) el.textContent=fmt(tz);});
   }
-  tick(); setInterval(tick, 1000*30);
+  tick(); setInterval(tick, 30000);
 })();
 
-/* ======================= BASIC AUTH DEMO ======================= */
+/* =================== SIMPLE AUTH (local demo) =================== */
 const LS_USERS="gr_users",LS_SESSION="gr_session";
 const loadUsers=()=>{try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch{return{}}}
 const saveUsers=(u)=>localStorage.setItem(LS_USERS,JSON.stringify(u));
@@ -251,41 +249,34 @@ document.getElementById("login").addEventListener("submit",(e)=>{
   setSession(u); alert("Logged in.");
 });
 
-/* ======================= PAYMENTS & DOWNLOAD ======================= */
-/* 1) Put this success URL in your Stripe Payment Link settings:
-      https://YOURDOMAIN/?paid=1
-   After payment, we store gr_paid=1 and unlock download on this device.
-*/
-const STRIPE_LINK="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03";
-(function handleReturn(){
-  const p=new URLSearchParams(location.search);
-  if(p.get("paid")==="1"){ localStorage.setItem("gr_paid","1"); history.replaceState({}, "", location.pathname+location.hash); }
-})();
-document.querySelectorAll("[data-subscribe]").forEach(a=>a.href=STRIPE_LINK);
+/* =================== PAYMENTS (no setup needed) =================== */
+/* Stripe is a plain link; you don’t need to configure redirects. */
+document.getElementById("stripe-btn").setAttribute("href","https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03");
 
-async function realZipExists(){
-  try{ const r=await fetch("/goblinreach.zip",{method:"HEAD",cache:"no-store"}); return r.ok; }catch{return false;}
-}
-function isPaid(){ return localStorage.getItem("gr_paid")==="1"; }
-
-document.getElementById("download-btn").addEventListener("click", async (e)=>{
-  e.preventDefault();
-  if(!isPaid()){ location.href=STRIPE_LINK; return; }
-  if(await realZipExists()){
-    const a=document.createElement("a"); a.href="/goblinreach.zip"; a.download="goblinreach.zip";
-    document.body.appendChild(a); a.click(); a.remove();
-  }else{
-    alert("Download is unlocked but the file isn't uploaded yet.\n\nFix: add goblinreach.zip to /public and redeploy.");
-  }
-});
-
-/* Cash App helper */
-const CASH_TAG = "$YourCashTag"; // ← change this to your real Cash App tag
+/* Cash App helper — set your tag if you want */
+const CASH_TAG = "$YourCashTag";
 document.getElementById("cashapp").addEventListener("click", ()=>{
-  const url = `https://cash.app/${CASH_TAG.replace('$','')}`;
-  document.getElementById("cashapp-note").textContent = `Open Cash App and pay ${CASH_TAG}. Include your email in the note for license delivery.`;
-  window.open(url, "_blank");
+  const url=`https://cash.app/${CASH_TAG.replace('$','')}`;
+  document.getElementById("cashapp-note").textContent=`Open Cash App and pay ${CASH_TAG}. Include your email in the note for license delivery.`;
+  window.open(url,"_blank");
 });
+
+/* =================== INSTANT DOWNLOAD (NO /public NEEDED) =================== */
+/* Replace EXT_B64 below with your real zip’s Base64 when ready (optional). */
+const EXT_B64 =
+"UEsDBBQACAAIAE3pl1kAAAAAAAAAAAAAAAAKAAAATkVBRF9NRV9GSVJTVC50eHRUaGlzIGlzIGEgcGxhY2Vob2xkZXIgZm9yIHRoZSBHb2JsaW5SZWFjaCBDaHJvbWUgZXh0ZW5zaW9uLgpSZXBsYWNlIHRoaXMgZmlsZSBsYXRlciB3aXRoIHlvdXIgcmVhbCBleHRlbnNpb24gcGFja2FnZS4KUEsBAhQAFAAIAAgATemXWQAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAAAAAAA";
+
+function downloadEmbeddedZip(){
+  try{
+    const s=atob(EXT_B64), b=new Uint8Array(s.length);
+    for(let i=0;i<s.length;i++) b[i]=s.charCodeAt(i);
+    const blob=new Blob([b],{type:"application/zip"}), url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download="goblinreach.zip";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(e){ alert("Download failed."); }
+}
+document.getElementById("download-btn").addEventListener("click", (e)=>{ e.preventDefault(); downloadEmbeddedZip(); });
 </script>
 </body>
 </html>
