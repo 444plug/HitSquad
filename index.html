@@ -85,20 +85,18 @@
           <div class="badge">600–900s safe delay</div>
         </div>
 
-        <!-- PRIMARY CTAs — ALL ROUTE TO THE SAME CHECKOUT URL -->
         <div class="cta-row">
-          <a class="cta" data-checkout>
+          <a class="cta" href="https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT">
             <span>Subscribe — $22/mo</span>
             <span class="pill">Most popular</span>
           </a>
-          <a class="cta secondary" data-checkout>
+          <a class="cta secondary" href="https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT">
             <span>Download Extension</span>
           </a>
-          <a class="cta secondary" data-checkout>
+          <a class="cta secondary" href="https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT">
             <span>Get Started</span>
           </a>
         </div>
-        <div class="fine">All three buttons go to the <strong>same checkout</strong> for fastest conversion. After payment, you’ll be redirected to install + login.</div>
       </div>
 
       <div class="shot panel">
@@ -130,24 +128,8 @@
       </div>
     </footer>
   </div>
-
   <script>
-    // === CONFIG — EDIT THESE 2 LINES ONLY ===
-    const CHECKOUT_URL = "https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT"; // <- Your $22/mo Stripe Checkout link
-    const LOGIN_URL = "https://app.goblinreach.ai/login"; // <- Your app login URL (or leave as '#')
-
-    // Wire up all buttons with [data-checkout] to the SAME checkout URL
-    document.querySelectorAll('[data-checkout]').forEach(a=>{ a.href = CHECKOUT_URL; a.setAttribute('target','_self'); a.setAttribute('rel','noopener'); });
-
-    // Login nav link
-    const login = document.getElementById('login-link');
-    if(login){ login.href = LOGIN_URL; }
-
-    // Year stamp
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Optional: keyboard shortcut to go straight to checkout (press "G")
-    window.addEventListener('keydown', (e)=>{ if((e.key==='g' || e.key==='G') && !e.metaKey && !e.ctrlKey){ location.href = CHECKOUT_URL; }});
   </script>
 </body>
 </html>
