@@ -20,7 +20,6 @@
     body{
       margin:0; font:16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text); background:var(--bg);
-      /* subtle matrix effect */
       background-image:
         radial-gradient(900px 500px at 70% -10%, rgba(25,209,107,.12), transparent),
         radial-gradient(700px 400px at -10% 110%, rgba(25,209,107,.08), transparent),
@@ -111,21 +110,24 @@
           <div class="badge">600–900s safe delay</div>
         </div>
 
-        <!-- CTAs — ALL ROUTE TO THE SAME CHECKOUT URL -->
+        <!-- CTAs → Stripe checkout links -->
         <div class="cta-row">
-          <a class="cta" data-checkout>
-            <span>Subscribe — $22/mo</span>
+          <a class="cta" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">
+            <span>Subscribe</span>
             <span class="pill">Most popular</span>
           </a>
-          <a class="cta secondary" data-checkout>
+          <a class="cta secondary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">
             <span>Download Extension</span>
           </a>
-          <a class="cta secondary" data-checkout>
+          <a class="cta secondary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">
             <span>Get Started</span>
+          </a>
+          <a class="cta" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">
+            <span>Upgrade</span>
+            <span class=\"pill\">6 Month Plan</span>
           </a>
         </div>
 
-        <!-- spy tiles / vpn section -->
         <div class="tiles">
           <div class="tile">
             <h4>Rotating Proxies</h4>
@@ -173,20 +175,11 @@
   </div>
 
   <script>
-    // === CONFIG — EDIT THESE 2 LINES ONLY ===
-    const CHECKOUT_URL = "https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT"; // $22/mo Stripe Checkout link
-    const LOGIN_URL = "https://app.goblinreach.ai/login"; // your app login URL
-
-    // Wire up all CTAs to the same checkout
-    document.querySelectorAll('[data-checkout]').forEach(a=>{ a.href = CHECKOUT_URL; a.setAttribute('target','_self'); a.setAttribute('rel','noopener'); });
-
-    // Login link
+    const LOGIN_URL = "#"; // Use app login here if known
     const login = document.getElementById('login-link'); if(login) login.href = LOGIN_URL;
 
-    // Year stamp
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // World clock (NYC, London, Dubai)
     function tzTime(tz){ return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:tz}); }
     function tick(){
       document.getElementById('clock-ny').textContent = 'NYC — ' + tzTime('America/New_York');
