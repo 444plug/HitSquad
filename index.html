@@ -4,63 +4,89 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GoblinReach — Stealth IG DM Automator</title>
-  <meta name="description" content="Compliant, human‑paced Instagram DM automation with proxy + VPN support." />
+  <meta name="description" content="Stealth, proxy‑ready Instagram DM automation with human‑like pacing." />
   <meta property="og:title" content="GoblinReach — Stealth IG DM Automator" />
-  <meta property="og:description" content="Compliant, human‑paced Instagram DM automation with proxy + VPN support." />
+  <meta property="og:description" content="Stealth, proxy‑ready Instagram DM automation with human‑like pacing." />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#0b1d14" />
+  <meta name="theme-color" content="#04110b" />
   <link rel="icon" href="/favicon.ico" />
   <style>
     :root{
-      --bg:#050b09; --panel:#0b1d14; --text:#e8ffee; --muted:#9ae6b4;
-      --accent:#16a34a; --accent-2:#22c55e; --accent-3:#34d399; --wired:#133520;
+      --bg:#030a07; --panel:#06140e; --border:#0f2e20; --glow:#19d16b; --text:#eaffef; --muted:#9be8b9;
+      --accent:#12a150; --accent2:#19d16b; --tile:#071b12;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-      color:var(--text); background:radial-gradient(1200px 600px at 80% -10%, #0b381f44, transparent),
-              radial-gradient(800px 400px at -10% 110%, #0b381f33, transparent), var(--bg);
+      margin:0; font:16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text); background:var(--bg);
+      /* subtle matrix effect */
+      background-image:
+        radial-gradient(900px 500px at 70% -10%, rgba(25,209,107,.12), transparent),
+        radial-gradient(700px 400px at -10% 110%, rgba(25,209,107,.08), transparent),
+        linear-gradient(transparent 31px, rgba(25,209,107,.07) 31px),
+        linear-gradient(90deg, transparent 31px, rgba(25,209,107,.07) 31px);
+      background-size: auto, auto, 32px 32px, 32px 32px;
+      background-position: center, center, 0 0, 0 0;
     }
     a{color:inherit; text-decoration:none}
     .wrap{max-width:1100px; margin:0 auto; padding:28px 18px}
     header{display:flex; align-items:center; justify-content:space-between; gap:16px}
     .brand{display:flex; align-items:center; gap:12px}
-    .logo{width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 2px #0f291a,0 10px 30px #0f291a}
+    .logo{width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--accent2),var(--accent)); box-shadow:0 0 0 2px #0b261a,0 8px 28px #0b261a}
     .brand h1{font-size:18px; margin:0; letter-spacing:.2px}
     nav a{opacity:.9; padding:8px 12px; border-radius:10px}
-    nav a:hover{background:#0f291a}
+    nav a:hover{background:#0a2015}
+
+    .clock{position:fixed; top:12px; right:12px; z-index:20; padding:8px 12px; border-radius:10px; background:#06140ed9; border:1px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,.35); font-size:12px; color:#bff7ce}
+    .clock .t{font-variant-numeric:tabular-nums; font-weight:600; color:#eaffef}
+
     .hero{margin:42px 0 28px; display:grid; grid-template-columns:1.1fr .9fr; gap:28px}
     @media (max-width:900px){.hero{grid-template-columns:1fr}}
-    .panel{background:linear-gradient(180deg,rgba(21,56,36,.7),rgba(9,25,17,.85)); border:1px solid #17452b; box-shadow:0 10px 40px rgba(0,0,0,.4), inset 0 0 0 1px #0c2618; border-radius:18px; padding:22px}
-    .eyebrow{color:var(--muted); font-weight:600; letter-spacing:.18em; text-transform:uppercase; font-size:12px}
+    .panel{background:linear-gradient(180deg,rgba(10,30,22,.85),rgba(4,16,11,.92)); border:1px solid var(--border); box-shadow:0 10px 40px rgba(0,0,0,.5), inset 0 0 0 1px #0b2418; border-radius:18px; padding:22px}
+    .eyebrow{color:var(--muted); font-weight:700; letter-spacing:.18em; text-transform:uppercase; font-size:11px}
     h2{margin:6px 0 12px; font-size:34px; line-height:1.1}
     p.lead{margin:0 0 16px; opacity:.95}
+
     .badges{display:flex; gap:12px; flex-wrap:wrap; margin:18px 0}
-    .badge{font-size:12px; padding:6px 10px; border:1px solid #1a5a35; border-radius:999px; background:#0b1d14aa}
+    .badge{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#072015cc}
 
     .cta-row{display:flex; flex-wrap:wrap; gap:12px; margin:18px 0 4px}
-    .cta{display:inline-flex; align-items:center; gap:10px; padding:13px 18px; border-radius:12px; border:1px solid #1a5a35; background:linear-gradient(180deg,#1a5f38,#0d3a23); color:#eaffef; font-weight:700; letter-spacing:.2px; transition:transform .06s ease, filter .2s}
-    .cta:hover{transform:translateY(-1px); filter:brightness(1.05)}
-    .cta.secondary{background:linear-gradient(180deg,#0e2b1b,#0a2216)}
+    .cta{display:inline-flex; align-items:center; gap:10px; padding:13px 18px; border-radius:12px; border:1px solid var(--border); background:linear-gradient(180deg,#0e3a29,#0a2419); color:#eaffef; font-weight:800; letter-spacing:.2px; transition:transform .06s ease, filter .2s}
+    .cta:hover{transform:translateY(-1px); filter:brightness(1.06)}
+    .cta.secondary{background:linear-gradient(180deg,#0b261b,#081c13)}
     .cta .pill{background:#052015; border:1px solid #13472c; color:#aef0bf; font-size:12px; padding:2px 8px; border-radius:999px}
 
-    .shot{position:relative; aspect-ratio:16/10; border-radius:18px; background:linear-gradient(180deg,#0c2217,#06130d); border:1px solid #17452b; overflow:hidden}
+    .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0 0}
+    @media (max-width:900px){.tiles{grid-template-columns:1fr}}
+    .tile{background:linear-gradient(180deg,#072417,#05150f); border:1px solid var(--border); border-radius:14px; padding:12px}
+    .tile h4{margin:2px 0 8px; font-size:13px; color:#b6f3c7}
+    .tile .chip{display:inline-block; font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid var(--border); background:#06180f; color:#c4ffd6}
+
+    .shot{position:relative; aspect-ratio:16/10; border-radius:18px; background:linear-gradient(180deg,#0a1f16,#07150f); border:1px solid var(--border); overflow:hidden}
     .grid{position:absolute; inset:0; background-image:linear-gradient(#0e2b1b44 1px,transparent 1px),linear-gradient(90deg,#0e2b1b44 1px,transparent 1px); background-size:22px 22px}
-    .glow{position:absolute; inset:0; background:radial-gradient(500px 220px at 70% 30%, rgba(52,211,153,.18), transparent), radial-gradient(400px 200px at 20% 80%, rgba(34,197,94,.14), transparent)}
+    .glow{position:absolute; inset:0; background:radial-gradient(500px 220px at 70% 30%, rgba(25,209,107,.18), transparent), radial-gradient(400px 200px at 20% 80%, rgba(25,209,107,.12), transparent)}
     .caption{position:absolute; bottom:0; width:100%; padding:12px 16px; background:linear-gradient(180deg,transparent,rgba(0,0,0,.45)); font-size:13px; color:#c9ffd6}
 
     .features{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:28px 0}
     @media (max-width:900px){.features{grid-template-columns:1fr}}
-    .card{padding:18px; border-radius:16px; border:1px solid #17452b; background:linear-gradient(180deg,#0d281a,#07150f)}
+    .card{padding:18px; border-radius:16px; border:1px solid var(--border); background:linear-gradient(180deg,#0d281a,#07150f)}
     .card h3{margin:2px 0 8px; font-size:16px}
     .fine{font-size:12px; opacity:.8}
 
-    footer{margin:26px 0 10px; padding:16px; border-top:1px solid #143c25; color:#a9e9ba; font-size:13px}
+    footer{margin:26px 0 10px; padding:16px; border-top:1px solid var(--border); color:#a9e9ba; font-size:13px}
     .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between}
   </style>
 </head>
 <body>
+  <!-- world clock -->
+  <div class="clock" aria-live="polite">
+    <div>World Clock</div>
+    <div class="t" id="clock-ny">NYC — --:--:--</div>
+    <div class="t" id="clock-lon">LDN — --:--:--</div>
+    <div class="t" id="clock-dxb">DXB — --:--:--</div>
+  </div>
+
   <div class="wrap">
     <header>
       <div class="brand">
@@ -85,17 +111,34 @@
           <div class="badge">600–900s safe delay</div>
         </div>
 
+        <!-- CTAs — ALL ROUTE TO THE SAME CHECKOUT URL -->
         <div class="cta-row">
-          <a class="cta" href="https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT">
+          <a class="cta" data-checkout>
             <span>Subscribe — $22/mo</span>
             <span class="pill">Most popular</span>
           </a>
-          <a class="cta secondary" href="https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT">
+          <a class="cta secondary" data-checkout>
             <span>Download Extension</span>
           </a>
-          <a class="cta secondary" href="https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT">
+          <a class="cta secondary" data-checkout>
             <span>Get Started</span>
           </a>
+        </div>
+
+        <!-- spy tiles / vpn section -->
+        <div class="tiles">
+          <div class="tile">
+            <h4>Rotating Proxies</h4>
+            <span class="chip">Residential • Geo‑target</span>
+          </div>
+          <div class="tile">
+            <h4>VPN Cloak</h4>
+            <span class="chip">Hide IP • Reduce flags</span>
+          </div>
+          <div class="tile">
+            <h4>24/7 Cloud</h4>
+            <span class="chip">Runs while you sleep</span>
+          </div>
         </div>
       </div>
 
@@ -128,8 +171,29 @@
       </div>
     </footer>
   </div>
+
   <script>
+    // === CONFIG — EDIT THESE 2 LINES ONLY ===
+    const CHECKOUT_URL = "https://buy.stripe.com/YOUR_22_PER_MONTH_CHECKOUT"; // $22/mo Stripe Checkout link
+    const LOGIN_URL = "https://app.goblinreach.ai/login"; // your app login URL
+
+    // Wire up all CTAs to the same checkout
+    document.querySelectorAll('[data-checkout]').forEach(a=>{ a.href = CHECKOUT_URL; a.setAttribute('target','_self'); a.setAttribute('rel','noopener'); });
+
+    // Login link
+    const login = document.getElementById('login-link'); if(login) login.href = LOGIN_URL;
+
+    // Year stamp
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // World clock (NYC, London, Dubai)
+    function tzTime(tz){ return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:tz}); }
+    function tick(){
+      document.getElementById('clock-ny').textContent = 'NYC — ' + tzTime('America/New_York');
+      document.getElementById('clock-lon').textContent = 'LDN — ' + tzTime('Europe/London');
+      document.getElementById('clock-dxb').textContent = 'DXB — ' + tzTime('Asia/Dubai');
+    }
+    tick(); setInterval(tick,1000);
   </script>
 </body>
 </html>
