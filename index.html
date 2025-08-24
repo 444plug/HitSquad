@@ -3,190 +3,190 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GoblinReach — Stealth IG DM Automator</title>
-  <meta name="description" content="Stealth, proxy‑ready Instagram DM automation with human‑like pacing." />
-  <meta property="og:title" content="GoblinReach — Stealth IG DM Automator" />
-  <meta property="og:description" content="Stealth, proxy‑ready Instagram DM automation with human‑like pacing." />
-  <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#04110b" />
-  <link rel="icon" href="/favicon.ico" />
+  <title>GoblinReach • DM Automation (One‑Paste)</title>
+  <meta name="description" content="GoblinReach automates Instagram DMs with proxy/VPN support and human‑like pacing. Start free, upgrade anytime. One‑paste index with instant access overlay." />
   <style>
-    :root{
-      --bg:#030a07; --panel:#06140e; --border:#0f2e20; --glow:#19d16b; --text:#eaffef; --muted:#9be8b9;
-      --accent:#12a150; --accent2:#19d16b; --tile:#071b12;
-    }
+    :root{--bg:#0b0f0d;--bg2:#111716;--fg:#e7f5ef;--mut:#a7b7b0;--neon:#32ff7e;--neon2:#00d084;--bd:rgba(50,255,126,.28);--bd2:rgba(50,255,126,.45);--shadow:0 10px 30px rgba(0,0,0,.35);--r:18px}
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; font:16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text); background:var(--bg);
-      background-image:
-        radial-gradient(900px 500px at 70% -10%, rgba(25,209,107,.12), transparent),
-        radial-gradient(700px 400px at -10% 110%, rgba(25,209,107,.08), transparent),
-        linear-gradient(transparent 31px, rgba(25,209,107,.07) 31px),
-        linear-gradient(90deg, transparent 31px, rgba(25,209,107,.07) 31px);
-      background-size: auto, auto, 32px 32px, 32px 32px;
-      background-position: center, center, 0 0, 0 0;
-    }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px}
-    header{display:flex; align-items:center; justify-content:space-between; gap:16px}
-    .brand{display:flex; align-items:center; gap:12px}
-    .logo{width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--accent2),var(--accent)); box-shadow:0 0 0 2px #0b261a,0 8px 28px #0b261a}
-    .brand h1{font-size:18px; margin:0; letter-spacing:.2px}
-    nav a{opacity:.9; padding:8px 12px; border-radius:10px}
-    nav a:hover{background:#0a2015}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%, rgba(0,208,132,.08), transparent),radial-gradient(800px 600px at 90% 10%, rgba(50,255,126,.06), transparent),linear-gradient(180deg,#09110f 0%,var(--bg) 60%);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica Neue,Arial}
+    a{color:var(--neon)}
+    .wrap{max-width:1200px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;background:linear-gradient(180deg,rgba(11,15,13,.95),rgba(11,15,13,.65));backdrop-filter:blur(8px);border-bottom:1px solid var(--bd);z-index:10}
+    .brand{display:flex;align-items:center;gap:12px;padding:12px 0}
+    .mark{width:28px;height:28px;border-radius:8px;background:radial-gradient(circle at 30% 30%,var(--neon),var(--neon2));filter:drop-shadow(0 0 8px rgba(50,255,126,.6))}
+    .brand h1{margin:0;font-size:20px;font-weight:800;letter-spacing:.5px}
+    .brand h1 span{color:var(--neon)}
 
-    .clock{position:fixed; top:12px; right:12px; z-index:20; padding:8px 12px; border-radius:10px; background:#06140ed9; border:1px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,.35); font-size:12px; color:#bff7ce}
-    .clock .t{font-variant-numeric:tabular-nums; font-weight:600; color:#eaffef}
+    .hero{padding:48px 0 16px}
+    .kicker{color:var(--neon);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:2px}
+    .title{font-size:clamp(28px,4.5vw,48px);font-weight:900;line-height:1.05;margin:6px 0 8px}
+    .sub{color:var(--mut);font-size:clamp(14px,1.4vw,18px);max-width:860px}
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .badge{border:1px solid var(--bd);color:var(--mut);padding:6px 10px;border-radius:999px;font-size:12px}
 
-    .hero{margin:42px 0 28px; display:grid; grid-template-columns:1.1fr .9fr; gap:28px}
-    @media (max-width:900px){.hero{grid-template-columns:1fr}}
-    .panel{background:linear-gradient(180deg,rgba(10,30,22,.85),rgba(4,16,11,.92)); border:1px solid var(--border); box-shadow:0 10px 40px rgba(0,0,0,.5), inset 0 0 0 1px #0b2418; border-radius:18px; padding:22px}
-    .eyebrow{color:var(--muted); font-weight:700; letter-spacing:.18em; text-transform:uppercase; font-size:11px}
-    h2{margin:6px 0 12px; font-size:34px; line-height:1.1}
-    p.lead{margin:0 0 16px; opacity:.95}
+    .section{padding:26px 0 10px}
+    h2.section-title{font-size:clamp(24px,3.2vw,36px);margin:0 0 10px;color:var(--neon)}
+    p.lead{color:var(--mut);margin:0 0 20px}
 
-    .badges{display:flex; gap:12px; flex-wrap:wrap; margin:18px 0}
-    .badge{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#072015cc}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .card{grid-column:span 12;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);position:relative;transition:transform .25s ease,border-color .25s ease}
+    .card:hover{transform:translateY(-4px);border-color:var(--bd2)}
+    @media(min-width:720px){.card{grid-column:span 6}}
+    @media(min-width:1024px){.card{grid-column:span 4}}
+    .plan{font-size:20px;font-weight:800;margin:0 0 6px}
+    .plan-desc{color:var(--mut);margin:0 0 14px;font-size:14px}
+    .price{font-size:36px;font-weight:900;color:var(--neon);margin-bottom:12px;text-shadow:0 0 8px rgba(50,255,126,.25)}
+    .price small{color:var(--mut);font-weight:700;font-size:14px;margin-left:8px}
+    ul.features{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:8px}
+    .feat{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:14px}
+    .cta{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid var(--bd);background:linear-gradient(180deg,rgba(50,255,126,.18),rgba(50,255,126,.10));color:#04110b;font-weight:900;text-decoration:none;letter-spacing:.4px}
 
-    .cta-row{display:flex; flex-wrap:wrap; gap:12px; margin:18px 0 4px}
-    .cta{display:inline-flex; align-items:center; gap:10px; padding:13px 18px; border-radius:12px; border:1px solid var(--border); background:linear-gradient(180deg,#0e3a29,#0a2419); color:#eaffef; font-weight:800; letter-spacing:.2px; transition:transform .06s ease, filter .2s}
-    .cta:hover{transform:translateY(-1px); filter:brightness(1.06)}
-    .cta.secondary{background:linear-gradient(180deg,#0b261b,#081c13)}
-    .cta .pill{background:#052015; border:1px solid #13472c; color:#aef0bf; font-size:12px; padding:2px 8px; border-radius:999px}
+    /* 3 steps */
+    .steps .card{min-height:160px}
+    .num{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:900;background:radial-gradient(80% 80% at 30% 20%,var(--neon),var(--neon2));color:#04110b;box-shadow:0 0 20px rgba(50,255,126,.4);margin-bottom:10px}
+    .step-title{font-size:18px;font-weight:800;margin:4px 0 6px}
+    .step-copy{color:var(--mut);font-size:14px}
 
-    .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0 0}
-    @media (max-width:900px){.tiles{grid-template-columns:1fr}}
-    .tile{background:linear-gradient(180deg,#072417,#05150f); border:1px solid var(--border); border-radius:14px; padding:12px}
-    .tile h4{margin:2px 0 8px; font-size:13px; color:#b6f3c7}
-    .tile .chip{display:inline-block; font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid var(--border); background:#06180f; color:#c4ffd6}
+    footer{padding:40px 0 28px;color:var(--mut);font-size:13px;border-top:1px solid var(--bd);margin-top:28px}
+    .foot{display:grid;gap:10px;align-items:center}
+    @media(min-width:700px){.foot{grid-template-columns:1fr auto}}
 
-    .shot{position:relative; aspect-ratio:16/10; border-radius:18px; background:linear-gradient(180deg,#0a1f16,#07150f); border:1px solid var(--border); overflow:hidden}
-    .grid{position:absolute; inset:0; background-image:linear-gradient(#0e2b1b44 1px,transparent 1px),linear-gradient(90deg,#0e2b1b44 1px,transparent 1px); background-size:22px 22px}
-    .glow{position:absolute; inset:0; background:radial-gradient(500px 220px at 70% 30%, rgba(25,209,107,.18), transparent), radial-gradient(400px 200px at 20% 80%, rgba(25,209,107,.12), transparent)}
-    .caption{position:absolute; bottom:0; width:100%; padding:12px 16px; background:linear-gradient(180deg,transparent,rgba(0,0,0,.45)); font-size:13px; color:#c9ffd6}
+    /* SUCCESS OVERLAY (shows on #success) */
+    #unlock{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999}
+    .unlock-card{max-width:760px;margin:7vh auto;background:#0e1513;border:1px solid var(--bd2);border-radius:18px;padding:26px;color:var(--fg);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+    .unlock-card h2{margin:0 0 8px;font-size:28px;color:var(--neon)}
+    .unlock-card p{margin:0 0 14px;color:var(--fg)}
+    .dl-wrap{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 10px}
+    .ghost{opacity:.75;font-size:13px}
+    .row{display:flex;flex-wrap:wrap;gap:8px}
+    .mini{font-size:12px;color:var(--mut)}
 
-    .features{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:28px 0}
-    @media (max-width:900px){.features{grid-template-columns:1fr}}
-    .card{padding:18px; border-radius:16px; border:1px solid var(--border); background:linear-gradient(180deg,#0d281a,#07150f)}
-    .card h3{margin:2px 0 8px; font-size:16px}
-    .fine{font-size:12px; opacity:.8}
-
-    footer{margin:26px 0 10px; padding:16px; border-top:1px solid var(--border); color:#a9e9ba; font-size:13px}
-    .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between}
+    /* tiny world clock */
+    #clock{font-family:monospace;color:var(--mut);font-size:12px}
   </style>
 </head>
 <body>
-  <!-- world clock -->
-  <div class="clock" aria-live="polite">
-    <div>World Clock</div>
-    <div class="t" id="clock-ny">NYC — --:--:--</div>
-    <div class="t" id="clock-lon">LDN — --:--:--</div>
-    <div class="t" id="clock-dxb">DXB — --:--:--</div>
+  <!-- SUCCESS OVERLAY -->
+  <div id="unlock" role="dialog" aria-modal="true" aria-labelledby="unlock-title">
+    <div class="unlock-card">
+      <h2 id="unlock-title">✅ Access Unlocked</h2>
+      <p>Thanks for your purchase. Download the tool and start in under a minute.</p>
+      <ol style="line-height:1.7;margin:0 0 16px;padding-left:18px">
+        <li><b>Download</b> the extension ZIP.</li>
+        <li><b>Open</b> Chrome → <i>chrome://extensions</i> → enable <i>Developer mode</i> → <b>Load unpacked</b> → select the unzipped folder.</li>
+        <li><b>Open</b> GoblinReach from the toolbar → log in → launch a campaign.</li>
+      </ol>
+      <div class="dl-wrap">
+        <!-- TODO: Upload these two files under /public/downloads/ in your Vercel project -->
+        <a class="cta" href="/downloads/goblinreach-extension.zip" download>↓ Download Extension (ZIP)</a>
+        <a class="cta" href="/downloads/quickstart.pdf" target="_blank">📘 Quickstart Guide</a>
+      </div>
+      <div class="mini">Need help? DM <a href="https://www.instagram.com/goblinreach.ai/" target="_blank" rel="noopener">@goblinreach.ai</a></div>
+      <p class="ghost">Not supposed to be here? <a href="/">Return to homepage</a>.</p>
+    </div>
   </div>
 
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>GoblinReach</h1>
-      </div>
-      <nav>
-        <a id="login-link" href="#">Log in</a>
-        <a id="support-link" href="mailto:support@goblinreach.ai">Support</a>
-      </nav>
-    </header>
+  <header>
+    <div class="wrap brand">
+      <div class="mark" aria-hidden="true"></div>
+      <h1>Goblin<span>Reach</span></h1>
+      <div style="margin-left:auto" id="clock" aria-label="World Clock"></div>
+    </div>
+  </header>
 
-    <section class="hero">
-      <div class="panel">
-        <div class="eyebrow">Stealth Instagram Outreach</div>
-        <h2>Let AI handle your Instagram DMs — safely, on autopilot.</h2>
-        <p class="lead">Guided login (no tokens), human‑like pacing (600–900s jitter), proxy‑ready. One‑minute install.</p>
-
-        <div class="badges">
-          <div class="badge">18–31 avg replies / 100 DMs</div>
-          <div class="badge">1,000+ installs</div>
-          <div class="badge">600–900s safe delay</div>
-        </div>
-
-        <!-- CTAs → Stripe checkout links -->
-        <div class="cta-row">
-          <a class="cta" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">
-            <span>Subscribe</span>
-            <span class="pill">Most popular</span>
-          </a>
-          <a class="cta secondary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">
-            <span>Download Extension</span>
-          </a>
-          <a class="cta secondary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">
-            <span>Get Started</span>
-          </a>
-          <a class="cta" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">
-            <span>Upgrade</span>
-            <span class=\"pill\">6 Month Plan</span>
-          </a>
-        </div>
-
-        <div class="tiles">
-          <div class="tile">
-            <h4>Rotating Proxies</h4>
-            <span class="chip">Residential • Geo‑target</span>
-          </div>
-          <div class="tile">
-            <h4>VPN Cloak</h4>
-            <span class="chip">Hide IP • Reduce flags</span>
-          </div>
-          <div class="tile">
-            <h4>24/7 Cloud</h4>
-            <span class="chip">Runs while you sleep</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="shot panel">
-        <div class="grid"></div>
-        <div class="glow"></div>
-        <div class="caption">Live preview: Human‑paced queue, proxy status, and reply counter.</div>
+  <main>
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <div class="kicker">AUTOPILOT OUTREACH • PROXY • VPN • 24/7 CLOUD</div>
+      <h2 id="hero-title" class="title">Let AI handle your Instagram DMs — safely, on autopilot.</h2>
+      <p class="sub">Human‑like pacing (600–900s jitter), proxy/VPN support, multi‑account control, and export of replies to Google Sheets or Telegram. One‑minute setup. No tech skills.</p>
+      <div class="badges">
+        <span class="badge">18–31 avg replies / 100 DMs</span>
+        <span class="badge">1,000+ installs</span>
+        <span class="badge">Stealth mode + mouse wiggler</span>
       </div>
     </section>
 
-    <section class="features">
-      <div class="card">
-        <h3>Proxies & VPN</h3>
-        <p>Rotate residential proxies and run behind a VPN for maximum deliverability and safety.</p>
-      </div>
-      <div class="card">
-        <h3>Human‑like pacing</h3>
-        <p>600–900s randomized delays, auto‑retries, throttling, and warm‑up sequences.</p>
-      </div>
-      <div class="card">
-        <h3>Campaign builder</h3>
-        <p>Upload a list, assign message sets, schedule sends, and stream replies to Sheets or Telegram.</p>
+    <!-- PRICING -->
+    <section class="wrap section" aria-labelledby="pricing-title">
+      <h2 id="pricing-title" class="section-title">Choose Your Plan</h2>
+      <p class="lead">Start free today. Upgrade anytime for more power and features.</p>
+
+      <div class="grid">
+        <!-- STARTER -->
+        <article class="card" aria-labelledby="p1">
+          <h3 id="p1" class="plan">Starter</h3>
+          <p class="plan-desc">Perfect for solo creators & small brands.</p>
+          <div class="price">$22<small>/month</small></div>
+          <ul class="features">
+            <li class="feat">✔ 1,000 DMs / month</li>
+            <li class="feat">✔ Proxy‑ready + VPN mode</li>
+            <li class="feat">✔ Human‑like pacing (600–900s)</li>
+          </ul>
+          <!-- STRIPE PAYMENT LINK: set redirect to https://goblinreach.live/#success in Stripe -->
+          <a class="cta" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener" aria-label="Start Free Trial – $22 per month">Start Free Trial →</a>
+        </article>
+
+        <!-- PRO -->
+        <article class="card" aria-labelledby="p2">
+          <h3 id="p2" class="plan">Pro</h3>
+          <p class="plan-desc">For growth hackers & agencies.</p>
+          <div class="price">$95<small>/6 mo</small></div>
+          <ul class="features">
+            <li class="feat">✔ 10,000 DMs / month</li>
+            <li class="feat">✔ Multi‑account support</li>
+            <li class="feat">✔ Export replies to Sheets / Telegram</li>
+          </ul>
+          <!-- STRIPE PAYMENT LINK: set redirect to https://goblinreach.live/#success in Stripe -->
+          <a class="cta" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04" target="_blank" rel="noopener" aria-label="Upgrade Now – $95 for 6 months">Upgrade Now →</a>
+        </article>
+
+        <!-- AGENCY -->
+        <article class="card" aria-labelledby="p3">
+          <h3 id="p3" class="plan">Agency / White‑Label</h3>
+          <p class="plan-desc">Custom setup for serious players.</p>
+          <div class="price" style="font-size:30px">From $5,000+</div>
+          <ul class="features">
+            <li class="feat">✔ Unlimited DMs / accounts</li>
+            <li class="feat">✔ Custom branding (white‑label)</li>
+            <li class="feat">✔ Dedicated setup & support</li>
+          </ul>
+          <a class="cta" href="https://cash.app/$Triple4mgmt" target="_blank" rel="noopener" aria-label="Contact Sales via Cash App">Contact Sales →</a>
+        </article>
       </div>
     </section>
 
-    <footer>
-      <div class="row">
-        <div>© <span id="year"></span> GoblinReach. Compliant automation with human‑like pacing.</div>
-        <div class="fine">Questions? <a href="mailto:support@goblinreach.ai">support@goblinreach.ai</a></div>
+    <!-- 3 STEPS -->
+    <section class="wrap section steps" aria-labelledby="steps-title">
+      <h2 id="steps-title" class="section-title">Get Started in 3 Steps</h2>
+      <p class="lead">No engineering required. One‑minute setup.</p>
+      <div class="grid">
+        <article class="card"><div class="num">1</div><div class="step-title">Download Extension</div><div class="step-copy">Install on Chrome/Edge. Compatible with proxy/VPN.</div></article>
+        <article class="card"><div class="num">2</div><div class="step-title">Connect Instagram</div><div class="step-copy">Secure login. Add proxy or VPN for maximum stealth.</div></article>
+        <article class="card"><div class="num">3</div><div class="step-title">Launch Campaigns</div><div class="step-copy">Upload a list or target followers. Human‑like pacing handles the rest.</div></article>
       </div>
-    </footer>
-  </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© <span id="y"></span> GoblinReach. Compliant automation with human‑like pacing.</div>
+      <div>Built for agencies & creators.</div>
+    </div>
+  </footer>
 
   <script>
-    const LOGIN_URL = "#"; // Use app login here if known
-    const login = document.getElementById('login-link'); if(login) login.href = LOGIN_URL;
+    // World clock (local)
+    const c=document.getElementById('clock');
+    setInterval(()=>{const d=new Date();c.textContent=d.toLocaleString();},1000);
 
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    function tzTime(tz){ return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:tz}); }
-    function tick(){
-      document.getElementById('clock-ny').textContent = 'NYC — ' + tzTime('America/New_York');
-      document.getElementById('clock-lon').textContent = 'LDN — ' + tzTime('Europe/London');
-      document.getElementById('clock-dxb').textContent = 'DXB — ' + tzTime('Asia/Dubai');
+    // Show success overlay if returning from Stripe with #success
+    if(location.hash==='#success'){
+      const el=document.getElementById('unlock');
+      if(el) el.style.display='block';
     }
-    tick(); setInterval(tick,1000);
+    // year
+    document.getElementById('y').textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
