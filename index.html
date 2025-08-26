@@ -11,9 +11,10 @@
   <style>
     :root { --g: #22c55e; --g2: #16a34a; --bg: #060606; }
     html { isolation: isolate; }
-    html, body { background:#000; color:#e5e7eb; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; overflow: auto; min-height: 100vh; }
+    html, body { background:#000; color:#e5e7eb; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; overflow: auto; overflow-x: hidden; min-height: 100vh; }
     *::before, *::after { content: none !important; }
-    [data-vercel-powered-by], [id*="vercel"], [class*="vercel"] { display: none !important; }
+    [data-vercel-powered-by], [id*="vercel"], [class*="vercel"], [class*="footer"], [id*="footer"], footer, [role="contentinfo"] { display: none !important; }
+    body > *:not(:where(header, section, div.sticky)) { display: none !important; }
     .max-w-6xl { max-width: 72rem; margin-left: auto; margin-right: auto; }
     .px-4 { padding-left: 1rem; padding-right: 1rem; }
     .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
@@ -180,7 +181,7 @@
           <div class="text-sm text-neutral-400">Paid already? Unlock the starter extension immediately. No email wait. No ban‑bait.</div>
         </div>
         <div class="flex flex-wrap gap-2">
-          <button class="btn btn-g"watermark id="unlockBtn" type="button">I paid — give me access</button>
+          <button class="btn btn-g" id="unlockBtn" type="button">I paid — give me access</button>
           <button class="btn btn-ghost" id="trialBtn" type="button">Free trial: 50 DMs (safe mode)</button>
         </div>
       </div>
@@ -211,6 +212,20 @@
   <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
   <script>
+    // Remove injected footers or unwanted content
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const unwanted = document.querySelectorAll('footer, [id*="footer"], [class*="footer"], [id*="vercel"], [class*="vercel"], [data-vercel-powered-by]');
+        unwanted.forEach(el => {
+          if (el.textContent.toLowerCase().includes('vercel') || el.textContent.toLowerCase().includes('powered') || el.textContent.toLowerCase().includes('footer')) {
+            el.remove();
+          }
+        });
+      } catch (e) {
+        console.error('Error removing unwanted elements:', e);
+      }
+    });
+
     // World clocks
     function updateClock() {
       try {
