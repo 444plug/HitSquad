@@ -128,7 +128,7 @@
     <div class="card p-5">
       <div class="text-sm text-emerald-400 mb-1">VPN + Cloud 24/7</div>
       <div class="font-bold text-lg">Run while your laptop is off</div>
-      <p class="text-sm text-neutral-400 mt-2">Deploy the bot on a cheap VPS. Auto‑retry & resume after crashes.</p>
+      <p class="text-sm text-neutral-400 mt-2">Deploy the bot on a cheap VPS. Auto‑retry & resume after crashes. Persistent background service for 24/7 operation.</p>
     </div>
     <div class="card p-5">
       <div class="text-sm text-emerald-400 mb-1">Instant Delivery</div>
@@ -186,7 +186,8 @@
         "version": "0.1.0",
         "description": "Human-like Instagram DM pacing with delay controls and proxy tips.",
         "action": { "default_popup": "popup.html" },
-        "permissions": ["storage", "activeTab", "scripting"],
+        "background": { "service_worker": "background.js" },
+        "permissions": ["storage", "activeTab", "scripting", "alarms"],
         "host_permissions": ["https://*.instagram.com/*"],
         "icons": {
           "16": "icon16.png",
@@ -197,8 +198,7 @@
 
       const popupHtml = `<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>GoblinReach</title><style>body{font:14px Inter,system-ui;background:#0b0b0b;color:#e5e7eb;margin:0;padding:16px}button{background:#22c55e;border:0;color:#052e16;padding:10px 12px;border-radius:12px;font-weight:800}input,textarea{width:100%;background:#101010;border:1px solid #2a2a2a;color:#cfcfcf;border-radius:10px;padding:8px}</style></head><body><h1 style=\"margin:0 0 8px;\">GoblinReach ${trial?"Trial":""}</h1><div style=\"opacity:.7;margin-bottom:10px\">Keep delay ≥ 600s. Obey platform rules.</div><label>Audience</label><select id=\"aud\" style=\"width:100%;background:#101010;border:1px solid #2a2a2a;color:#cfcfcf;border-radius:10px;padding:8px\"><option>People who liked a post</option><option>Commenters of a post</option><option>A user's followers</option><option>A user's following</option></select><label style=\"margin-top:8px;display:block\">Post/Username</label><input id=\"target\" placeholder=\"https://instagram.com/p/POST_ID or @user\"><label style=\"margin-top:8px;display:block\">Message</label><textarea id=\"msg\" rows=\"3\" placeholder=\"Hey {{name}} — quick question…\"></textarea><label style=\"margin-top:8px;display:block\">Delay (sec)</label><input id=\"delay\" type=\"number\" min=\"600\" value=\"600\"><div style=\"display:flex;gap:8px;margin-top:12px\"><button id=\"start\">Start</button><button id=\"stop\" style=\"background:#202020;color:#d1d5db\">Stop</button></div><div id=\"log\" style=\"margin-top:10px;opacity:.8;white-space:pre-wrap\"></div><script src=\"popup.js\"></script></body></html>`;
 
-      const popupJs = `let timer=null;let count=0;let limit=${trial?50:999999};
-const log=(t)=>{document.getElementById('log').textContent += t+"\n";};
+      const popupJs = `const log=(t)=>{document.getElementById('log').textContent += t+"\\n";};
 async function saveSettings(){
   const aud=document.getElementById('aud').value;
   const target=document.getElementById('target').value.trim();
@@ -208,39 +208,70 @@ async function saveSettings(){
   return {aud,target,msg,delay};
 }
 
-// Optional helper: open target (profile or post) in current tab first
+document.getElementById('start').onclick=async ()=>{
+  const {delay}=await saveSettings();
+  if(delay<600){alert('Keep delay ≥ 600 for safety.');return;}
+  log('Starting with delay '+delay+'s');
+  chrome.runtime.sendMessage({action:'start'});
+};
+
+document.getElementById('stop').onclick=()=>{
+  log('Stopped.');
+  chrome.runtime.sendMessage({action:'stop'});
+};
+
+// Listen for logs from background
+chrome.runtime.onMessage.addListener((msg)=>{
+  if(msg.action==='log'){ log(msg.text); }
+});`;
+
+      const backgroundJs = `let count=0;
+let limit=0;
+
+function keepAlive(){
+  setInterval(chrome.runtime.getPlatformInfo, 20000);
+}
+keepAlive();
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{
+  if(message.action==='start'){
+    chrome.storage.sync.get(['aud','target','msg','delay'], (st)=>{
+      limit = ${trial ? 50 : 999999};
+      count=0;
+      openTarget(st.target);
+      createNextAlarm(st.delay);
+      chrome.runtime.sendMessage({action:'log', text:'Automation started.'});
+    });
+  }else if(message.action==='stop'){
+    chrome.alarms.clear('dmAlarm');
+    chrome.runtime.sendMessage({action:'log', text:'Automation stopped.'});
+  }
+});
+
 async function openTarget(target){
   if(!target) return;
   let url=target;
-  if(target.startsWith('@')){
-    url=\`https://www.instagram.com/\${target.replace('@','')}/\`;
-  }
+  if(target.startsWith('@')){ url=\`https://www.instagram.com/\${target.replace('@','')}/\`; }
   if(!/^https?:\\/\\//.test(url)) return;
   chrome.tabs.query({active:true,currentWindow:true},tabs=>{ if(!tabs[0]) return; chrome.tabs.update(tabs[0].id,{url}); });
 }
 
-async function start(){
-  const {target,delay}=await saveSettings();
-  if(delay<600){alert('Keep delay ≥ 600 for safety.');return;}
-  log('Starting with delay '+delay+'s');
-  count=0;
-  await openTarget(target);
-  tick(delay);
+function createNextAlarm(delay){
+  const when = Date.now() + (delay * 1000) + Math.floor(Math.random() * 60000); // jitter up to 60s
+  chrome.alarms.create('dmAlarm', {when});
 }
 
-function stop(){ if(timer) clearTimeout(timer); log('Stopped.'); }
-
-async function tick(delay){
-  if(count>=limit){ log('Limit reached.'); return; }
-  try{
-    count++; log('Step '+count+': injecting assistant…');
-    chrome.tabs.query({active:true,currentWindow:true},tabs=>{ if(!tabs[0]) return; chrome.scripting.executeScript({target:{tabId:tabs[0].id},files:['worker.js']}); });
-  }catch(e){ log('Error: '+e.message); }
-  finally{ timer=setTimeout(()=>tick(delay+Math.floor(Math.random()*60)), delay*1000); }
-}
-
-document.getElementById('start').onclick=start;
-document.getElementById('stop').onclick=stop;`;
+chrome.alarms.onAlarm.addListener((alarm)=>{
+  if(alarm.name==='dmAlarm'){
+    if(count >= limit){ chrome.runtime.sendMessage({action:'log', text:'Limit reached.'}); return; }
+    count++;
+    chrome.runtime.sendMessage({action:'log', text:\`Step \${count}: injecting assistant…\`});
+    chrome.tabs.query({active:true,currentWindow:true},(tabs)=>{
+      if(tabs[0]){ chrome.scripting.executeScript({target:{tabId:tabs[0].id},files:['worker.js']}); }
+    });
+    chrome.storage.sync.get(['delay'], (st)=>{ createNextAlarm(st.delay); });
+  }
+});`;
 
       const workerJs = `// Auto Mode: fills the DM box and presses Send automatically.
 (async()=>{
@@ -284,12 +315,22 @@ document.getElementById('stop').onclick=stop;`;
   setTimeout(()=> tip.remove(), 6000);
 })();`;
 
+      const readmeTxt = \`To run 24/7 on cloud:
+1. Set up a VPS (e.g., DigitalOcean droplet with Ubuntu).
+2. Install Chrome: sudo apt update && sudo apt install chromium-browser.
+3. Load the extension: Run Chrome with --load-extension=/path/to/unzipped --user-data-dir=/tmp/chrome-data.
+4. To keep running: Use screen or tmux to detach the session, or set up as a service.
+5. For headless: chromium-browser --headless --disable-gpu --remote-debugging-port=9222 --load-extension=/path/to/unzipped.
+Note: Instagram may detect automation; use proxies/VPN. The background service keeps the automation running even if popup is closed.\`;
+
       const iconPng = atob('iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAABcElEQVR4nO2aUW7CMBCEZ2wq3s2w7x8J6Hq2iQnQy1xQw0m0k9m1mN1hZf7lqf7gGxk0cZP7mKp3xq1y9VbSg1l2x1C8vQm0l1mBqC0oZyqf8zj3w0xZK9v0bB3cH3YbX4o3+2M9o1QmG4QwI6Jw0g1+3m4eG2bDTv5f2F1mFh0c3j2sN4sQhF0pZ4KkqC2qS3qJv5vVwCjF1e8m7m0w1m2G1G6Qq0u9b1+qkO2t7+oG3Z8qH6L1gXfDqVb5H1Ck8A0j9q4lq3qQm2mYcK8C4X8hL8QG0h6m9y7y0g2pQq2E3qk6k2gD2o2Y0g9w3oEe2dB9wCqz6qFZy7mJYt2yYvP2w0bJ0Z1m3bZt0f3J7pQqQ1m9b4b1kP1Q6kqg9+2v1m3q2Q1m3hXf8j8iA6D2c4wJ5mOa1S6z1Fv3oY3GQqf2oQAAAAAElFTkSuQmCC');
 
       zip.file('manifest.json', JSON.stringify(manifest, null, 2));
       zip.file('popup.html', popupHtml);
       zip.file('popup.js', popupJs);
+      zip.file('background.js', backgroundJs);
       zip.file('worker.js', workerJs);
+      zip.file('README.txt', readmeTxt);
       zip.file('icon16.png', iconPng, {binary:true});
       zip.file('icon32.png', iconPng, {binary:true});
       zip.file('icon128.png', iconPng, {binary:true});
