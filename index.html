@@ -49,6 +49,25 @@
       .trust{grid-template-columns:1fr}
     }
   </style>
+  <!-- Meta Pixel (replace PIXEL_ID) -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','PIXEL_ID'); // TODO: set your real Pixel ID
+    fbq('track','PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+  <!-- Hotjar (replace HJID with your numeric site ID) -->
+  <script>
+    (function(h,o,t,j,a,r){
+      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:HJID,hjsv:6};
+      a=o.getElementsByTagName('head')[0];r=o.createElement('script');r.async=1;r.src=j+a.parentNode?'https://static.hotjar.com/c/hotjar-':'https://static.hotjar.com/c/hotjar-';r.src+=h._hjSettings.hjid+'.js?sv='+h._hjSettings.hjsv;a.appendChild(r);
+    })(window,document,0,0);
+  </script>
+
+  <!-- Vercel Web Analytics: enable in Vercel Dashboard → Analytics. If your project provides a script URL, include it below. -->
+  <!-- Example (script URL may differ per project; see docs): -->
+  <!-- <script defer src="/_vercel/insights/script.js"></script> -->
 </head>
 <body>
   <div class="wrap">
@@ -137,5 +156,22 @@
       setInterval(()=>{ if(s>0){ s--; el.textContent = s; } }, 1000);
     })();
   </script>
-</body>
+  <script>
+    (function(){
+      const el = document.getElementById('timer');
+      let s = parseInt(el.textContent,10);
+      setInterval(()=>{ if(s>0){ s--; el.textContent = s; } }, 1000);
+    })();
+
+    // Track CTA clicks (Meta Pixel + Hotjar events if available)
+    function track(eventName){
+      try{ if(window.fbq) fbq('trackCustom', eventName); }catch(e){}
+      try{ if(window.hj) hj('event', eventName); }catch(e){}
+    }
+
+    document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(a=>{
+      a.addEventListener('click',()=>track('StripeCheckoutClick'))
+    });
+    document.querySelectorAll('a[href*="cash.app"]').forEach(a=>{
+      a.addEventListener('c
 </html>
