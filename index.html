@@ -1,177 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GoblinReach — AI DM Automation</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0b0b0b;--panel:#141414;--muted:#9e9e9e;--accent:#39ff14;--accent-2:#1bff74}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#fff}
-    a{color:var(--accent)}
-    .wrap{max-width:1120px;margin:0 auto;padding:20px}
-    header{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#0aff9d 60%,#00ffa0);box-shadow:0 0 18px #00ff91aa}
-    .brand h1{font-size:20px;margin:0;letter-spacing:.3px}
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;margin-top:22px}
-    .card{background:var(--panel);border:1px solid #222;border-radius:18px;padding:26px;box-shadow:0 10px 40px #00000055}
-    .kicker{color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.76rem}
-    h2{font-size:38px;line-height:1.05;margin:10px 0 10px}
-    .sub{color:#d2d2d2;max-width:48ch}
-    .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
-    .btn{display:inline-block;padding:14px 22px;border-radius:12px;font-weight:800;text-decoration:none}
-    .btn-primary{background:var(--accent);color:#0b0b0b}
-    .btn-ghost{border:1px solid #2a2a2a;color:#fff}
-    .pill{display:inline-flex;gap:8px;align-items:center;background:#0e0e0e;border:1px dashed #2a2a2a;padding:8px 12px;border-radius:999px;color:#c7c7c7;font-size:.9rem}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
-    .feat{padding:18px;border-radius:14px;background:linear-gradient(180deg,#131313,#0f0f0f);border:1px solid #222}
-
-    /* Pricing */
-    .pricing{margin-top:36px}
-    .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .tier{background:linear-gradient(180deg,#141414,#0d0d0d);border:1px solid #222;border-radius:18px;padding:22px;position:relative}
-    .price{font-size:34px;font-weight:800}
-    .save{position:absolute;right:14px;top:14px;background:#0e1; color:#001; padding:6px 10px; border-radius:999px; font-weight:800}
-
-    /* Trust */
-    .trust{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
-    .quote{font-style:italic;color:#e9e9e9}
-
-    /* Responsive */
-    @media (max-width:960px){
-      .hero{grid-template-columns:1fr}
-      .grid{grid-template-columns:1fr 1fr}
-      .tiers{grid-template-columns:1fr}
-      .trust{grid-template-columns:1fr}
-    }
-  </style>
-  <!-- Meta Pixel (replace PIXEL_ID) -->
-  <script>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','PIXEL_ID'); // TODO: set your real Pixel ID
-    fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
-
-  <!-- Hotjar (replace HJID with your numeric site ID) -->
-  <script>
-    (function(h,o,t,j,a,r){
-      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:HJID,hjsv:6};
-      a=o.getElementsByTagName('head')[0];r=o.createElement('script');r.async=1;r.src=j+a.parentNode?'https://static.hotjar.com/c/hotjar-':'https://static.hotjar.com/c/hotjar-';r.src+=h._hjSettings.hjid+'.js?sv='+h._hjSettings.hjsv;a.appendChild(r);
-    })(window,document,0,0);
-  </script>
-
-  <!-- Vercel Web Analytics: enable in Vercel Dashboard → Analytics. If your project provides a script URL, include it below. -->
-  <!-- Example (script URL may differ per project; see docs): -->
-  <!-- <script defer src="/_vercel/insights/script.js"></script> -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GoblinReach — Stealth Instagram DM Automation</title>
+<meta name="description" content="Let AI handle your Instagram DMs — safely, on autopilot. Proxy/VPN ready, human-like pacing, and optional 24/7 cloud runs." />
+<style>
+  :root{
+    --bg:#070b07; --panel:#0b140b; --line:#123312;
+    --text:#e7fbe7; --muted:#bfecc8; --accent:#23c05b; --ghost:#0f1e10;
+    --glitch1:#103110; --glitch2:#0a120a; --glow:#65f59e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
+       background:var(--bg);color:var(--text)}
+  .wrap{max-width:900px;margin:40px auto;padding:20px}
+  .hero{padding:36px;border:1px solid var(--line);
+        border-radius:20px;background:#0f1a10}
+  h1{font-size:42px;margin:0 0 8px}
+  .sub{opacity:.9;margin:0 0 18px;font-size:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+  .badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;
+         background:var(--ghost);font-size:13px;color:var(--muted)}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+  .btn{border:0;border-radius:12px;padding:14px 18px;font-weight:800;
+       text-decoration:none;display:inline-flex;align-items:center}
+  .btn.primary{background:var(--accent);color:#07240e}
+  .btn.ghost{background:var(--ghost);color:var(--text);border:1px solid var(--line)}
+  .panel{margin-top:18px;padding:16px;border:1px solid var(--line);
+         border-radius:14px;background:var(--panel)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .muted{color:var(--muted)}
+  .dl{display:none}
+  .dl.show{display:block}
+  footer{opacity:.75;margin-top:26px;font-size:13px}
+  a{color:#a7f3b7}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>GoblinReach.ai</h1>
-      </div>
-    </header>
+<div class="wrap">
+  <div class="hero">
+    <h1>GoblinReach.ai</h1>
+    <p class="sub">Stealth Instagram Outreach — AI handles DMs with human-like pacing (600–900s), proxy/VPN support, and optional 24/7 cloud runs.</p>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="card">
-        <div class="kicker">Stealth Instagram Outreach</div>
-        <h2>Turn IG views into paying clients — automatically.</h2>
-        <p class="sub">AI handles your DMs with human‑like pacing (600–900s), proxy/VPN support, and optional 24/7 cloud runs so you keep selling while you sleep.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Start for $22/mo</a>
-          <a class="btn btn-ghost" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">6 months — $95</a>
-          <a class="btn btn-ghost" href="https://cash.app/$triple4mgmt">High‑ticket setup ($5k–$25k)</a>
-        </div>
-        <div class="grid">
-          <div class="feat"><strong>💬 Human‑like pacing</strong><br/>Safe 600–900s jitter so you don’t trip limits.</div>
-          <div class="feat"><strong>🌐 Proxy/VPN Ready</strong><br/>Rotate proxies, add VPN for stealth.</div>
-          <div class="feat"><strong>☁️ Cloud Automation</strong><br/>Keep campaigns running when your laptop is off.</div>
-          <div class="feat"><strong>📊 Live Analytics</strong><br/>Track replies, leads & conversions in real‑time.</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="kicker">In‑Action Preview</div>
-        <h3 style="margin:8px 0 10px">Campaign Snapshot</h3>
-        <div class="pill">18–31 replies / 100 DMs • 1,000+ installs • 600–900s delay</div>
-        <div style="height:260px;margin-top:14px;border-radius:14px;background:radial-gradient(80% 120% at 20% 0%, #123 0, #0b0b0b 55%), linear-gradient(90deg, rgba(57,255,20,.15), transparent 40%), linear-gradient(0deg, rgba(0,255,160,.08), transparent);border:1px solid #1f1f1f;display:flex;align-items:center;justify-content:center">
-          <div style="text-align:center">
-            <div style="font-weight:800;font-size:28px;color:var(--accent)">Live DM Queue</div>
-            <div style="margin-top:6px;color:#cfcfcf">Next send in <span id="timer">612</span>s • Safe mode</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="badges">
+      <span class="badge">600–900s safe delay</span>
+      <span class="badge">Proxy / VPN ready</span>
+      <span class="badge">Cloud automation</span>
+    </div>
 
-    <!-- PRICING -->
-    <section class="pricing">
-      <div class="tiers">
-        <div class="tier">
-          <div class="price">$22<span style="font-size:16px">/mo</span></div>
-          <p>Creators & small teams</p>
-          <a class="btn btn-primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Subscribe</a>
-        </div>
-        <div class="tier">
-          <div class="save">Save 28%</div>
-          <div class="price">$95<span style="font-size:16px"> / 6mo</span></div>
-          <p>Scale safely & save</p>
-          <a class="btn btn-primary" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">Subscribe</a>
-        </div>
-        <div class="tier">
-          <div class="price">$5k–$25k</div>
-          <p>White‑label & enterprise installs</p>
-          <a class="btn btn-primary" href="https://cash.app/$triple4mgmt">Apply</a>
-        </div>
-      </div>
-    </section>
+    <div class="cta">
+      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank">Start for $22/mo</a>
+      <a class="btn ghost" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04" target="_blank">6 months — $95</a>
+      <a class="btn ghost" href="https://cash.app/$Triple4mgmt" target="_blank">High-ticket Setup ($5k–$25k)</a>
+    </div>
 
-    <!-- TRUST -->
-    <section class="trust">
-      <div class="card">
-        <div class="kicker">Social Proof</div>
-        <p class="quote">“Doubled my sales in a week — safe & smooth.” — <strong>Lisa K.</strong></p>
-        <p class="quote">“Finally a DM tool that doesn’t get you banned.” — <strong>@verifieduser</strong></p>
-      </div>
-      <div class="card">
-        <div class="kicker">Help & Support</div>
-        <p>Need help? DM us on <a href="https://www.instagram.com/goblinreach.ai/">Instagram</a>. Your subscription grants setup guidance and best‑practice playbooks.</p>
-      </div>
-    </section>
+    <!-- Paid download: revealed after ?paid=1 -->
+    <div id="paidBox" class="panel dl">
+      <h3>Access unlocked ✅</h3>
+      <p class="muted">Thanks for your purchase. Download the full build below.</p>
+      <p><a class="btn primary" href="/assets/goblinreach.zip" download>Download GoblinReach (Full)</a></p>
+    </div>
 
-    <footer style="margin:28px 0 10px;color:var(--muted);text-align:center">
-      © 2025 GoblinReach — Stealth automation for growth.
-    </footer>
+    <!-- Trial (always visible) -->
+    <div class="panel">
+      <h3>Free Trial — 50 DMs (Safe Mode)</h3>
+      <p class="muted">Try GoblinReach with safe pacing. Upgrade anytime.</p>
+      <a class="btn ghost" href="/assets/goblinreach_trial.zip" download>Download Trial</a>
+    </div>
+
+    <footer>© 2025 GoblinReach — Compliant, human-like DM automation.</footer>
   </div>
+</div>
 
-  <script>
-    (function(){
-      const el = document.getElementById('timer');
-      let s = parseInt(el.textContent,10);
-      setInterval(()=>{ if(s>0){ s--; el.textContent = s; } }, 1000);
-    })();
-  </script>
-  <script>
-    (function(){
-      const el = document.getElementById('timer');
-      let s = parseInt(el.textContent,10);
-      setInterval(()=>{ if(s>0){ s--; el.textContent = s; } }, 1000);
-    })();
-
-    // Track CTA clicks (Meta Pixel + Hotjar events if available)
-    function track(eventName){
-      try{ if(window.fbq) fbq('trackCustom', eventName); }catch(e){}
-      try{ if(window.hj) hj('event', eventName); }catch(e){}
-    }
-
-    document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(a=>{
-      a.addEventListener('click',()=>track('StripeCheckoutClick'))
-    });
-    document.querySelectorAll('a[href*="cash.app"]').forEach(a=>{
-      a.addEventListener('c
+<script>
+  // Reveal the paid download if ?paid=1
+  const params = new URLSearchParams(location.search);
+  if (params.get('paid') === '1') {
+    document.getElementById('paidBox').classList.add('show');
+  }
+</script>
+</body>
 </html>
