@@ -1,4 +1,5 @@
-<!doctype html>
+# Create a ready-to-upload index.html for the user
+index_html = """<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -9,7 +10,6 @@
   :root{
     --bg:#070b07; --panel:#0b140b; --line:#123312;
     --text:#e7fbe7; --muted:#bfecc8; --accent:#23c05b; --ghost:#0f1e10;
-    --glitch1:#103110; --glitch2:#0a120a; --glow:#65f59e;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
@@ -83,3 +83,8 @@
 </script>
 </body>
 </html>
+"""
+with open("/mnt/data/index.html", "w", encoding="utf-8") as f:
+    f.write(index_html)
+
+"/mnt/data/index.html"
