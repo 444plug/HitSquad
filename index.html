@@ -5,30 +5,94 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GoblinReach — Stealth Instagram DM Automation</title>
 <meta name="description" content="Let AI handle your Instagram DMs — safely, on autopilot. Proxy/VPN ready, human-like pacing, and optional 24/7 cloud runs." />
+<style>
+  :root{
+    --bg:#070b07; --panel:#0b140b; --line:#123312;
+    --text:#e7fbe7; --muted:#bfecc8; --accent:#23c05b; --ghost:#0f1e10;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:980px;margin:40px auto;padding:20px}
+  .card{padding:28px;border:1px solid var(--line);border-radius:18px;background:#0f1a10}
+  h1{font-size:40px;margin:0 0 8px}
+  .sub{opacity:.9;margin:0 0 18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+  .badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--ghost);font-size:13px;color:var(--muted)}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+  .btn{appearance:none;border:0;border-radius:12px;padding:14px 18px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center}
+  .btn.primary{background:var(--accent);color:#07240e}
+  .btn.ghost{background:var(--ghost);color:var(--text);border:1px solid var(--line)}
+  .panel{margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .muted{color:var(--muted)}
+  .dl{display:none}
+  .dl.show{display:block}
+  footer{opacity:.75;margin-top:22px;font-size:13px}
+  a{color:#a7f3b7}
+</style>
 </head>
 <body>
-  <h1>GoblinReach.ai</h1>
-  <p>Stealth Instagram Outreach — AI handles DMs with human-like pacing (600–900s), proxy/VPN support, and optional 24/7 cloud runs.</p>
-  <p><a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03">Start for $22/mo</a></p>
-  <p><a href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04">6 months — $95</a></p>
-  <p><a href="https://cash.app/$Triple4mgmt">High-ticket Setup ($5k–$25k)</a></p>
+<div class="wrap">
+  <div class="card">
+    <h1>GoblinReach.ai</h1>
+    <p class="sub">Stealth Instagram Outreach — human-like pacing (600–900s), proxy/VPN support, optional 24/7 cloud runs. One-minute install.</p>
 
-  <div id="paidBox" style="display:none;">
-    <h3>Access unlocked ✅</h3>
-    <p>Thanks for your purchase. Download the full build below.</p>
-    <p><a href="assets/goblinreach.zip" download>Download GoblinReach (Full)</a></p>
-  </div>
+    <div class="badges">
+      <span class="badge">600–900s safe delay</span>
+      <span class="badge">Proxy / VPN ready</span>
+      <span class="badge">Cloud automation</span>
+    </div>
 
-  <div>
-    <h3>Free Trial — 50 DMs (Safe Mode)</h3>
-    <p><a href="assets/goblinreach_trial.zip" download>Download Trial</a></p>
+    <div class="cta">
+      <!-- Replace with your live Stripe links if different -->
+      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Start for $22/mo</a>
+      <a class="btn ghost" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04" target="_blank" rel="noopener">6 months — $95</a>
+      <a class="btn ghost" href="https://cash.app/$Triple4mgmt" target="_blank" rel="noopener">High-ticket setup ($5k–$25k)</a>
+    </div>
+
+    <!-- Unlocks AFTER Stripe redirect (?paid=1 or session_id=...) -->
+    <div id="paidBox" class="panel dl">
+      <h3>Access unlocked ✅</h3>
+      <p class="muted">Thanks for your purchase. Download the full build below.</p>
+      <p><a class="btn primary" href="/assets/goblinreach.zip" download>Download GoblinReach (Full)</a></p>
+      <p class="muted" style="font-size:12px">If clicking does nothing, make sure the file exists at <code>/assets/goblinreach.zip</code>.</p>
+    </div>
+
+    <!-- Always-visible trial -->
+    <div class="panel">
+      <div class="grid">
+        <div>
+          <h3>Free Trial — 50 DMs (Safe Mode)</h3>
+          <p class="muted">Try GoblinReach with safe pacing. Upgrade any time to unlock full queues, proxy pools, and cloud automations.</p>
+          <a class="btn ghost" href="/assets/goblinreach_trial.zip" download>Download Trial</a>
+        </div>
+        <div>
+          <h3>Quick Start</h3>
+          <ul class="muted">
+            <li>Install via Chrome: <b>chrome://extensions</b> → Developer Mode → Load Unpacked or import .zip.</li>
+            <li>Login to Instagram (guided login; no token needed).</li>
+            <li>Select audience → write message → toggle <b>Automate</b>.</li>
+            <li>Recommended delay: 600–900 seconds between actions.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer>© 2025 GoblinReach — Compliant, human-like DM automation.</footer>
   </div>
+</div>
 
 <script>
-  const params = new URLSearchParams(location.search);
-  if (params.get('paid') === '1') {
-    document.getElementById('paidBox').style.display = 'block';
-  }
+  // Reveal paid download if Stripe returned successfully
+  (function(){
+    const p = new URLSearchParams(location.search);
+    if (p.get('paid') === '1' || p.has('session_id')) {
+      const box = document.getElementById('paidBox');
+      if (box) box.classList.add('show');
+    }
+  })();
 </script>
 </body>
 </html>
