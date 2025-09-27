@@ -5,84 +5,91 @@
   <title>GoblinReach.ai</title>
   <style>
     body {
-      background-color: black;
-      color: #00ff00;
-      font-family: monospace;
-      text-align: center;
       margin: 0;
-      padding: 0;
+      font-family: monospace;
+      background: black;
+      color: #00ff00;
+      text-align: center;
     }
     header {
       padding: 2rem;
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-shadow: 0 0 10px #00ff00;
+      font-size: 3rem;
+      text-shadow: 0 0 20px #00ff00;
     }
     .section {
       margin: 2rem auto;
       padding: 1.5rem;
-      border: 1px solid #00ff00;
-      border-radius: 10px;
       width: 85%;
-      box-shadow: 0 0 15px #00ff00;
+      border: 1px solid #00ff00;
+      border-radius: 12px;
+      box-shadow: 0 0 25px #00ff00;
+      background: rgba(0, 0, 0, 0.85);
     }
     .btn {
+      margin-top: 1rem;
+      padding: 1rem 2rem;
       background: black;
       color: #00ff00;
       border: 2px solid #00ff00;
-      padding: 1rem 2rem;
-      margin: 1rem;
       font-size: 1.2rem;
-      cursor: pointer;
       border-radius: 8px;
-      transition: all 0.2s;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
     }
     .btn:hover {
       background: #00ff00;
       color: black;
     }
     .logo-btn {
-      margin-top: 2rem;
+      margin: 3rem 0;
     }
     .logo-btn img {
-      width: 100px;
+      width: 120px;
       transition: transform 0.3s;
     }
     .logo-btn img:hover {
       transform: scale(1.2);
+      filter: drop-shadow(0 0 20px #00ff00);
+    }
+    footer {
+      margin: 3rem 0;
+      font-size: 0.9rem;
+      color: #00ff00;
     }
   </style>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <header>GoblinReach.ai</header>
 
   <div class="section">
-    <h2>🚀 Instant Download</h2>
-    <p>Pay → Download → Start Automating DMs immediately.</p>
-    <button class="btn">Download Now</button>
+    <h2>🚀 Get Started Now</h2>
+    <p>Choose your plan. Pay → Download → Automate immediately.</p>
+    <button class="btn" id="subscribeBtn">$22 / month</button>
+    <button class="btn" id="upgradeBtn">$95 / 6 months</button>
   </div>
 
   <div class="section">
-    <h2>🕶️ VPN & Proxies</h2>
-    <p>Stay hidden. Stay unstoppable. Built-in VPN + rotating proxies.</p>
+    <h2>🕶️ VPN & Proxy Shield</h2>
+    <p>Stay invisible. Rotate IPs. Bypass limits like a ghost.</p>
   </div>
 
   <div class="section">
     <h2>🖱️ Auto Mouse Wiggler</h2>
-    <p>No more idle bans. Always online. Always moving.</p>
+    <p>Prevents idle bans. Your account never sleeps.</p>
   </div>
 
   <div class="section">
     <h2>⏱️ Smart Timers & Delays</h2>
-    <p>Bypass limits with human-like randomization.</p>
+    <p>Human-like pacing. Avoid detection. Scale safely.</p>
   </div>
 
   <div class="section">
-    <h2>📑 Export to DOC</h2>
-    <p>Save reports, leads, and DM results instantly.</p>
+    <h2>📑 Export Reports</h2>
+    <p>Save leads + DM logs to DOC instantly.</p>
   </div>
 
-  <!-- Instagram Button -->
+  <!-- Instagram Logo -->
   <div class="logo-btn">
     <a href="https://instagram.com/YOUR_USERNAME" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
@@ -90,8 +97,29 @@
     <p>Follow us on Instagram</p>
   </div>
 
-  <footer style="margin-top: 3rem; font-size: 0.9rem;">
-    © 2025 GoblinReach.ai – Zero Limits, Zero Excuses.
-  </footer>
+  <footer>© 2025 GoblinReach.ai – Matrix Mode Activated</footer>
+
+  <script>
+    // Replace with your real Stripe publishable key
+    const stripe = Stripe("pk_test_YOUR_KEY_HERE");
+
+    document.getElementById("subscribeBtn").addEventListener("click", () => {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: "price_ID_MONTHLY", quantity: 1 }],
+        mode: "subscription",
+        successUrl: "https://yourdomain.com/download.zip",
+        cancelUrl: "https://yourdomain.com/cancel.html",
+      });
+    });
+
+    document.getElementById("upgradeBtn").addEventListener("click", () => {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: "price_ID_6MONTH", quantity: 1 }],
+        mode: "subscription",
+        successUrl: "https://yourdomain.com/download.zip",
+        cancelUrl: "https://yourdomain.com/cancel.html",
+      });
+    });
+  </script>
 </body>
 </html>
