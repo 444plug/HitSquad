@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GoblinReach.ai</title>
   <script src="https://js.stripe.com/v3/"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Arial', sans-serif;
+      background: #000;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     #matrix {
       position: fixed;
@@ -18,179 +21,142 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: #0a0a0a;
-    }
-    .matrix-char {
-      font-family: monospace;
-      font-size: 12px;
-      fill: #1a4a2a;
+      background: #000;
       opacity: 0.2;
     }
-    #adminSection { display: none; }
-    .dashboard-table { border-collapse: collapse; width: 100%; }
-    .dashboard-table th, .dashboard-table td {
-      border: 1px solid #333;
-      padding: 8px;
-      text-align: left;
+    .slime-green {
+      background-color: #22c55e;
+      color: #000;
+      transition: background-color 0.2s ease;
     }
-    .dashboard-table th { background: #1a1a1a; }
+    .slime-green-hover:hover {
+      background-color: #16a34a;
+    }
+    .text-slime {
+      color: #22c55e;
+    }
+    .sharp-border {
+      border: 2px solid #22c55e;
+      border-radius: 4px;
+    }
+    .sharp-shadow {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .sharp-text {
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
-<body class="bg-[#0a0a0a] text-gray-200 overflow-x-hidden">
+<body class="min-h-screen flex flex-col items-center justify-center text-center p-4">
   <canvas id="matrix"></canvas>
-  <header class="text-center py-12">
-    <img src="https://goblinreach.ai/goblin-logo.png" alt="GoblinReach Logo" class="w-32 mx-auto mb-6 opacity-90">
-    <div id="worldClock" class="text-sm font-medium text-gray-400 mb-6">🌍 Loading time...</div>
-    <a href="https://instagram.com/YOUR_USERNAME" target="_blank" class="inline-block">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="w-8 mx-auto mb-6 transition hover:brightness-110">
-    </a>
-    <h1 class="text-2xl font-semibold text-gray-100 mb-2">GoblinReach.ai</h1>
-    <p class="text-sm text-gray-400">Precision Automation • Secure VPN • Uninterrupted Performance</p>
+  <header class="mb-8">
+    <img src="https://goblinreach.ai/goblin-logo.png" alt="GoblinReach Logo" class="w-32 mx-auto mb-4">
+    <h1 class="text-4xl font-bold text-slime sharp-text">GoblinReach.ai</h1>
+    <p class="text-lg text-gray-300 sharp-text">Automate Instagram • VPN • Mouse Wigglers • Secure Access</p>
   </header>
-  <main class="max-w-2xl mx-auto p-6 space-y-8">
-    <!-- Member Login Portal -->
-    <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
-      <h2 class="text-lg font-semibold text-gray-100 mb-4">🔐 Member Access</h2>
-      <input type="text" id="loginUser" placeholder="Username" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-gray-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-500">
-      <input type="password" id="loginKey" placeholder="Access Key" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-gray-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-500">
-      <button id="loginBtn" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition">Access</button>
-      <p id="loginMsg" class="mt-4 text-sm text-gray-400"></p>
+  <main class="space-y-6 w-full max-w-md">
+    <!-- Login -->
+    <section class="bg-gray-900 sharp-border p-6 sharp-shadow">
+      <h2 class="text-xl font-semibold mb-4 text-slime sharp-text">Member Login</h2>
+      <input type="text" id="loginUser" placeholder="Username" class="w-full p-2 mb-4 bg-gray-800 border border-gray-600 rounded text-white sharp-border">
+      <input type="password" id="loginKey" placeholder="Access Key" class="w-full p-2 mb-4 bg-gray-800 border border-gray-600 rounded text-white sharp-border">
+      <button id="loginBtn" class="w-full slime-green p-2 rounded slime-green-hover text-black font-bold sharp-border">Login</button>
+      <p id="loginMsg" class="mt-2 text-sm text-gray-400"></p>
     </section>
-    <!-- Plans -->
-    <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
-      <h2 class="text-lg font-semibold text-gray-100 mb-4">Membership Plans</h2>
-      <p class="text-sm text-gray-400">$22 / Month</p>
-      <p class="text-sm text-gray-400">$95 / 6 Months</p>
-      <button id="planMonthly" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition m-2">$22 Subscribe</button>
-      <button id="planSix" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition m-2">$95 / 6 Months</button>
+    <!-- Signup/Plans -->
+    <section class="bg-gray-900 sharp-border p-6 sharp-shadow">
+      <h2 class="text-xl font-semibold mb-4 text-slime sharp-text">Get Started - Plans</h2>
+      <p class="text-sm text-gray-300 mb-2">$22 / Month</p>
+      <button id="signUpBtn" class="w-full slime-green p-2 rounded slime-green-hover text-black font-bold mb-2 sharp-border">Sign Up Now (Monthly)</button>
+      <p class="text-sm text-gray-300">$95 / 6 Months</p>
+      <button id="planSixBtn" class="w-full slime-green p-2 rounded slime-green-hover text-black font-bold sharp-border">Subscribe (6 Months)</button>
     </section>
     <!-- Features -->
-    <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
-      <h2 class="text-lg font-semibold text-gray-100 mb-4">Features</h2>
-      <ul class="list-none p-0 space-y-2 text-sm text-gray-400">
-        <li>✔ Integrated VPN Protection</li>
-        <li>✔ Automatic Mouse Wiggler</li>
-        <li>✔ Precision Automation Timers</li>
-        <li>✔ Document Export Capabilities</li>
-        <li>✔ Uninterrupted 24/7 Performance</li>
+    <section class="bg-gray-900 sharp-border p-6 sharp-shadow">
+      <h2 class="text-xl font-semibold mb-4 text-slime sharp-text">Key Features</h2>
+      <ul class="text-sm text-gray-300 space-y-2">
+        <li class="sharp-text">✔ Built-in VPN Cloak</li>
+        <li class="sharp-text">✔ Auto Mouse Wiggler (No Sleep)</li>
+        <li class="sharp-text">✔ Timer Delays for Safe Automation</li>
+        <li class="sharp-text">✔ Export Reports to DOC</li>
+        <li class="sharp-text">✔ 24/7 Uptime — No Bugs</li>
       </ul>
     </section>
-    <!-- Admin Section -->
-    <section id="adminSection" class="bg-[#121212] border border-red-600/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
-      <h2 class="text-lg font-semibold text-gray-100 mb-4">🔑 Admin Dashboard</h2>
-      <input type="password" id="adminKey" placeholder="Admin Key" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-red-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-red-500">
-      <button id="adminBtn" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition">Admin Login</button>
-      <p id="adminMsg" class="mt-4 text-sm text-gray-400"></p>
-      <div id="adminDashboard" class="mt-6 hidden">
-        <h3 class="text-md font-semibold text-gray-100 mb-2">Subscriber Overview</h3>
-        <table class="dashboard-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Access Key</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="subscriberTable">
-            <tr><td>John Doe</td><td>KEY-001</td><td>Active</td></tr>
-            <tr><td>Jane Smith</td><td>KEY-002</td><td>Active</td></tr>
-            <tr><td>Alice Johnson</td><td>KEY-003</td><td>Pending</td></tr>
-          </tbody>
-        </table>
-        <p class="mt-4 text-sm text-gray-400">Total Subscribers: 3</p>
-        <button id="logoutBtn" class="mt-4 inline-block px-5 py-2 bg-gray-600 text-gray-200 font-medium rounded-md hover:bg-gray-500 transition">Logout</button>
+    <!-- User Reviews -->
+    <section class="bg-gray-900 sharp-border p-6 sharp-shadow">
+      <h2 class="text-xl font-semibold mb-4 text-slime sharp-text">What Users Say</h2>
+      <div class="space-y-4 text-sm text-gray-300">
+        <p class="sharp-text">"Boosted my engagement!" - Sarah C. ⭐⭐⭐⭐⭐</p>
+        <p class="sharp-text">"Saves so much time!" - Marcus M. ⭐⭐⭐⭐⭐</p>
+        <p class="sharp-text">"Reliable automation." - Elena P. ⭐⭐⭐⭐⭐</p>
+      </div>
+    </section>
+    <!-- FAQs -->
+    <section class="bg-gray-900 sharp-border p-6 sharp-shadow">
+      <h2 class="text-xl font-semibold mb-4 text-slime sharp-text">FAQs</h2>
+      <div class="space-y-4 text-sm text-gray-300">
+        <p class="sharp-text"><strong>Do I share my login?</strong> No, it's secure.</p>
+        <p class="sharp-text"><strong>Refund policy?</strong> Full refund within 7 days.</p>
+        <p class="sharp-text"><strong>Cancel subscription?</strong> Email support@goblinreach.ai</p>
       </div>
     </section>
   </main>
-  <footer class="text-center py-6 text-xs text-gray-500">
-    <p>© 2025 GoblinReach.ai | Support: support@goblinreach.ai | <a href="#" id="adminLink" class="text-[#22c55e] hover:underline">Admin</a></p>
+  <footer class="mt-8 text-sm text-gray-500">
+    <p>© 2025 GoblinReach.ai | <a href="mailto:support@goblinreach.ai" class="text-slime">Support</a></p>
   </footer>
   <script>
-    // Stripe Setup
-    const stripe = Stripe("pk_test_YOUR_KEY_HERE");
-    document.getElementById("planMonthly").addEventListener("click", () => {
+    // Stripe Setup with your live key
+    const stripe = Stripe("pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB");
+    // Monthly Plan
+    document.getElementById("signUpBtn").addEventListener("click", () => {
       stripe.redirectToCheckout({
-        lineItems: [{ price: "price_ID_MONTHLY", quantity: 1 }],
+        lineItems: [{ price: "price_1RVG0wBVvxnlfHy5_xxx", quantity: 1 }], // Replace with real price ID
         mode: "subscription",
-        successUrl: "https://goblinreach.ai/download.html?key=USER_KEY_HERE",
-        cancelUrl: "https://goblinreach.ai/cancel.html",
+        successUrl: "https://goblinreach.ai/success",
+        cancelUrl: "https://goblinreach.ai/",
       });
     });
-    document.getElementById("planSix").addEventListener("click", () => {
+    // 6 Months Plan
+    document.getElementById("planSixBtn").addEventListener("click", () => {
       stripe.redirectToCheckout({
-        lineItems: [{ price: "price_ID_6MONTH", quantity: 1 }],
+        lineItems: [{ price: "price_1RVG0wBVvxnlfHy5_yyy", quantity: 1 }], // Replace with real price ID
         mode: "subscription",
-        successUrl: "https://goblinreach.ai/download.html?key=USER_KEY_HERE",
-        cancelUrl: "https://goblinreach.ai/cancel.html",
+        successUrl: "https://goblinreach.ai/success",
+        cancelUrl: "https://goblinreach.ai/",
       });
     });
-    // World Clock
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('worldClock').innerText = "🌍 " + now.toUTCString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-    // Member Login
-    const validKeys = ["EXAMPLE-KEY-1", "EXAMPLE-KEY-2"];
+    // Login
+    const validKeys = ["GOBLIN-KEY-001", "GOBLIN-KEY-002"]; // Initial keys; add more post-payment
     document.getElementById('loginBtn').addEventListener('click', () => {
       const key = document.getElementById('loginKey').value.trim();
       if (validKeys.includes(key)) {
-        document.getElementById('loginMsg').innerHTML =
-          '✅ Access granted. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition">Download Now</a>';
+        document.getElementById('loginMsg').innerHTML = '✅ Access granted. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime underline">Download Now</a>';
       } else {
-        document.getElementById('loginMsg').innerText = "❌ Invalid key. Verify your subscription.";
+        document.getElementById('loginMsg').innerText = "❌ Invalid key. Sign up or contact support.";
       }
-    });
-    // Admin Login
-    const adminValidKeys = ["ADMIN-KEY-2025"];
-    document.getElementById('adminBtn').addEventListener('click', () => {
-      const adminKey = document.getElementById('adminKey').value.trim();
-      const adminMsg = document.getElementById('adminMsg');
-      const adminDash = document.getElementById('adminDashboard');
-      if (adminValidKeys.includes(adminKey)) {
-        adminMsg.innerText = "✅ Admin access granted.";
-        adminDash.classList.remove('hidden');
-      } else {
-        adminMsg.innerText = "❌ Invalid admin key.";
-      }
-    });
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      document.getElementById('adminKey').value = '';
-      document.getElementById('adminMsg').innerText = '';
-      document.getElementById('adminDashboard').classList.add('hidden');
-    });
-    // Toggle Admin Section
-    document.getElementById('adminLink').addEventListener('click', (e) => {
-      e.preventDefault();
-      const adminSec = document.getElementById('adminSection');
-      adminSec.style.display = adminSec.style.display === 'none' ? 'block' : 'none';
     });
     // Matrix Animation
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-    const cols = Math.floor(width / 20) + 1;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const cols = Math.floor(canvas.width / 20) + 1;
     const ypos = Array(cols).fill(0);
     function matrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = '#1a4a2a';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#22c55e';
       ctx.font = '12px monospace';
       ypos.forEach((y, ind) => {
         const text = String.fromCharCode(33 + Math.random() * 94);
-        const x = ind * 20;
-        ctx.fillText(text, x, y);
-        if (y > 100 + Math.random() * 15000) ypos[ind] = 0;
-        else ypos[ind] = y + 15;
+        ctx.fillText(text, ind * 20, y);
+        ypos[ind] = y > canvas.height + Math.random() * 10000 ? 0 : y + 15;
       });
     }
     setInterval(matrix, 150);
     window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     });
   </script>
 </body>
