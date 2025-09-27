@@ -26,6 +26,7 @@
       fill: #1a4a2a;
       opacity: 0.2;
     }
+    #adminSection { display: none; }
   </style>
 </head>
 <body class="bg-[#0a0a0a] text-gray-200 overflow-x-hidden">
@@ -40,7 +41,7 @@
     <p class="text-sm text-gray-400">Precision Automation • Secure VPN • Uninterrupted Performance</p>
   </header>
   <main class="max-w-2xl mx-auto p-6 space-y-8">
-    <!-- Login Portal -->
+    <!-- Member Login Portal -->
     <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
       <h2 class="text-lg font-semibold text-gray-100 mb-4">🔐 Member Access</h2>
       <input type="text" id="loginUser" placeholder="Username" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-gray-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-500">
@@ -67,12 +68,29 @@
         <li>✔ Uninterrupted 24/7 Performance</li>
       </ul>
     </section>
+    <!-- Admin Section (Hidden by Default) -->
+    <section id="adminSection" class="bg-[#121212] border border-red-600/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
+      <h2 class="text-lg font-semibold text-gray-100 mb-4">🔑 Admin Dashboard</h2>
+      <input type="password" id="adminKey" placeholder="Admin Key" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-red-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-red-500">
+      <button id="adminBtn" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition">Admin Login</button>
+      <p id="adminMsg" class="mt-4 text-sm text-gray-400"></p>
+      <div id="adminDashboard" class="mt-6 hidden">
+        <h3 class="text-md font-semibold text-gray-100 mb-2">Dashboard Stats</h3>
+        <ul class="list-none p-0 space-y-1 text-sm text-gray-400">
+          <li>Active Users: 150</li>
+          <li>Monthly Revenue: $3,300</li>
+          <li>New Subscriptions: 12</li>
+          <li>Downloads Today: 5</li>
+        </ul>
+        <button id="logoutBtn" class="mt-4 inline-block px-5 py-2 bg-gray-600 text-gray-200 font-medium rounded-md hover:bg-gray-500 transition">Logout</button>
+      </div>
+    </section>
   </main>
   <footer class="text-center py-6 text-xs text-gray-500">
-    <p>© 2025 GoblinReach.ai | Support: support@goblinreach.ai</p>
+    <p>© 2025 GoblinReach.ai | Support: support@goblinreach.ai | <a href="#" id="adminLink" class="text-[#22c55e] hover:underline">Admin</a></p>
   </footer>
   <script>
-    // Stripe Setup
+    // Stripe Setup (unchanged)
     const stripe = Stripe("pk_test_YOUR_KEY_HERE");
     document.getElementById("planMonthly").addEventListener("click", () => {
       stripe.redirectToCheckout({
@@ -90,16 +108,15 @@
         cancelUrl: "https://goblinreach.ai/cancel.html",
       });
     });
-    // World Clock
+    // World Clock (unchanged)
     function updateClock() {
       const now = new Date();
-      document.getElementById('worldClock').innerText =
-        "🌍 " + now.toUTCString();
+      document.getElementById('worldClock').innerText = "🌍 " + now.toUTCString();
     }
     setInterval(updateClock, 1000);
     updateClock();
-    // Simple Access Key login (move to server-side for production)
-    const validKeys = ["EXAMPLE-KEY-1", "EXAMPLE-KEY-2"]; // Replace with real keys or use backend
+    // Member Login (unchanged)
+    const validKeys = ["EXAMPLE-KEY-1", "EXAMPLE-KEY-2"];
     document.getElementById('loginBtn').addEventListener('click', () => {
       const key = document.getElementById('loginKey').value.trim();
       if (validKeys.includes(key)) {
@@ -109,7 +126,32 @@
         document.getElementById('loginMsg').innerText = "❌ Invalid key. Verify your subscription.";
       }
     });
-    // Minimal Matrix animation
+    // Admin Login
+    const adminValidKeys = ["ADMIN-KEY-2025"]; // Change this to your secret key!
+    document.getElementById('adminBtn').addEventListener('click', () => {
+      const adminKey = document.getElementById('adminKey').value.trim();
+      const adminMsg = document.getElementById('adminMsg');
+      const adminDash = document.getElementById('adminDashboard');
+      if (adminValidKeys.includes(adminKey)) {
+        adminMsg.innerText = "✅ Admin access granted.";
+        adminDash.classList.remove('hidden');
+      } else {
+        adminMsg.innerText = "❌ Invalid admin key.";
+      }
+    });
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      document.getElementById('adminKey').value = '';
+      document.getElementById('adminMsg').innerText = '';
+      document.getElementById('adminDashboard').classList.add('hidden');
+    });
+    // Toggle Admin Section
+    document.getElementById('adminLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      const adminSec = document.getElementById('adminSection');
+      adminSec.style.display = adminSec.style.display === 'none' ? 'block' : 'none';
+    });
+    // Matrix Animation (unchanged)
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
