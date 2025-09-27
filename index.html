@@ -1,189 +1,139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GoblinReach.ai</title>
-<style>
-  body {
-    margin:0; font-family: monospace;
-    background:#000; color:#00ff66; overflow-x:hidden;
-  }
-  header {
-    text-align:center; padding:20px;
-  }
-  header img {
-    width:120px; margin-bottom:10px;
-  }
-  header h1 {
-    font-size:2.2em; text-shadow:0 0 15px #00ff66;
-    margin-bottom:5px;
-  }
-  header p {
-    font-size:1em; color:#00cc55; margin-top:0;
-  }
-  #worldClock {
-    font-weight:bold; text-align:center; margin-bottom:10px;
-    font-size:1.2em; text-shadow:0 0 5px #00ff66;
-  }
-  .insta-btn img {
-    width:40px; margin:0 auto 10px; display:block;
-    transition:0.2s;
-  }
-  .insta-btn img:hover {transform:scale(1.2); filter:drop-shadow(0 0 10px #00ff66);}
-  .content {
-    max-width:750px; margin:20px auto; padding:20px; text-align:center;
-  }
-  .btn {
-    display:inline-block; padding:12px 20px; margin:10px;
-    background:#00ff66; color:#000; font-weight:bold;
-    text-decoration:none; border-radius:5px;
-    transition:0.2s;
-  }
-  .btn:hover {background:#00cc55; transform:scale(1.05);}
-  .box {
-    border:1px solid #00ff66; padding:25px; margin:20px 0; border-radius:10px;
-    background:rgba(0,20,0,0.85); text-align:center; box-shadow:0 0 20px #00ff66;
-  }
-  .box h2 {text-align:center; margin-bottom:15px;}
-  .login-box input {
-    display:block; margin:10px auto; padding:12px;
-    border:1px solid #00ff66; border-radius:5px; background:#000; color:#00ff66;
-    width:70%;
-  }
-  footer {
-    text-align:center; padding:20px; font-size:0.8em; color:#008844;
-  }
-  /* subtle matrix animation background */
-  #matrix {
-    position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
-    background:black;
-  }
-</style>
-<script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
-
-<canvas id="matrix"></canvas>
-
-<header>
-  <!-- Goblin logo -->
-  <img src="https://yourdomain.com/goblin-logo.png" alt="GoblinReach Logo">
-  <div id="worldClock">🌍 Loading time...</div>
-  <div class="insta-btn">
-    <a href="https://instagram.com/YOUR_USERNAME" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-    </a>
-  </div>
-  <h1>GoblinReach.ai</h1>
-  <p>Automate Instagram • VPN • Mouse Wigglers • Secure Access</p>
-</header>
-
-<div class="content">
-
-  <!-- Login Portal -->
-  <div class="box login-box">
-    <h2>🔐 Member Login</h2>
-    <input type="text" placeholder="Username" id="loginUser"/>
-    <input type="password" placeholder="Access Key" id="loginKey"/>
-    <button class="btn" id="loginBtn">Login</button>
-    <p id="loginMsg"></p>
-  </div>
-
-  <!-- Plans -->
-  <div class="box">
-    <h2>Plans</h2>
-    <p>$22 / Month</p>
-    <p>$95 / 6 Months</p>
-    <button class="btn" id="planMonthly">$22 Subscribe</button>
-    <button class="btn" id="planSix">$95 / 6 Months</button>
-  </div>
-
-  <!-- Features -->
-  <div class="box">
-    <h2>Features</h2>
-    <ul style="list-style:none; padding:0;">
-      <li>✔ Built-in VPN cloak</li>
-      <li>✔ Auto Mouse Wiggler (no sleep)</li>
-      <li>✔ Timer delays for safe automation</li>
-      <li>✔ Export reports to DOC</li>
-      <li>✔ 24/7 uptime — no bugs</li>
-    </ul>
-  </div>
-
-</div>
-
-<footer>
-  <p>© 2025 GoblinReach.ai | Support: support@goblinreach.ai</p>
-</footer>
-
-<script>
-  // Stripe Setup
-  const stripe = Stripe("pk_test_YOUR_KEY_HERE");
-
-  document.getElementById("planMonthly").addEventListener("click", () => {
-    stripe.redirectToCheckout({
-      lineItems: [{ price: "price_ID_MONTHLY", quantity: 1 }],
-      mode: "subscription",
-      successUrl: "https://yourdomain.com/download.html?key=USER_KEY_HERE",
-      cancelUrl: "https://yourdomain.com/cancel.html",
-    });
-  });
-
-  document.getElementById("planSix").addEventListener("click", () => {
-    stripe.redirectToCheckout({
-      lineItems: [{ price: "price_ID_6MONTH", quantity: 1 }],
-      mode: "subscription",
-      successUrl: "https://yourdomain.com/download.html?key=USER_KEY_HERE",
-      cancelUrl: "https://yourdomain.com/cancel.html",
-    });
-  });
-
-  // World Clock
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('worldClock').innerText =
-      "🌍 " + now.toUTCString();
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  // Simple Access Key login (keys can later be generated server-side)
-  const validKeys = ["EXAMPLE-KEY-1","EXAMPLE-KEY-2"]; // replace with real keys
-
-  document.getElementById('loginBtn').addEventListener('click', () => {
-    const key = document.getElementById('loginKey').value.trim();
-    if(validKeys.includes(key)){
-      document.getElementById('loginMsg').innerHTML =
-        '✅ Login successful. <a href="downloads/goblinreach.zip" class="btn">Download Now</a>';
-    } else {
-      document.getElementById('loginMsg').innerText = "❌ Invalid key. Check subscription.";
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoblinReach.ai</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
     }
-  });
-
-  // Minimal Matrix animation
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-
-  const cols = Math.floor(width/20);
-  const ypos = Array(cols).fill(0);
-
-  function matrix() {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0,0,width,height);
-    ctx.fillStyle = '#00ff33';
-    ctx.font = '15px monospace';
-    ypos.forEach((y, ind)=>{
-      const text = String.fromCharCode(33 + Math.random() * 94);
-      ctx.fillText(text, ind*20, y);
-      ypos[ind] = y > height ? 0 : y + 20;
+    #matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: #0a0a0a;
+    }
+    .matrix-char {
+      font-family: monospace;
+      font-size: 12px;
+      fill: #1a4a2a;
+      opacity: 0.2;
+    }
+  </style>
+</head>
+<body class="bg-[#0a0a0a] text-gray-200 overflow-x-hidden">
+  <canvas id="matrix"></canvas>
+  <header class="text-center py-12">
+    <img src="https://goblinreach.ai/goblin-logo.png" alt="GoblinReach Logo" class="w-32 mx-auto mb-6 opacity-90">
+    <div id="worldClock" class="text-sm font-medium text-gray-400 mb-6">🌍 Loading time...</div>
+    <a href="https://instagram.com/YOUR_USERNAME" target="_blank" class="inline-block">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="w-8 mx-auto mb-6 transition hover:brightness-110">
+    </a>
+    <h1 class="text-2xl font-semibold text-gray-100 mb-2">GoblinReach.ai</h1>
+    <p class="text-sm text-gray-400">Precision Automation • Secure VPN • Uninterrupted Performance</p>
+  </header>
+  <main class="max-w-2xl mx-auto p-6 space-y-8">
+    <!-- Login Portal -->
+    <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
+      <h2 class="text-lg font-semibold text-gray-100 mb-4">🔐 Member Access</h2>
+      <input type="text" id="loginUser" placeholder="Username" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-gray-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-500">
+      <input type="password" id="loginKey" placeholder="Access Key" class="block w-3/4 mx-auto p-2 mb-4 bg-[#1a1a1a] border border-gray-600/50 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-500">
+      <button id="loginBtn" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition">Access</button>
+      <p id="loginMsg" class="mt-4 text-sm text-gray-400"></p>
+    </section>
+    <!-- Plans -->
+    <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
+      <h2 class="text-lg font-semibold text-gray-100 mb-4">Membership Plans</h2>
+      <p class="text-sm text-gray-400">$22 / Month</p>
+      <p class="text-sm text-gray-400">$95 / 6 Months</p>
+      <button id="planMonthly" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition m-2">$22 Subscribe</button>
+      <button id="planSix" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition m-2">$95 / 6 Months</button>
+    </section>
+    <!-- Features -->
+    <section class="bg-[#121212] border border-gray-700/50 rounded-lg p-6 shadow-[0_0_8px_rgba(0,0,0,0.5)] text-center">
+      <h2 class="text-lg font-semibold text-gray-100 mb-4">Features</h2>
+      <ul class="list-none p-0 space-y-2 text-sm text-gray-400">
+        <li>✔ Integrated VPN Protection</li>
+        <li>✔ Automatic Mouse Wiggler</li>
+        <li>✔ Precision Automation Timers</li>
+        <li>✔ Document Export Capabilities</li>
+        <li>✔ Uninterrupted 24/7 Performance</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="text-center py-6 text-xs text-gray-500">
+    <p>© 2025 GoblinReach.ai | Support: support@goblinreach.ai</p>
+  </footer>
+  <script>
+    // Stripe Setup
+    const stripe = Stripe("pk_test_YOUR_KEY_HERE");
+    document.getElementById("planMonthly").addEventListener("click", () => {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: "price_ID_MONTHLY", quantity: 1 }],
+        mode: "subscription",
+        successUrl: "https://goblinreach.ai/download.html?key=USER_KEY_HERE",
+        cancelUrl: "https://goblinreach.ai/cancel.html",
+      });
     });
-  }
-  setInterval(matrix,50);
-  window.addEventListener('resize', ()=>{ width = canvas.width=window.innerWidth; height = canvas.height=window.innerHeight; });
-</script>
-
+    document.getElementById("planSix").addEventListener("click", () => {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: "price_ID_6MONTH", quantity: 1 }],
+        mode: "subscription",
+        successUrl: "https://goblinreach.ai/download.html?key=USER_KEY_HERE",
+        cancelUrl: "https://goblinreach.ai/cancel.html",
+      });
+    });
+    // World Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('worldClock').innerText =
+        "🌍 " + now.toUTCString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+    // Simple Access Key login (move to server-side for production)
+    const validKeys = ["EXAMPLE-KEY-1", "EXAMPLE-KEY-2"]; // Replace with real keys or use backend
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const key = document.getElementById('loginKey').value.trim();
+      if (validKeys.includes(key)) {
+        document.getElementById('loginMsg').innerHTML =
+          '✅ Access granted. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="inline-block px-5 py-2 bg-[#22c55e]/80 text-black font-medium rounded-md hover:bg-[#22c55e] transition">Download Now</a>';
+      } else {
+        document.getElementById('loginMsg').innerText = "❌ Invalid key. Verify your subscription.";
+      }
+    });
+    // Minimal Matrix animation
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    const cols = Math.floor(width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+    function matrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#1a4a2a';
+      ctx.font = '12px monospace';
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(33 + Math.random() * 94);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 15000) ypos[ind] = 0;
+        else ypos[ind] = y + 15;
+      });
+    }
+    setInterval(matrix, 150);
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
