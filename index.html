@@ -10,8 +10,17 @@
       background:#000; color:#00ff66;
     }
     header {
-      text-align:center; padding:30px 20px;
+      text-align:center; padding:20px;
     }
+    #worldClock {
+      font-weight:bold; margin-bottom:10px;
+      font-size:1.2em; text-shadow:0 0 10px #00ff66;
+    }
+    .insta-btn img {
+      width:80px; margin:0 auto 10px; display:block;
+      transition:0.2s;
+    }
+    .insta-btn img:hover {transform:scale(1.2); filter:drop-shadow(0 0 20px #00ff66);}
     header h1 {
       font-size:2em; text-shadow:0 0 10px #00ff66;
     }
@@ -19,7 +28,7 @@
       font-size:1em; color:#00cc55;
     }
     .content {
-      max-width:700px; margin:30px auto; padding:20px; text-align:center;
+      max-width:700px; margin:20px auto; padding:20px; text-align:center;
     }
     .btn {
       display:inline-block; padding:12px 20px; margin:10px;
@@ -30,23 +39,15 @@
     .btn:hover {background:#00cc55; transform:scale(1.05);}
     .box {
       border:1px solid #00ff66; padding:20px; margin:20px 0; border-radius:5px;
-      background:rgba(0,20,0,0.7); text-align:left; box-shadow:0 0 15px #00ff66;
+      background:rgba(0,20,0,0.7); text-align:center; box-shadow:0 0 15px #00ff66;
     }
     .box h2 {text-align:center;}
-    #worldClock {font-weight:bold; text-align:center; margin-top:10px;}
-    footer {
-      text-align:center; padding:20px; font-size:0.8em; color:#008844;
-    }
-    .insta-btn img {
-      width:80px; margin-top:15px; transition:0.2s;
-    }
-    .insta-btn img:hover {transform:scale(1.2); filter:drop-shadow(0 0 20px #00ff66);}
-    .login-box {
-      text-align:center;
-    }
     .login-box input {
       display:block; margin:10px auto; padding:10px;
       border:1px solid #00ff66; border-radius:5px; background:#000; color:#00ff66;
+    }
+    footer {
+      text-align:center; padding:20px; font-size:0.8em; color:#008844;
     }
   </style>
   <script src="https://js.stripe.com/v3/"></script>
@@ -54,6 +55,12 @@
 <body>
 
 <header>
+  <div id="worldClock">🌍 Loading time...</div>
+  <div class="insta-btn">
+    <a href="https://instagram.com/YOUR_USERNAME" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+    </a>
+  </div>
   <h1>GoblinReach.ai</h1>
   <p>Matrix-powered Growth • VPN • Auto Wigglers • Instant Setup</p>
 </header>
@@ -63,9 +70,10 @@
   <!-- Login Portal -->
   <div class="box login-box">
     <h2>🔐 Member Login</h2>
-    <input type="text" placeholder="Username" />
-    <input type="password" placeholder="Access Key" />
-    <button class="btn">Login</button>
+    <input type="text" placeholder="Username" id="loginUser"/>
+    <input type="password" placeholder="Access Key" id="loginKey"/>
+    <button class="btn" id="loginBtn">Login</button>
+    <p id="loginMsg"></p>
   </div>
 
   <!-- Plans -->
@@ -75,13 +83,6 @@
     <p>$95 / 6 Months</p>
     <button class="btn" id="planMonthly">$22 Subscribe</button>
     <button class="btn" id="planSix">$95 / 6 Months</button>
-  </div>
-
-  <!-- DM Portal -->
-  <div class="box">
-    <h2>📨 DM Portal</h2>
-    <p>Run Instagram DM campaigns like HyperCavs.</p>
-    <button class="btn">Open Portal</button>
   </div>
 
   <!-- Features -->
@@ -94,14 +95,6 @@
       <li>✔ Export reports to DOC</li>
       <li>✔ 24/7 uptime — no bugs</li>
     </ul>
-    <div id="worldClock"></div>
-  </div>
-
-  <!-- Instagram -->
-  <div class="insta-btn" style="text-align:center;">
-    <a href="https://instagram.com/YOUR_USERNAME" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-    </a>
   </div>
 
 </div>
@@ -141,7 +134,18 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // Analytics placeholder (drop your pixel code here)
+  // Simulated login for now
+  document.getElementById('loginBtn').addEventListener('click', () => {
+    const user = document.getElementById('loginUser').value;
+    const key = document.getElementById('loginKey').value;
+    if(user && key){
+      document.getElementById('loginMsg').innerText = "✅ Login successful. Access granted!";
+    } else {
+      document.getElementById('loginMsg').innerText = "❌ Please enter valid credentials.";
+    }
+  });
+
+  // Analytics placeholder
 </script>
 
 </body>
