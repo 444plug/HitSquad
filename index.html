@@ -1,98 +1,286 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GoblinReach — Stealth Instagram DM Automation</title>
-<meta name="description" content="Let AI handle your Instagram DMs — safely, on autopilot. Proxy/VPN ready, human-like pacing, and optional 24/7 cloud runs." />
-<style>
-  :root{
-    --bg:#070b07; --panel:#0b140b; --line:#123312;
-    --text:#e7fbe7; --muted:#bfecc8; --accent:#23c05b; --ghost:#0f1e10;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-  .wrap{max-width:980px;margin:40px auto;padding:20px}
-  .card{padding:28px;border:1px solid var(--line);border-radius:18px;background:#0f1a10}
-  h1{font-size:40px;margin:0 0 8px}
-  .sub{opacity:.9;margin:0 0 18px}
-  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-  .badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--ghost);font-size:13px;color:var(--muted)}
-  .cta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
-  .btn{appearance:none;border:0;border-radius:12px;padding:14px 18px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center}
-  .btn.primary{background:var(--accent);color:#07240e}
-  .btn.ghost{background:var(--ghost);color:var(--text);border:1px solid var(--line)}
-  .panel{margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:900px){.grid{grid-template-columns:1fr}}
-  .muted{color:var(--muted)}
-  .dl{display:none}
-  .dl.show{display:block}
-  footer{opacity:.75;margin-top:22px;font-size:13px}
-  a{color:#a7f3b7}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GoblinReach • GoblinReach.ai</title>
+  <meta name="description" content="GoblinReach — lightweight outreach & growth tools. Instant download, 24/7 uptime tips, secure payments." />
+  <style>
+    /* Simple modern styles (single-file). Tweak as needed. */
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#00d084; --muted:#9aa4b2; --glass: rgba(255,255,255,0.03);
+      --maxw:1100px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#071021 0%, #071524 100%);color:#e6eef6;line-height:1.45}
+    .wrap{max-width:var(--maxw);margin:24px auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:54px;height:54px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#00b3ff);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{margin:0;font-size:20px}
+    .sub{color:var(--muted);font-size:13px;margin-top:6px}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:20px;margin-top:22px}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;padding:0;}.hero-right{order:2}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px;border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .features li{margin:10px 0}
+    .price{font-size:28px;font-weight:700;margin:0}
+    .muted{color:var(--muted);font-size:13px}
+    .cta{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+    button{background:var(--accent);border:none;color:#022;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .small{font-size:13px;padding:8px 10px}
+    footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+    .plan{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:10px}
+    .note{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;color:var(--muted);font-size:13px}
+    .success{background:linear-gradient(90deg,#052018,#073024);padding:12px;border-radius:10px;color:#b9f6d6;margin-top:12px}
+    .danger{background:linear-gradient(90deg,#3a0a0a,#2b0505);padding:10px;border-radius:10px;color:#ffd1cf;margin-top:12px}
+    .inline{display:inline-block}
+    .kbd{background:rgba(0,0,0,0.25);padding:6px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);font-family:monospace}
+    .logoText{font-weight:800;letter-spacing:0.6px}
+    .legal{font-size:12px;color:#9aa4b2;margin-top:12px}
+    .download-link{display:block;text-decoration:none;background:linear-gradient(90deg,#00d084,#00b3ff);color:#022;padding:10px 14px;border-radius:10px;text-align:center;font-weight:700}
+    .center{text-align:center}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>GoblinReach.ai</h1>
-    <p class="sub">Stealth Instagram Outreach — human-like pacing (600–900s), proxy/VPN support, optional 24/7 cloud runs. One-minute install.</p>
-
-    <div class="badges">
-      <span class="badge">600–900s safe delay</span>
-      <span class="badge">Proxy / VPN ready</span>
-      <span class="badge">Cloud automation</span>
-    </div>
-
-    <div class="cta">
-      <!-- Replace with your live Stripe links if different -->
-      <a class="btn primary" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" rel="noopener">Start for $22/mo</a>
-      <a class="btn ghost" href="https://buy.stripe.com/3cIbJ00P3gIfesD9leaZi04" target="_blank" rel="noopener">6 months — $95</a>
-      <a class="btn ghost" href="https://cash.app/$Triple4mgmt" target="_blank" rel="noopener">High-ticket setup ($5k–$25k)</a>
-    </div>
-
-    <!-- Unlocks AFTER Stripe redirect (?paid=1 or session_id=...) -->
-    <div id="paidBox" class="panel dl">
-      <h3>Access unlocked ✅</h3>
-      <p class="muted">Thanks for your purchase. Download the full build below.</p>
-      <p><a class="btn primary" href="/assets/goblinreach.zip" download>Download GoblinReach (Full)</a></p>
-      <p class="muted" style="font-size:12px">If clicking does nothing, make sure the file exists at <code>/assets/goblinreach.zip</code>.</p>
-    </div>
-
-    <!-- Always-visible trial -->
-    <div class="panel">
-      <div class="grid">
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">G</div>
         <div>
-          <h3>Free Trial — 50 DMs (Safe Mode)</h3>
-          <p class="muted">Try GoblinReach with safe pacing. Upgrade any time to unlock full queues, proxy pools, and cloud automations.</p>
-          <a class="btn ghost" href="/assets/goblinreach_trial.zip" download>Download Trial</a>
-        </div>
-        <div>
-          <h3>Quick Start</h3>
-          <ul class="muted">
-            <li>Install via Chrome: <b>chrome://extensions</b> → Developer Mode → Load Unpacked or import .zip.</li>
-            <li>Login to Instagram (guided login; no token needed).</li>
-            <li>Select audience → write message → toggle <b>Automate</b>.</li>
-            <li>Recommended delay: 600–900 seconds between actions.</li>
-          </ul>
+          <div class="logoText">GoblinReach <span style="font-weight:400;color:var(--muted)">• GoblinReach.ai</span></div>
+          <div class="sub">Instant delivery • Secure payments • Customer-first</div>
         </div>
       </div>
-    </div>
+      <div class="muted">Contact: <span class="kbd">$Triple4mgmt</span> (Cash App)</div>
+    </header>
 
-    <footer>© 2025 GoblinReach — Compliant, human-like DM automation.</footer>
+    <main class="hero">
+      <section>
+        <div class="card">
+          <h2 style="margin:0 0 6px 0">Launch-ready single-file product — paste to your index</h2>
+          <div class="muted">This page handles purchase + instant download. Replace the download URL & Stripe keys below.</div>
+
+          <hr style="border:none;height:12px">
+
+          <h3 style="margin:8px 0">What’s included</h3>
+          <ul class="features">
+            <li>Single-file index (this page) for a polished landing experience.</li>
+            <li>Two pricing options — $22 / month and $95 / 6 months. (Configurable.)</li>
+            <li>Secure Stripe placeholder integration (replace with live keys).</li>
+            <li>Instant download after payment (server-ready URL required).</li>
+            <li>Customer-first UX: receipts, support email, and refund policy area.</li>
+          </ul>
+
+          <div style="margin-top:12px" class="note">
+            <strong>Compliance:</strong> This package does <em>not</em> include illicit automation (spam, ghost account messaging, scraping restricted data). Keep your product legal and platform-compliant.
+          </div>
+
+          <div style="margin-top:12px" class="legal">
+            <strong>Support email:</strong> <span id="supportEmail">support@goblinreach.ai</span><br>
+            <strong>Download filename expected:</strong> <span class="kbd">goblinreach.zip</span> (place it at your server's `/downloads/` or update URL below)
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="card">
+          <h3 style="margin:0 0 8px 0">Host & uptime tips (quick)</h3>
+          <ol class="muted">
+            <li>Deploy on Vercel or Netlify for automatic HTTPS + auto-deploy from Git. (Easy rollback.)</li>
+            <li>Use an uptime monitor (UptimeRobot, Pingdom) to restart a function or notify you if down.</li>
+            <li>Serve the download from a CDN or S3 to keep bandwidth fast and reliable.</li>
+          </ol>
+        </div>
+
+        <div style="margin-top:14px" class="card">
+          <h3 style="margin:0 0 8px 0">Refunds & zero-unhappy-customer policy</h3>
+          <p class="muted">Set a clear 7-day refund window, provide a direct support channel, and automate license keys so customers can re-download immediately. A clear refund policy massively reduces angry customers.</p>
+        </div>
+
+      </section>
+
+      <aside class="hero-right">
+        <div class="card">
+          <div class="center">
+            <p class="muted">Choose plan</p>
+            <div style="display:flex;gap:8px;flex-direction:column">
+              <div class="plan">
+                <div>
+                  <div class="muted">Monthly</div>
+                  <div class="price">$22 <span class="muted">/ month</span></div>
+                </div>
+                <div style="text-align:right">
+                  <button class="small" onclick="startCheckout('monthly')">Buy $22</button>
+                </div>
+              </div>
+
+              <div class="plan" style="margin-top:8px">
+                <div>
+                  <div class="muted">Best value</div>
+                  <div class="price">$95 <span class="muted">/ 6 months</span></div>
+                </div>
+                <div style="text-align:right">
+                  <button class="small" onclick="startCheckout('six')">Buy $95</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="checkoutStatus" class="muted" style="margin-top:12px">Not in checkout</div>
+          </div>
+
+          <hr style="margin:12px 0;border:none;height:8px">
+
+          <div>
+            <h4 style="margin:0 0 8px 0">Instant download</h4>
+            <p class="muted">After successful purchase, the download link will appear automatically — the download should start immediately for the customer.</p>
+            <div id="downloadArea" style="margin-top:8px"></div>
+
+            <div id="paymentControls" style="margin-top:12px">
+              <div class="muted">Test mode: Click simulate to see the flow without Stripe.</div>
+              <div class="cta" style="margin-top:8px">
+                <button class="btn-ghost small" onclick="simulateSuccess()">Simulate success</button>
+                <button class="btn-ghost small" onclick="simulateFail()">Simulate failure</button>
+              </div>
+            </div>
+
+            <div id="message" style="margin-top:10px"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="card">
+          <h4 style="margin:0 0 8px 0">Quick settings (edit directly)</h4>
+          <p class="muted"><strong>Placeholders you MUST replace:</strong></p>
+          <ul class="muted">
+            <li><span class="kbd">STRIPE_PUBLISHABLE_KEY</span> — replace with your key in the script area.</li>
+            <li><span class="kbd">STRIPE_SUCCESS_URL</span> — URL to confirm purchase on your server (optional).</li>
+            <li><span class="kbd">DOWNLOAD_URL</span> — direct URL to the delivered ZIP or installer (example below).</li>
+            <li>Support email: edit the <code>supportEmail</code> element if you want a different address.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:12px" class="card">
+          <h4 style="margin:0 0 8px 0">Auto mouse-wiggler (optional)</h4>
+          <p class="muted">If you need a local anti-sleep tool, include a small native app or browser extension. Below is a harmless checkbox that simulates local activity by moving a tiny on-page element (this does not control the OS mouse and is provided for visual feedback only).</p>
+          <label class="muted"><input id="wiggle" type="checkbox" onchange="toggleWiggle()"> Enable demo wiggle</label>
+          <div id="wiggleBox" style="margin-top:10px;height:36px"></div>
+        </div>
+
+      </aside>
+    </main>
+
+    <footer>
+      <div class="muted">© GoblinReach • Built for quick recovery and reliable delivery. Replace placeholders before going live.</div>
+    </footer>
+
   </div>
-</div>
 
-<script>
-  // Reveal paid download if Stripe returned successfully
-  (function(){
-    const p = new URLSearchParams(location.search);
-    if (p.get('paid') === '1' || p.has('session_id')) {
-      const box = document.getElementById('paidBox');
-      if (box) box.classList.add('show');
+  <script>
+    /* === CONFIG: update these before you go live === */
+    const CONFIG = {
+      STRIPE_PUBLISHABLE_KEY: "STRIPE_PUBLISHABLE_KEY", // REPLACE with your publishable key
+      DOWNLOAD_URL: "/downloads/goblinreach.zip",       // REPLACE with the real download URL (publicly accessible)
+      SUPPORT_EMAIL: "support@goblinreach.ai",
+      SUCCESS_RETURN_URL: window.location.href + "?paid=true" // optional server-side redirect URL
+    };
+    document.getElementById('supportEmail').textContent = CONFIG.SUPPORT_EMAIL;
+
+    /* --- Simple simulated checkout flow --- 
+       NOTE: This is a client-side UI flow. For a real product:
+         1) Use Stripe Checkout or Payment Intents from your server.
+         2) Create a server endpoint that returns a Checkout session id.
+         3) Redirect using stripe.redirectToCheckout({ sessionId }) or use the Elements API.
+         4) Serve a signed download link (S3 presigned URL) to the user after your server confirms payment.
+    */
+
+    function startCheckout(plan){
+      // Real implementation should call your server. This is a friendly UI only.
+      const status = document.getElementById('checkoutStatus');
+      status.textContent = "Starting checkout for " + (plan === 'monthly' ? "$22/mo" : "$95/6mo") + " (test)";
+      // show small instruction:
+      showMessage("This is a demo checkout. Replace with server-side Stripe Checkout for real payments.", "info");
+      // on real success your server would notify and you'd show the download
     }
-  })();
-</script>
+
+    function showDownloadAndAutoStart(){
+      const area = document.getElementById('downloadArea');
+      area.innerHTML = '';
+      const a = document.createElement('a');
+      a.href = CONFIG.DOWNLOAD_URL;
+      a.className = 'download-link';
+      a.textContent = 'Download GoblinReach now';
+      a.setAttribute('download','goblinreach.zip');
+      area.appendChild(a);
+
+      // attempt to auto-click to start download
+      setTimeout(()=>{ a.click(); }, 600);
+      showMessage('Download started — if it does not start, the user may need to allow popups or click the button.', 'success');
+    }
+
+    function simulateSuccess(){
+      // This simulates a server-confirmed successful payment and starts the download.
+      document.getElementById('checkoutStatus').textContent = "Payment confirmed (simulated).";
+      showDownloadAndAutoStart();
+    }
+
+    function simulateFail(){
+      document.getElementById('checkoutStatus').textContent = "Payment failed (simulated).";
+      showMessage('Payment failed. Please contact ' + CONFIG.SUPPORT_EMAIL, 'danger');
+    }
+
+    function showMessage(text, type){
+      const msg = document.getElementById('message');
+      msg.innerHTML = '';
+      const d = document.createElement('div');
+      d.textContent = text;
+      if(type === 'success') d.className = 'success';
+      else if(type === 'danger') d.className = 'danger';
+      else d.className = 'muted';
+      msg.appendChild(d);
+    }
+
+    /* Wiggle demo: purely on-page visual, not controlling system mouse */
+    let wiggleInterval = null;
+    function toggleWiggle(){
+      const box = document.getElementById('wiggleBox');
+      if(document.getElementById('wiggle').checked){
+        box.innerHTML = '<div id="dot" style="width:12px;height:12px;border-radius:6px;background:#00d084;display:inline-block;transform:translateX(0)"></div>';
+        let dir = 1;
+        wiggleInterval = setInterval(()=>{
+          const el = document.getElementById('dot');
+          if(!el) return;
+          const cur = parseFloat(el.style.transform.replace(/[^\d\.\-]/g,'')) || 0;
+          const next = cur + (3 * dir);
+          el.style.transform = 'translateX(' + next + 'px)';
+          if(Math.abs(next) > 12) dir *= -1;
+        }, 180);
+      } else {
+        if(wiggleInterval) clearInterval(wiggleInterval);
+        wiggleInterval = null;
+        box.innerHTML = '';
+      }
+    }
+
+    /* When loading the page, check for paid=true query (optional convenience) */
+    (function(){
+      const url = new URL(window.location.href);
+      if(url.searchParams.get('paid') === 'true'){
+        // If you redirect customers here after server confirms payment, they will get download immediately
+        showDownloadAndAutoStart();
+      }
+    })();
+
+    /* Utility: Replace placeholders in code before going live (simple message) */
+    (function checkPlaceholders(){
+      const missing = [];
+      if(CONFIG.STRIPE_PUBLISHABLE_KEY === "STRIPE_PUBLISHABLE_KEY") missing.push('Stripe publishable key');
+      if(CONFIG.DOWNLOAD_URL === "/downloads/goblinreach.zip") {
+        // it's OK to keep this if you actually have that path - otherwise replace
+      }
+      if(missing.length){
+        console.warn("GoblinReach: please replace config placeholders before going live:", missing);
+      }
+    })();
+
+  </script>
 </body>
 </html>
