@@ -12,9 +12,6 @@
     header {
       text-align:center; padding:30px 20px;
     }
-    header img {
-      width:120px; margin-bottom:10px;
-    }
     header h1 {
       font-size:2em; text-shadow:0 0 10px #00ff66;
     }
@@ -33,7 +30,7 @@
     .btn:hover {background:#00cc55; transform:scale(1.05);}
     .box {
       border:1px solid #00ff66; padding:20px; margin:20px 0; border-radius:5px;
-      background:rgba(0,255,100,0.05); text-align:left;
+      background:rgba(0,20,0,0.7); text-align:left; box-shadow:0 0 15px #00ff66;
     }
     .box h2 {text-align:center;}
     #worldClock {font-weight:bold; text-align:center; margin-top:10px;}
@@ -43,7 +40,7 @@
     .insta-btn img {
       width:80px; margin-top:15px; transition:0.2s;
     }
-    .insta-btn img:hover {transform:scale(1.2);}
+    .insta-btn img:hover {transform:scale(1.2); filter:drop-shadow(0 0 20px #00ff66);}
     .login-box {
       text-align:center;
     }
@@ -57,8 +54,6 @@
 <body>
 
 <header>
-  <!-- Replace with your logo file -->
-  <img src="https://yourdomain.com/logo.png" alt="GoblinReach Logo" />
   <h1>GoblinReach.ai</h1>
   <p>Matrix-powered Growth • VPN • Auto Wigglers • Instant Setup</p>
 </header>
@@ -146,7 +141,7 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // Analytics placeholder (drop in Google/Meta/TikTok pixel here)
+  // Analytics placeholder (drop your pixel code here)
 </script>
 
 </body>
