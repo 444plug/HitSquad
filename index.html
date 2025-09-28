@@ -59,6 +59,7 @@
     }
     .red-dot { background-color: #ef4444; }
     .green-dot { background-color: #22c55e; }
+    #adminSection { display: none; }
   </style>
 </head>
 <body class="min-h-screen p-6">
@@ -143,8 +144,28 @@
     </section>
   </main>
   <footer class="text-center mt-8 text-xs text-gray-500">
-    <p>© 2025 GoblinReach.ai | <a href="mailto:support@goblinreach.ai" class="text-slime">Support</a></p>
+    <p>© 2025 GoblinReach.ai | <a href="mailto:support@goblinreach.ai" class="text-slime">Support</a> | <a href="#" id="adminLink" class="text-slime">Admin</a></p>
   </footer>
+  <!-- Admin Section -->
+  <section id="adminSection" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+    <div class="bg-gray-800 p-6 rounded card w-80">
+      <h2 class="text-lg font-semibold mb-3 text-slime sharp-text">Admin Dashboard</h2>
+      <input type="password" id="adminKey" placeholder="Admin Key" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white">
+      <button id="adminBtn" class="w-full slime-green p-2 rounded slime-green-hover font-semibold mb-2">Admin Login</button>
+      <p id="adminMsg" class="text-sm text-gray-400"></p>
+      <div id="adminDashboard" class="mt-3 hidden">
+        <h3 class="text-md font-semibold text-slime mb-2">Stats</h3>
+        <ul class="text-sm text-gray-400 space-y-1">
+          <li>Active Users: 150</li>
+          <li>Monthly Revenue: $3,300</li>
+          <li>New Subscriptions: 12</li>
+          <li>Downloads: 5</li>
+        </ul>
+        <button id="logoutBtn" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Logout</button>
+      </div>
+      <button id="closeAdmin" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Close</button>
+    </div>
+  </section>
   <script>
     const stripe = Stripe("pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB");
     document.getElementById("startBtn").addEventListener("click", () => {
@@ -158,15 +179,31 @@
     document.getElementById("downloadBtn").addEventListener("click", () => {
       window.location.href = "https://goblinreach.ai/downloads/goblinreach.zip"; // Replace with your ZIP URL
     });
-    // Login functionality (temp client-side)
-    const validKeys = ["GOBLIN-KEY-001", "GOBLIN-KEY-002"]; // Add keys post-payment
-    document.querySelector('#login button').addEventListener('click', () => {
-      const key = document.querySelector('#login input[type="password"]').value.trim();
-      if (validKeys.includes(key)) {
-        document.getElementById('loginMsg').innerHTML = '✅ Access granted. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
+    // Admin Login
+    const adminValidKeys = ["ADMIN-KEY-2025"]; // Change to your secret key
+    document.getElementById('adminBtn').addEventListener('click', () => {
+      const adminKey = document.getElementById('adminKey').value.trim();
+      const adminMsg = document.getElementById('adminMsg');
+      const adminDash = document.getElementById('adminDashboard');
+      if (adminValidKeys.includes(adminKey)) {
+        adminMsg.innerText = "✅ Admin access granted.";
+        adminDash.classList.remove('hidden');
       } else {
-        document.getElementById('loginMsg').innerText = "❌ Invalid key. Sign up or contact support.";
+        adminMsg.innerText = "❌ Invalid admin key.";
       }
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      document.getElementById('adminKey').value = '';
+      document.getElementById('adminMsg').innerText = '';
+      document.getElementById('adminDashboard').classList.add('hidden');
+    });
+    document.getElementById('closeAdmin').addEventListener('click', () => {
+      document.getElementById('adminSection').style.display = 'none';
+    });
+    // Toggle Admin Section
+    document.getElementById('adminLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('adminSection').style.display = 'flex';
     });
     // Matrix Animation (Spy Effect)
     const canvas = document.getElementById('matrix');
