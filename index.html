@@ -1,91 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblinreach.ai - Launch Your Adventure</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #0f0f23, #1a1a2e);
-            color: #fff;
-            text-align: center;
-            overflow-x: hidden;
-        }
-        header {
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        .logo-link {
-            color: #00ff88;
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .hero {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 0 20px;
-        }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff88;
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-        .start-btn {
-            background: linear-gradient(45deg, #00ff88, #00cc6a);
-            color: #000;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2em;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
-            transition: transform 0.3s ease;
-        }
-        .start-btn:hover {
-            transform: scale(1.05);
-        }
-        footer {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            font-size: 0.9em;
-        }
-        @media (max-width: 768px) {
-            h1 { font-size: 2em; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GoblinReach.ai</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 0;
+    }
+    #matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: #0a0a0a;
+      opacity: 0.15;
+    }
+    .slime-green { background-color: #22c55e; color: #000; transition: all 0.2s ease; }
+    .slime-green-hover:hover { background-color: #16a34a; }
+    .text-slime { color: #22c55e; }
+    .card { border: 2px solid #22c55e; border-radius: 12px; box-shadow: 0 6px 12px rgba(34,197,94,0.15); }
+    .sharp-text { text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+    .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+    .red-dot { background-color: #ef4444; }
+    .green-dot { background-color: #22c55e; }
+    @media (max-width: 768px) {
+      .grid-cols-2 { grid-template-columns: 1fr; }
+      header, main { padding: 1rem; }
+      .card { margin-bottom: 1rem; }
+      #matrix { opacity: 0.08; }
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <a href="https://www.instagram.com/goblinreach.ai/" class="logo-link" target="_blank" rel="noopener noreferrer">@goblinreach.ai</a>
-    </header>
-    
-    <section class="hero">
-        <h1>Welcome to Goblinreach</h1>
-        <p>Unlock the hidden realms. Start your journey today.</p>
-        <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="start-btn" target="_blank" rel="noopener noreferrer">Start Now</a>
+<body class="min-h-screen p-6">
+  <canvas id="matrix"></canvas>
+
+  <!-- Header -->
+  <header class="flex justify-between items-center mb-8 text-sm text-gray-400">
+    <div class="flex items-center space-x-2">
+      <img src="https://goblinreach.ai/goblin-logo.png" alt="GoblinReach Logo" class="w-8">
+      <span class="text-slime font-semibold">GoblinReach</span>
+      <span>Cloud Proxies + VPN Ready</span>
+    </div>
+    <div class="flex space-x-4">
+      <a href="https://instagram.com/YOUR_USERNAME" target="_blank" class="text-slime">Instagram</a>
+      <a href="#login" class="text-slime">Login</a>
+      <a href="#signup" class="text-slime">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+    <!-- Signup -->
+    <section class="card p-6 bg-gray-900" id="signup">
+      <h1 class="text-2xl font-bold text-slime mb-2 sharp-text">Miracle Price: $22/mo</h1>
+      <h2 class="text-xl font-bold mb-4 sharp-text">Get High-Ticket Clients on Autopilot</h2>
+      <p class="text-gray-400 mb-4">GoblinReach offers a $1,000/mo tool experience for just $22/mo. Compliant, human-like DM automation for elite users.</p>
+      <div class="grid grid-cols-3 gap-2 mb-4 text-sm">
+        <div class="card p-2 bg-gray-800 text-center">
+          <p>Avg. Replies / 100 DMs</p>
+          <p class="text-slime">18-31</p>
+        </div>
+        <div class="card p-2 bg-gray-800 text-center">
+          <p>Active Users</p>
+          <p class="text-slime">1,000+</p>
+        </div>
+        <div class="card p-2 bg-gray-800 text-center">
+          <p>Compliance</p>
+          <p class="text-slime">Rate-limits</p>
+        </div>
+      </div>
+      <button id="startBtn" class="w-full slime-green p-3 rounded slime-green-hover font-bold">Start</button>
     </section>
-    
-    <footer>
-        &copy; 2025 Goblinreach.ai. All rights reserved. | <a href="https://www.instagram.com/goblinreach.ai/" style="color: #00ff88;">Instagram</a>
-    </footer>
+
+    <!-- Login -->
+    <section class="card p-6 bg-gray-900" id="login">
+      <h3 class="text-lg font-semibold text-slime sharp-text">LIVE Preview: Stable Features</h3>
+      <p class="text-xs text-gray-500 mb-2">Keep 600s between actions for optimal deliverability.</p>
+      <div class="flex items-center space-x-2 mb-4">
+        <label class="flex items-center text-sm text-gray-400">
+          <input type="checkbox" id="automationToggle" checked class="mr-1 text-slime">
+          Automation
+        </label>
+        <span class="status-dot red-dot" id="statusDot"></span>
+        <p class="text-sm text-gray-400">Status</p>
+      </div>
+      <div class="space-y-4">
+        <select class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm">
+          <option>People who liked a post</option>
+          <option>Commenters of a post</option>
+          <option>A user's followers</option>
+          <option>A user's following</option>
+        </select>
+        <input type="number" value="600" class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm" placeholder="Delay (sec)">
+        <textarea class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm h-16" placeholder="DM Template: Hey {{name}} - quick on {{post}}?"></textarea>
+        <textarea class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm h-16" placeholder="Custom Comment Template"></textarea>
+        <div class="flex space-x-4 text-sm text-gray-400">
+          <label class="flex items-center"><input type="checkbox" class="mr-1 text-slime">Send Likes</label>
+          <label class="flex items-center"><input type="checkbox" class="mr-1 text-slime">Auto-Comment</label>
+        </div>
+        <div class="card p-3 bg-gray-800 mt-4">
+          <h4 class="text-slime text-sm mb-2 sharp-text">Social Login</h4>
+          <input type="password" id="loginKey" placeholder="Access Key" class="w-full p-2 mb-2 bg-gray-800 border border-gray-700 rounded text-white">
+          <button id="loginBtn" class="w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600 text-sm">Login with GoblinReach & Instagram</button>
+          <p id="loginMsg" class="text-xs text-gray-500 mt-1">Authenticate your accounts in one click.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center mt-8 text-xs text-gray-500">
+    <p>© 2025 GoblinReach.ai | <a href="mailto:support@goblinreach.ai" class="text-slime">Support</a> | <a href="#" id="adminLink" class="text-slime">Admin</a></p>
+  </footer>
+
+  <!-- Admin Section -->
+  <section id="adminSection" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-800 p-6 rounded-lg card w-80">
+      <h2 class="text-lg font-semibold mb-3 text-slime sharp-text">Admin Dashboard</h2>
+      <input type="password" id="adminKey" placeholder="Admin Key" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white">
+      <button id="adminBtn" class="w-full slime-green p-2 rounded slime-green-hover font-semibold mb-2">Admin Login</button>
+      <p id="adminMsg" class="text-sm text-gray-400"></p>
+      <div id="adminDashboard" class="mt-3 hidden">
+        <h3 class="text-md font-semibold text-slime mb-2 sharp-text">Stats</h3>
+        <ul class="text-sm text-gray-400 space-y-1">
+          <li>Active Users: 150</li>
+          <li>Monthly Revenue: $3,300</li>
+          <li>New Subscriptions: 12</li>
+          <li>Downloads: 5</li>
+        </ul>
+        <button id="logoutBtn" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Logout</button>
+      </div>
+      <button id="closeAdmin" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Close</button>
+    </div>
+  </section>
+
+  <script>
+    // Stripe Checkout
+    const stripe = Stripe("pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB");
+    const startBtn = document.getElementById("startBtn");
+    if (startBtn) {
+      startBtn.addEventListener("click", () => {
+        stripe.redirectToCheckout({
+          lineItems: [{ price: "price_1SCQWBBVvxnlfHy5B0IFFS1j", quantity: 1 }],
+          mode: "subscription",
+          successUrl: "https://goblinreach.ai/success",
+          cancelUrl: "https://goblinreach.ai/",
+        }).catch(error => alert("Payment error: " + error.message));
+      });
+    }
+
+    // Login
+    const validKeys = ["GOBLIN-KEY-001", "GOBLIN-KEY-002"];
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const key = document.getElementById('loginKey').value.trim();
+      const msg = document.getElementById('loginMsg');
+      if (validKeys.includes(key)) {
+        msg.innerHTML = '✅ Logged in. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
+      } else {
+        msg.innerText = "❌ Invalid key. Sign up or contact support.";
+      }
+    });
+
+    // Admin
+    const adminValidKeys = ["ADMIN-KEY-2025"];
+    document.getElementById('adminBtn').addEventListener('click', () => {
+      const adminKey = document.getElementById('adminKey').value.trim();
+      const adminMsg = document.getElementById('adminMsg');
+      const adminDash = document.getElementById('adminDashboard');
+      if (adminValidKeys.includes(adminKey)) {
+        adminMsg.innerText = "✅ Admin access granted.";
+        adminDash.classList.remove('hidden');
+      } else {
+        adminMsg.innerText = "❌ Invalid admin key.";
+      }
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      document.getElementById('adminKey').value = '';
+      document.getElementById('adminMsg').innerText = '';
+      document.getElementById('adminDashboard').classList.add('hidden');
+    });
+    document.getElementById('closeAdmin').addEventListener('click', () => {
+      document.getElementById('adminSection').classList.add('hidden');
+    });
+    document.getElementById('adminLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('adminSection').classList.remove('hidden');
+    });
+
+    // Matrix Animation
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+    function matrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#22c55e';
+      ctx.font = '12px monospace';
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(33 + Math.random() * 94);
+        ctx.fillText(text, ind * 20, y);
+        ypos[ind] = y > canvas.height + Math.random() * 10000 ? 0 : y + 15;
+      });
+    }
+    setInterval(matrix, 120);
+  </script>
 </body>
 </html>
