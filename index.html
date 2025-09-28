@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GoblinReach.ai</title>
   <script src="https://js.stripe.com/v3/"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -14,15 +14,13 @@
       color: #e5e7eb;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      margin: 0;
-      padding: 0;
     }
     #matrix {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       z-index: -1;
       background: #0a0a0a;
       opacity: 0.2;
@@ -62,21 +60,6 @@
     .red-dot { background-color: #ef4444; }
     .green-dot { background-color: #22c55e; }
     #adminSection { display: none; }
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .grid-cols-2 {
-        grid-template-columns: 1fr;
-      }
-      header, main {
-        padding: 1rem;
-      }
-      .card {
-        margin-bottom: 1rem;
-      }
-      #matrix {
-        opacity: 0.1; /* Reduce on mobile to avoid overload */
-      }
-    }
   </style>
 </head>
 <body class="min-h-screen p-6">
@@ -98,7 +81,7 @@
     <section class="card p-6 bg-gray-900" id="signup">
       <h1 class="text-2xl font-bold text-slime mb-2 sharp-text">Miracle Price: $22/mo</h1>
       <h2 class="text-xl font-bold mb-4 sharp-text">Get High-Ticket Clients on Autopilot</h2>
-      <p class="text-gray-400 mb-4">GoblinReach offers a $1,000/mo tool experience for just $22/mo. Compliant, human-like DM automation for elite users.</p>
+      <p class="text-gray-400 mb-4">GoblinReach offers a $1,000/mo tool experience for just $22/mo. Compliant, human-like DM automation.</p>
       <div class="grid grid-cols-3 gap-2 mb-4 text-sm">
         <div class="card p-2 bg-gray-800 text-center">
           <p>Avg. Replies / 100 DMs</p>
@@ -191,7 +174,13 @@
         mode: "subscription",
         successUrl: "https://goblinreach.ai/success",
         cancelUrl: "https://goblinreach.ai/",
-      }).catch(error => alert("Payment error: " + error.message));
+      }).catch(error => {
+        if (error.message.includes("Checkout client-only integration")) {
+          alert("Please enable Checkout client-only integration at https://dashboard.stripe.com/account/checkout/settings.");
+        } else {
+          alert("Payment error: " + error.message);
+        }
+      });
     });
     // One-Click Login (Mask Goblin & Instagram)
     const validKeys = ["GOBLIN-KEY-001", "GOBLIN-KEY-002"]; // Add keys post-payment
