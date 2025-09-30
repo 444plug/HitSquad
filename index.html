@@ -12,6 +12,8 @@
       font-family: 'Inter', sans-serif;
       background: #0a0a0a;
       color: #e5e7eb;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       margin: 0;
       padding: 0;
     }
@@ -25,54 +27,55 @@
       background: #0a0a0a;
       opacity: 0.2;
     }
+    .matrix-char {
+      font-family: monospace;
+      font-size: 12px;
+      color: #22c55e;
+      opacity: 0.4;
+    }
     .slime-green {
       background-color: #22c55e;
       color: #000;
       transition: all 0.2s ease;
     }
-    .slime-green-hover:hover { background-color: #16a34a; }
-    .text-slime { color: #22c55e; }
+    .slime-green-hover:hover {
+      background-color: #16a34a;
+    }
+    .text-slime {
+      color: #22c55e;
+    }
     .card {
       border: 2px solid #22c55e;
       border-radius: 12px;
       box-shadow: 0 6px 12px rgba(34, 197, 94, 0.1);
     }
-    .sharp-text { text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); }
-    .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+    .sharp-text {
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    .status-dot {
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 8px;
+    }
     .red-dot { background-color: #ef4444; }
     .green-dot { background-color: #22c55e; }
     #adminSection { display: none; }
-    /* Loading Overlay */
-    #loadingOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 9999;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #22c55e;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-    .spinner {
-      border: 4px solid rgba(255,255,255,0.1);
-      border-left-color: #22c55e;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .grid-cols-2 { grid-template-columns: 1fr; }
-      header, main { padding: 1rem; }
-      .card { margin-bottom: 1rem; }
-      #matrix { opacity: 0.1; }
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+      header, main {
+        padding: 1rem;
+      }
+      .card {
+        margin-bottom: 1rem;
+      }
+      #matrix {
+        opacity: 0.1;
+      }
     }
   </style>
 </head>
@@ -85,27 +88,34 @@
       <span>Cloud Proxies + VPN Ready</span>
     </div>
     <div class="flex space-x-4">
-      <a href="https://instagram.com/YOUR_USERNAME" target="_blank" class="text-slime">Instagram</a>
+      <a href="https://instagram.com/goblinreach.ai" target="_blank" class="text-slime">Instagram</a>
       <a href="#login" class="text-slime">Login</a>
       <a href="#signup" class="text-slime">Sign Up</a>
     </div>
   </header>
-
   <main class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-    <!-- Left Column -->
+    <!-- Left Column: Pricing & Signup -->
     <section class="card p-6 bg-gray-900" id="signup">
       <h1 class="text-2xl font-bold text-slime mb-2 sharp-text">Miracle Price: $22/mo</h1>
       <h2 class="text-xl font-bold mb-4 sharp-text">Get High-Ticket Clients on Autopilot</h2>
       <p class="text-gray-400 mb-4">GoblinReach offers a $1,000/mo tool experience for just $22/mo. Compliant, human-like DM automation for elite users.</p>
       <div class="grid grid-cols-3 gap-2 mb-4 text-sm">
-        <div class="card p-2 bg-gray-800 text-center"><p>Avg. Replies / 100 DMs</p><p class="text-slime">18-31</p></div>
-        <div class="card p-2 bg-gray-800 text-center"><p>Active Users</p><p class="text-slime">1,000+</p></div>
-        <div class="card p-2 bg-gray-800 text-center"><p>Compliance</p><p class="text-slime">Rate-limits</p></div>
+        <div class="card p-2 bg-gray-800 text-center">
+          <p>Avg. Replies / 100 DMs</p>
+          <p class="text-slime">18-31</p>
+        </div>
+        <div class="card p-2 bg-gray-800 text-center">
+          <p>Active Users</p>
+          <p class="text-slime">1,000+</p>
+        </div>
+        <div class="card p-2 bg-gray-800 text-center">
+          <p>Compliance</p>
+          <p class="text-slime">Rate-limits</p>
+        </div>
       </div>
       <button id="startBtn" class="w-full slime-green p-3 rounded slime-green-hover font-bold">Start</button>
     </section>
-
-    <!-- Right Column -->
+    <!-- Right Column: LIVE Preview -->
     <section class="card p-6 bg-gray-900" id="login">
       <h3 class="text-lg font-semibold text-slime sharp-text">LIVE Preview: Stable Features</h3>
       <p class="text-xs text-gray-500 mb-2">Keep 600s between actions for optimal deliverability.</p>
@@ -128,8 +138,18 @@
         <textarea class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm h-16" placeholder="DM Template: Hey {{name}} - quick on {{post}}?"></textarea>
         <textarea class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm h-16" placeholder="Custom Comment Template"></textarea>
         <div class="flex space-x-4 text-sm text-gray-400">
-          <label class="flex items-center"><input type="checkbox" class="mr-1 text-slime"> Send Likes (Secondary)</label>
-          <label class="flex items-center"><input type="checkbox" class="mr-1 text-slime"> Auto-Comment (Secondary)</label>
+          <label class="flex items-center">
+            <input type="checkbox" class="mr-1 text-slime focus:ring-slime-green">
+            Send Likes (Secondary)
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" class="mr-1 text-slime focus:ring-slime-green">
+            Auto-Comment (Secondary)
+          </label>
+        </div>
+        <div class="flex justify-between items-center text-sm text-gray-400">
+          <span>Randomizer</span>
+          <p class="text-xs">Tip: Mix DMs + likes + 600s pacing.</p>
         </div>
         <div class="card p-3 bg-gray-800 mt-4">
           <h4 class="text-slime text-sm mb-2 sharp-text">Social Login</h4>
@@ -140,19 +160,11 @@
       </div>
     </section>
   </main>
-
   <footer class="text-center mt-8 text-xs text-gray-500">
     <p>© 2025 GoblinReach.ai | <a href="mailto:support@goblinreach.ai" class="text-slime">Support</a> | <a href="#" id="adminLink" class="text-slime">Admin</a></p>
   </footer>
-
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="flex">
-    <div class="spinner"></div>
-    Redirecting to Checkout…
-  </div>
-
   <!-- Admin Section -->
-  <section id="adminSection" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+  <section id="adminSection" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" style="display: none;">
     <div class="bg-gray-800 p-6 rounded-lg card w-80">
       <h2 class="text-lg font-semibold mb-3 text-slime sharp-text">Admin Dashboard</h2>
       <input type="password" id="adminKey" placeholder="Admin Key" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white">
@@ -171,42 +183,37 @@
       <button id="closeAdmin" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Close</button>
     </div>
   </section>
-
   <script>
     const stripe = Stripe("pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB");
     document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("loadingOverlay").style.display = "flex";
       stripe.redirectToCheckout({
         lineItems: [{ price: "price_1SCQWBBVvxnlfHy5B0IFFS1j", quantity: 1 }],
         mode: "subscription",
         successUrl: "https://goblinreach.ai/success",
         cancelUrl: "https://goblinreach.ai/",
-      }).catch(error => {
-        alert("Payment error: " + error.message);
-        document.getElementById("loadingOverlay").style.display = "none";
-      });
+      }).catch(error => alert("Payment error: " + error.message));
     });
-
-    // One-Click Login
-    const validKeys = ["GOBLIN-KEY-001","GOBLIN-KEY-002"];
+    // One-Click Login (Mask Goblin & Instagram)
+    const validKeys = ["GOBLIN-KEY-001", "GOBLIN-KEY-002"]; // Add keys post-payment
     document.getElementById('loginBtn').addEventListener('click', () => {
       const key = document.getElementById('loginKey').value.trim();
       if (validKeys.includes(key)) {
-        document.getElementById('loginMsg').innerHTML = '✅ Logged in. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
+        document.getElementById('loginMsg').innerHTML = '✅ Logged in to GoblinReach & Instagram. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
       } else {
         document.getElementById('loginMsg').innerText = "❌ Invalid key. Sign up or contact support.";
       }
     });
-
     // Admin Login
-    const adminValidKeys = ["ADMIN-KEY-2025"];
+    const adminValidKeys = ["ADMIN-KEY-2025"]; // Change to your secret key
     document.getElementById('adminBtn').addEventListener('click', () => {
       const adminKey = document.getElementById('adminKey').value.trim();
+      const adminMsg = document.getElementById('adminMsg');
+      const adminDash = document.getElementById('adminDashboard');
       if (adminValidKeys.includes(adminKey)) {
-        document.getElementById('adminMsg').innerText = "✅ Admin access granted.";
-        document.getElementById('adminDashboard').classList.remove('hidden');
+        adminMsg.innerText = "✅ Admin access granted.";
+        adminDash.classList.remove('hidden');
       } else {
-        document.getElementById('adminMsg').innerText = "❌ Invalid admin key.";
+        adminMsg.innerText = "❌ Invalid admin key.";
       }
     });
     document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -217,12 +224,12 @@
     document.getElementById('closeAdmin').addEventListener('click', () => {
       document.getElementById('adminSection').style.display = 'none';
     });
+    // Toggle Admin Section
     document.getElementById('adminLink').addEventListener('click', (e) => {
       e.preventDefault();
       document.getElementById('adminSection').style.display = 'flex';
     });
-
-    // Matrix Effect
+    // Matrix Animation (Spy Effect)
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -230,7 +237,7 @@
     const cols = Math.floor(canvas.width / 20) + 1;
     const ypos = Array(cols).fill(0);
     function matrix() {
-      ctx.fillStyle = 'rgba(0,0,0,0.05)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#22c55e';
       ctx.font = '12px monospace';
