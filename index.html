@@ -62,6 +62,25 @@
     .red-dot { background-color: #ef4444; }
     .green-dot { background-color: #22c55e; }
     #adminSection { display: none; }
+    #cautionOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      text-align: center;
+    }
+    #cautionOverlay p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ef4444;
+    }
     /* Responsive Adjustments */
     @media (max-width: 768px) {
       .grid-cols-2 {
@@ -83,7 +102,7 @@
   <canvas id="matrix"></canvas>
   <header class="flex justify-between items-center mb-8 text-sm text-gray-400">
     <div class="flex items-center space-x-2">
-      <img src="https://goblinreach.live/goblin-logo.png" alt="GoblinReach Logo" class="w-8">
+      <img src="https://goblinreach.ai/goblin-logo.png" alt="GoblinReach Logo" class="w-8">
       <span class="text-slime font-semibold">GoblinReach</span>
       <span>Cloud Proxies + VPN Ready</span>
     </div>
@@ -183,22 +202,41 @@
       <button id="closeAdmin" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Close</button>
     </div>
   </section>
+  <!-- Caution Overlay -->
+  <div id="cautionOverlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" style="display: none;">
+    <p>DO NOT TOUCH INSTAGRAM BOT IN FUNCTION</p>
+  </div>
   <script>
     const stripe = Stripe("pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB");
     document.getElementById("startBtn").addEventListener("click", () => {
       stripe.redirectToCheckout({
         lineItems: [{ price: "price_1SCQWBBVvxnlfHy5B0IFFS1j", quantity: 1 }],
         mode: "subscription",
-        successUrl: "https://goblinreach.live/success",
-        cancelUrl: "https://goblinreach.live/",
+        successUrl: "https://goblinreach.ai/success",
+        cancelUrl: "https://goblinreach.ai/",
       }).catch(error => alert("Payment error: " + error.message));
     });
-    // One-Click Login (Mask Goblin & Instagram)
+    // One-Click Login (Mask Goblin & Instagram, Simulate DM Campaign)
     const validKeys = ["GOBLIN-KEY-001", "GOBLIN-KEY-002"]; // Add keys post-payment
     document.getElementById('loginBtn').addEventListener('click', () => {
       const key = document.getElementById('loginKey').value.trim();
       if (validKeys.includes(key)) {
-        document.getElementById('loginMsg').innerHTML = '✅ Logged in to GoblinReach & Instagram. <a href="https://goblinreach.live/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
+        document.getElementById('loginMsg').innerHTML = '✅ Logged in to GoblinReach & Instagram. Starting DM campaign...';
+        // Open Instagram DMs in new tab
+        const igTab = window.open('https://www.instagram.com/direct/inbox/', '_blank');
+        if (igTab) {
+          // Show caution overlay
+          document.getElementById('cautionOverlay').style.display = 'flex';
+          // Hide overlay after 10 seconds (adjust based on campaign duration)
+          setTimeout(() => {
+            document.getElementById('cautionOverlay').style.display = 'none';
+            // Close the tab after simulation (for demo; adjust for real use)
+            igTab.close();
+            document.getElementById('loginMsg').innerHTML += ' <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
+          }, 10000);
+        } else {
+          document.getElementById('loginMsg').innerHTML = '✅ Logged in. Blocked by popup settings. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
+        }
       } else {
         document.getElementById('loginMsg').innerText = "❌ Invalid key. Sign up or contact support.";
       }
@@ -237,4 +275,21 @@
     const cols = Math.floor(canvas.width / 20) + 1;
     const ypos = Array(cols).fill(0);
     function matrix() {
-      ctx.fillStyle = 'rgba(0
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#22c55e';
+      ctx.font = '12px monospace';
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(33 + Math.random() * 94);
+        ctx.fillText(text, ind * 20, y);
+        ypos[ind] = y > canvas.height + Math.random() * 10000 ? 0 : y + 15;
+      });
+    }
+    setInterval(matrix, 150);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
