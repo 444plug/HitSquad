@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>GoblinReach.ai</title>
+  <title>GoblinReach.Live</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -130,17 +130,8 @@
 </head>
 <body class="min-h-screen p-6">
   <canvas id="matrix"></canvas>
-  <header class="flex justify-between items-center mb-8 text-sm text-gray-400">
-    <div class="flex items-center space-x-2">
-      <img src="https://goblinreach.ai/goblin-logo.png" alt="GoblinReach Logo" class="w-8">
-      <span class="text-slime font-semibold">GoblinReach</span>
-      <span>Cloud Proxies + VPN Ready</span>
-    </div>
-    <div class="flex space-x-4">
-      <a href="https://instagram.com/goblinreach.ai" target="_blank" class="text-slime">Instagram</a>
-      <a href="#login" class="text-slime">Login</a>
-      <a href="#signup" class="text-slime">Sign Up</a>
-    </div>
+  <header class="w-full text-center mb-8 text-2xl text-slime font-bold">
+    GoblinReach.Live
   </header>
   <main class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
     <!-- Left Column: Pricing & Signup -->
@@ -207,16 +198,12 @@
   <!-- Right Sidebar -->
   <div id="sidebar" class="bg-gray-800 p-4 text-white">
     <h4 class="text-sm font-semibold text-slime mb-2">User Settings</h4>
-    <input type="text" id="usernameInput" placeholder="Enter Username (e.g., @user)" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white text-sm">
-    <select id="targetSelect" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white text-sm">
-      <option value="likers">People who liked a post</option>
-      <option value="commenters">Commenters of a post</option>
-      <option value="followers">A user's followers</option>
-      <option value="following">A user's following</option>
-    </select>
+    <input type="text" id="usernameInput" placeholder="@TargetUsername" value="@" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white text-sm">
     <label class="block text-sm mb-1">Delay (0-1000s)</label>
-    <input type="range" id="delaySlider" min="0" max="1000" value="600" class="w-full">
+    <input type="range" id="delaySlider" min="0" max="1000" value="600" class="w-full mb-2">
     <span id="delayValue" class="text-sm">600s</span>
+    <label class="block text-sm mb-1">VPN</label>
+    <input type="checkbox" id="vpnToggle" class="text-slime focus:ring-slime-green">
   </div>
   <button id="toggleSidebar" class="slime-green-hover">☰</button>
   <footer class="text-center mt-8 text-xs text-gray-500">
@@ -300,6 +287,13 @@
         if (delaySlider && delayValue) {
           delaySlider.addEventListener('input', () => {
             delayValue.textContent = `${delaySlider.value}s`;
+          });
+        }
+        const vpnToggle = document.getElementById('vpnToggle');
+        if (vpnToggle) {
+          vpnToggle.addEventListener('change', () => {
+            console.log("VPN toggled to: ", vpnToggle.checked ? "On" : "Off");
+            // Add backend logic here for real VPN toggle
           });
         }
       } else {
