@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>GoblinReach.ai</title>
-  <script src="https://js.stripe.com/v3/"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -163,7 +162,7 @@
           <p class="text-slime">Rate-limits</p>
         </div>
       </div>
-      <button id="startBtn" class="w-full slime-green p-3 rounded slime-green-hover font-bold">Start</button>
+      <a id="startBtn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" class="block w-full slime-green p-3 rounded slime-green-hover font-bold text-center">Start</a>
     </section>
     <!-- Right Column: LIVE Preview -->
     <section class="card p-6 bg-gray-900" id="login">
@@ -250,16 +249,10 @@
   <script>
     // Ensure DOM is fully loaded
     document.addEventListener('DOMContentLoaded', () => {
-      const stripe = Stripe("pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB");
       const startBtn = document.getElementById('startBtn');
       if (startBtn) {
         startBtn.addEventListener("click", () => {
-          stripe.redirectToCheckout({
-            lineItems: [{ price: "price_1SCQWBBVvxnlfHy5B0IFFS1j", quantity: 1 }],
-            mode: "subscription",
-            successUrl: "https://goblinreach.ai/success",
-            cancelUrl: "https://goblinreach.ai/",
-          }).catch(error => alert("Payment error: " + error.message));
+          window.open("https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03", '_blank');
         });
       } else {
         console.error("Start button not found!");
@@ -282,8 +275,7 @@
                 document.getElementById('cautionOverlay').style.display = 'none';
                 igTab.close();
                 loginMsg.innerHTML += ' <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
-                // Simulate adding to valid keys (client-side only)
-                validKeys.push(accessKey);
+                validKeys.push(accessKey); // Simulate adding key
               }, 10000);
             } else {
               loginMsg.innerHTML += ' Blocked by popup settings. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
@@ -392,7 +384,7 @@
       const suffixes = ['X', 'Pro', '007', 'AI'];
       const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
       const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-      return `${randomPrefix}${Math.floor(Math.random() * 1000)}${randomSuffix}`;
+      return `@${randomPrefix}${Math.floor(Math.random() * 1000)}${randomSuffix}`;
     }
 
     function generateRandomAccessKey() {
