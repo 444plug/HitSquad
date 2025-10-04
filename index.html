@@ -142,7 +142,7 @@
             </div>
             <div class="stats">
                 <div class="stat">Avg. Replies / 100 DMs<br>18-31</div>
-                <div class="stat">Active Users<br>1,000+</div>
+                <div class="stat">Active Users<br>444+</div>
                 <div class="stat">Compliance<br>Rate-limits</div>
             </div>
             <div class="emblem">
@@ -150,14 +150,14 @@
                 <input type="checkbox" id="vpn" checked> VPN Active
             </div>
             <div class="emblem">
-                <img src="https://img.icons8.com/ios-filled/50/00ff99/proxy.png" alt="Proxy">
+                <img src="https://img.icons8.com/fluency/48/proxy-server.png" alt="Proxy">
                 <input type="checkbox" id="proxy" checked> Proxy Active
             </div>
             <div class="emblem">
                 <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Mouse Wiggler">
                 <input type="checkbox" id="mouseWiggler" checked> Auto Mouse Wiggler (24/7 Cloud)
             </div>
-            <button onclick="window.location.href='https://buy.stripe.com/your-link'">Start</button>
+            <button onclick="window.location.href='https://buy.stripe.com/test_bIYbI21gZ6eN7eM288'">Start</button>
         </div>
         <div class="right-panel">
             <h2>LIVE Preview: Stable Features</h2>
@@ -203,7 +203,7 @@
     </div>
     <div class="footer">&copy; 2025 GoblinReach.ai | Support | Admin</div>
     <script>
-        // Matrix rain effect (updated color)
+        // Matrix rain effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
@@ -294,6 +294,32 @@
 
         window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
         window.addEventListener('load', () => console.log('GoblinReach launched bug-free!'));
+    </script>
+    <!-- Firebase for 24/7 updates -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        // Firebase setup (replace with your config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9k8q9QeN8Y8N8Y8N8Y8N8Y8N8Y8N8Y8",
+            authDomain: "goblinreach-live.firebaseapp.com",
+            databaseURL: "https://goblinreach-live-default-rtdb.firebaseio.com",
+            projectId: "goblinreach-live"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const userCountRef = db.ref('stats/activeUsers');
+        userCountRef.on('value', (snap) => {
+            document.querySelector('.stat:nth-child(2)').innerHTML = 'Active Users<br>' + snap.val();
+        });
+
+        // Admin update function (callable from phone via Firebase console)
+        function updateStats() {
+            const newCount = prompt('Enter new active user count (e.g., 444+):');
+            if (newCount) userCountRef.set(newCount);
+        }
+        // Add a button or link for you to trigger this (e.g., via phone browser bookmark)
+        // Example: <button onclick="updateStats()">Update Stats</button> (add to UI if desired)
     </script>
 </body>
 </html>
