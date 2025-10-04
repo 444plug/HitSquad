@@ -1,396 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>GoblinReach.Live</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0a0a;
-      color: #e5e7eb;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      margin: 0;
-      padding: 0;
-    }
-    #matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      background: #0a0a0a;
-      opacity: 0.2;
-    }
-    .matrix-char {
-      font-family: monospace;
-      font-size: 12px;
-      color: #22c55e;
-      opacity: 0.4;
-    }
-    .slime-green {
-      background-color: #22c55e;
-      color: #000;
-      transition: all 0.2s ease;
-    }
-    .slime-green-hover:hover {
-      background-color: #16a34a;
-    }
-    .text-slime {
-      color: #22c55e;
-    }
-    .card {
-      border: 2px solid #22c55e;
-      border-radius: 12px;
-      box-shadow: 0 6px 12px rgba(34, 197, 94, 0.1);
-    }
-    .sharp-text {
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    }
-    .status-dot {
-      height: 8px;
-      width: 8px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-left: 8px;
-    }
-    .red-dot { background-color: #ef4444; }
-    .green-dot { background-color: #22c55e; }
-    #adminSection { display: none; }
-    #cautionOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      text-align: center;
-    }
-    #cautionOverlay p {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #ef4444;
-    }
-    /* Right Sidebar */
-    #sidebar {
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: 200px;
-      background: #1a1a1a;
-      padding: 1rem;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      z-index: 10;
-    }
-    #sidebar.active {
-      transform: translateX(0);
-    }
-    #toggleSidebar {
-      position: absolute;
-      left: -40px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #22c55e;
-      color: #000;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px 0 0 5px;
-      cursor: pointer;
-    }
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .grid-cols-2 {
-        grid-template-columns: 1fr;
-      }
-      header, main {
-        padding: 1rem;
-      }
-      .card {
-        margin-bottom: 1rem;
-      }
-      #matrix {
-        opacity: 0.1;
-      }
-      #sidebar {
-        width: 150px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoblinReach.Live</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+        body { 
+            background: #0a0a1a; 
+            color: #e0e0ff; 
+            font-family: 'Lato', sans-serif; 
+            margin: 0; 
+            padding: 10px; 
+            overflow: hidden; 
+            position: relative;
+        }
+        canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+            opacity: 0.6; 
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            display: flex; 
+            gap: 15px; 
+            position: relative; 
+            z-index: 1; 
+        }
+        .left-panel, .right-panel { 
+            background: rgba(15, 15, 30, 0.9); 
+            border: 3px solid #00ff99; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.7); 
+        }
+        .left-panel { flex: 0.9; }
+        .right-panel { flex: 1.8; }
+        h1, h2 { color: #00ff99; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .price { 
+            background: linear-gradient(135deg, #00ff99, #00cc77); 
+            color: #0a0a1a; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            text-align: center; 
+            box-shadow: inset 0 0 8px rgba(0, 255, 153, 0.5); 
+        }
+        .stats { 
+            display: flex; 
+            justify-content: space-between; 
+            margin: 20px 0; 
+        }
+        .stat { 
+            background: linear-gradient(45deg, #1a1a33, #2a2a44); 
+            padding: 12px; 
+            border-radius: 6px; 
+            text-align: center; 
+            flex: 1; 
+            margin: 0 8px; 
+            box-shadow: 0 0 4px rgba(0, 255, 153, 0.3); 
+            font-size: 1em; 
+        }
+        button { 
+            background: #00ff99; 
+            color: #0a0a1a; 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            width: 100%; 
+            font-size: 1em; 
+            text-transform: uppercase; 
+        }
+        button:hover { background: #00cc77; }
+        button:disabled { background: #666; cursor: not-allowed; }
+        .input-group { margin: 15px 0; }
+        input, textarea, select { 
+            width: 100%; 
+            padding: 10px; 
+            background: #1a1a33; 
+            border: 2px solid #00ff99; 
+            color: #e0e0ff; 
+            border-radius: 6px; 
+            font-family: 'Lato', sans-serif; 
+            font-size: 0.95em; 
+        }
+        textarea { min-height: 60px; }
+        label { display: block; color: #00ff99; margin-bottom: 6px; font-weight: 700; }
+        .checkbox-group { display: flex; align-items: center; gap: 12px; }
+        .checkbox-group input { width: auto; margin-right: 5px; }
+        .slider-container { margin: 15px 0; }
+        .slider { width: 100%; accent-color: #00ff99; }
+        .slider-value { color: #00ff99; font-weight: 700; font-size: 1em; }
+        .status-light { 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            display: inline-block; 
+            margin-left: 8px; 
+            vertical-align: middle; 
+        }
+        .green { background: #00ff99; }
+        .red { background: #ff5555; }
+        .emblem { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin: 12px 0; 
+        }
+        .emblem img { 
+            width: 25px; 
+            height: 25px; 
+            filter: drop-shadow(0 0 4px #00ff99); 
+        }
+        .bot-section { display: none; background: #00ff99; color: #0a0a1a; padding: 10px; border-radius: 6px; margin: 10px 0; font-weight: 700; }
+        .footer { 
+            text-align: center; 
+            margin-top: 15px; 
+            color: #00ff99; 
+            position: relative; 
+            z-index: 1; 
+            font-size: 0.85em; 
+        }
+        .error { color: #ff5555; display: none; margin-top: 8px; font-weight: 700; }
+    </style>
 </head>
-<body class="min-h-screen p-6">
-  <canvas id="matrix"></canvas>
-  <header class="w-full text-center mb-8 text-2xl text-slime font-bold">
-    GoblinReach.Live
-  </header>
-  <main class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-    <!-- Left Column: Pricing & Signup -->
-    <section class="card p-6 bg-gray-900" id="signup">
-      <h1 class="text-2xl font-bold text-slime mb-2 sharp-text">Miracle Price: $22/mo</h1>
-      <h2 class="text-xl font-bold mb-4 sharp-text">Get High-Ticket Clients on Autopilot</h2>
-      <p class="text-gray-400 mb-4">GoblinReach offers a $1,000/mo tool experience for just $22/mo. Compliant, human-like DM automation for elite users.</p>
-      <div class="grid grid-cols-3 gap-2 mb-4 text-sm">
-        <div class="card p-2 bg-gray-800 text-center">
-          <p>Avg. Replies / 100 DMs</p>
-          <p class="text-slime">18-31</p>
+<body>
+    <canvas id="matrix"></canvas>
+    <div class="container">
+        <div class="left-panel">
+            <h1>GoblinReach.Live</h1>
+            <div class="price">
+                Get High-Ticket Clients on Autopilot<br>
+                Compliant, human-like DM automation for elite users.
+            </div>
+            <div class="stats">
+                <div class="stat">Avg. Replies / 100 DMs<br>18-31</div>
+                <div class="stat">Active Users<br>1,000+</div>
+                <div class="stat">Compliance<br>Rate-limits</div>
+            </div>
+            <div class="emblem">
+                <img src="https://img.icons8.com/ios-filled/50/00ff99/vpn.png" alt="VPN">
+                <input type="checkbox" id="vpn" checked> VPN Active
+            </div>
+            <div class="emblem">
+                <img src="https://img.icons8.com/ios-filled/50/00ff99/proxy.png" alt="Proxy">
+                <input type="checkbox" id="proxy" checked> Proxy Active
+            </div>
+            <div class="emblem">
+                <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Mouse Wiggler">
+                <input type="checkbox" id="mouseWiggler" checked> Auto Mouse Wiggler (24/7 Cloud)
+            </div>
+            <button onclick="window.location.href='https://buy.stripe.com/your-link'">Start</button>
         </div>
-        <div class="card p-2 bg-gray-800 text-center">
-          <p>Active Users</p>
-          <p class="text-slime">1,000+</p>
+        <div class="right-panel">
+            <h2>LIVE Preview: Stable Features</h2>
+            <p>Keep 600s between actions for optimal deliverability.</p>
+            <div class="input-group checkbox-group">
+                <label><input type="checkbox" id="automation" checked> Automation <span id="statusLight" class="status-light green"></span></label>
+                <label><input type="checkbox" id="status" checked> Status</label>
+            </div>
+            <div class="input-group">
+                <select>
+                    <option>People who liked a post</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <textarea placeholder="DM Template: Hey {name} - quick on {post}?">Hey {name} - quick on {post}?</textarea>
+            </div>
+            <div class="input-group">
+                <label for="commentTemplate">Custom Comment Template</label>
+                <textarea id="commentTemplate" placeholder="Custom Comment Template"></textarea>
+            </div>
+            <div class="input-group">
+                <label for="username">@username</label>
+                <input type="text" id="username" placeholder="@username" required>
+            </div>
+            <div class="slider-container">
+                <label for="interval">Send Interval (seconds): <span id="intervalValue" class="slider-value">5</span></label>
+                <input type="range" id="interval" min="1" max="6000" value="5" class="slider">
+            </div>
+            <div class="input-group checkbox-group">
+                <label><input type="checkbox"> Send Likes (Secondary)</label>
+                <label><input type="checkbox"> Auto Comment (Secondary)</label>
+            </div>
+            <h3>Social Login</h3>
+            <div class="input-group">
+                <label for="accessKey">Access Code (from purchase)</label>
+                <input type="text" id="accessKey" placeholder="Enter your purchase code" required>
+            </div>
+            <button id="loginBtn" onclick="socialLogin()">Unlock Instagram Bot</button>
+            <p>Enter code received after Stripe checkout to activate bot.</p>
+            <div id="botSection" class="bot-section">Instagram Bot Unlocked! Starting automation...<br><button onclick="startBot()">Start Bot</button></div>
+            <p id="error" class="error">Invalid code or fields! Check purchase email.</p>
         </div>
-        <div class="card p-2 bg-gray-800 text-center">
-          <p>Compliance</p>
-          <p class="text-slime">Rate-limits</p>
-        </div>
-      </div>
-      <a id="startBtn" href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" target="_blank" class="block w-full slime-green p-3 rounded slime-green-hover font-bold text-center">Start</a>
-    </section>
-    <!-- Right Column: LIVE Preview -->
-    <section class="card p-6 bg-gray-900" id="login">
-      <h3 class="text-lg font-semibold text-slime sharp-text">LIVE Preview: Stable Features</h3>
-      <p class="text-xs text-gray-500 mb-2">Keep 600s between actions for optimal deliverability.</p>
-      <div class="flex items-center space-x-2 mb-4">
-        <label class="flex items-center text-sm text-gray-400">
-          <input type="checkbox" id="automationToggle" checked class="mr-1 text-slime focus:ring-slime-green">
-          Automation
-        </label>
-        <span class="status-dot red-dot"></span>
-        <p class="text-sm text-gray-400">Status</p>
-      </div>
-      <div class="space-y-4">
-        <select class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm">
-          <option>People who liked a post</option>
-          <option>Commenters of a post</option>
-          <option>A user's followers</option>
-          <option>A user's following</option>
-        </select>
-        <textarea class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm h-16" placeholder="DM Template: Hey {{name}} - quick on {{post}}?"></textarea>
-        <textarea class="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white text-sm h-16" placeholder="Custom Comment Template"></textarea>
-        <div class="flex space-x-4 text-sm text-gray-400">
-          <label class="flex items-center">
-            <input type="checkbox" class="mr-1 text-slime focus:ring-slime-green">
-            Send Likes (Secondary)
-          </label>
-          <label class="flex items-center">
-            <input type="checkbox" class="mr-1 text-slime focus:ring-slime-green">
-            Auto-Comment (Secondary)
-          </label>
-        </div>
-        <div class="card p-3 bg-gray-800 mt-4">
-          <h4 class="text-slime text-sm mb-2 sharp-text">Social Login</h4>
-          <input type="password" id="loginKey" placeholder="Access Key" class="w-full p-2 mb-2 bg-gray-800 border border-gray-700 rounded text-white">
-          <button id="userLoginBtn" class="w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600 text-sm mb-2">Login with GoblinReach & Instagram</button>
-          <button id="adminLoginBtn" class="w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600 text-sm">Admin Social Login</button>
-          <p id="loginMsg" class="text-xs text-gray-500 mt-1">Authenticate your accounts in one click.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-  <!-- Right Sidebar -->
-  <div id="sidebar" class="bg-gray-800 p-4 text-white">
-    <h4 class="text-sm font-semibold text-slime mb-2">User Settings</h4>
-    <input type="text" id="usernameInput" placeholder="@TargetUsername" value="@" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white text-sm">
-    <label class="block text-sm mb-1">Delay (0-1000s)</label>
-    <input type="range" id="delaySlider" min="0" max="1000" value="600" class="w-full mb-2">
-    <span id="delayValue" class="text-sm">600s</span>
-    <label class="block text-sm mb-1">VPN</label>
-    <input type="checkbox" id="vpnToggle" class="text-slime focus:ring-slime-green">
-  </div>
-  <button id="toggleSidebar" class="slime-green-hover">☰</button>
-  <footer class="text-center mt-8 text-xs text-gray-500">
-    <p>© 2025 GoblinReach.ai | <a href="mailto:support@goblinreach.ai" class="text-slime">Support</a> | <a href="#" id="adminLink" class="text-slime">Admin</a></p>
-  </footer>
-  <!-- Admin Section -->
-  <section id="adminSection" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" style="display: none;">
-    <div class="bg-gray-800 p-6 rounded-lg card w-80">
-      <h2 class="text-lg font-semibold mb-3 text-slime sharp-text">Admin Dashboard</h2>
-      <input type="text" id="adminEmail" placeholder="Your Email (e.g., you@domain.com)" class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded text-white">
-      <button id="adminBtn" class="w-full slime-green p-2 rounded slime-green-hover font-semibold mb-2">Admin Login</button>
-      <p id="adminMsg" class="text-sm text-gray-400"></p>
-      <div id="adminDashboard" class="mt-3 hidden">
-        <h3 class="text-md font-semibold text-slime mb-2 sharp-text">Stats</h3>
-        <ul class="text-sm text-gray-400 space-y-1">
-          <li>Active Users: 150</li>
-          <li>Monthly Revenue: $3,300</li>
-          <li>New Subscriptions: 12</li>
-          <li>Downloads: 5</li>
-        </ul>
-        <button id="logoutBtn" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Logout</button>
-      </div>
-      <button id="closeAdmin" class="mt-2 w-full bg-gray-700 text-white p-2 rounded hover:bg-gray-600">Close</button>
     </div>
-  </section>
-  <!-- Caution Overlay -->
-  <div id="cautionOverlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" style="display: none;">
-    <p>DO NOT TOUCH INSTAGRAM BOT IN FUNCTION</p>
-  </div>
-  <script>
-    // Ensure DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', () => {
-      const startBtn = document.getElementById('startBtn');
-      if (startBtn) {
-        startBtn.addEventListener("click", () => {
-          window.open("https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03", '_blank');
-        });
-      } else {
-        console.error("Start button not found!");
-      }
-
-      // User Login with Random Username & Access Key
-      const userLoginBtn = document.getElementById('userLoginBtn');
-      if (userLoginBtn) {
-        userLoginBtn.addEventListener('click', () => {
-          const keyInput = document.getElementById('loginKey');
-          const loginMsg = document.getElementById('loginMsg');
-          const username = generateRandomUsername();
-          const accessKey = generateRandomAccessKey();
-          if (keyInput.value.trim() === accessKey) {
-            loginMsg.innerHTML = `✅ Logged in to GoblinReach & Instagram as ${username}. Starting DM campaign...`;
-            const igTab = window.open('https://www.instagram.com/direct/inbox/', '_blank');
-            if (igTab) {
-              document.getElementById('cautionOverlay').style.display = 'flex';
-              setTimeout(() => {
-                document.getElementById('cautionOverlay').style.display = 'none';
-                igTab.close();
-                loginMsg.innerHTML += ' <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
-                validKeys.push(accessKey); // Simulate adding key
-              }, 10000);
-            } else {
-              loginMsg.innerHTML += ' Blocked by popup settings. <a href="https://goblinreach.ai/downloads/goblinreach.zip" class="text-slime">Download Now</a>';
-            }
-          } else {
-            loginMsg.innerText = "❌ Invalid key. Sign up or contact support.";
-          }
-        });
-      } else {
-        console.error("User login button not found!");
-      }
-
-      // Admin Social Login
-      const adminLoginBtn = document.getElementById('adminLoginBtn');
-      if (adminLoginBtn) {
-        adminLoginBtn.addEventListener('click', () => {
-          const adminEmail = document.getElementById('loginKey').value.trim(); // Reuse loginKey for simplicity
-          const loginMsg = document.getElementById('loginMsg');
-          const adminCredentials = {
-            "you@domain.com": "ADMIN-KEY-YOURSELF" // Replace with your email and secret key
-          };
-          if (adminCredentials[adminEmail]) {
-            loginMsg.innerHTML = `✅ Logged in as Admin (${adminEmail}). Full access granted.`;
-            document.getElementById('adminSection').style.display = 'flex';
-            document.getElementById('adminDashboard').classList.remove('hidden');
-            document.getElementById('adminMsg').innerText = "Admin access granted.";
-          } else {
-            loginMsg.innerText = "❌ Invalid admin email or key. Contact support.";
-          }
-        });
-      } else {
-        console.error("Admin login button not found!");
-      }
-
-      // Sidebar Toggle and Functionality
-      const sidebar = document.getElementById('sidebar');
-      const toggleSidebar = document.getElementById('toggleSidebar');
-      if (toggleSidebar && sidebar) {
-        toggleSidebar.addEventListener('click', () => {
-          sidebar.classList.toggle('active');
-        });
-        const delaySlider = document.getElementById('delaySlider');
-        const delayValue = document.getElementById('delayValue');
-        if (delaySlider && delayValue) {
-          delaySlider.addEventListener('input', () => {
-            delayValue.textContent = `${delaySlider.value}s`;
-          });
-        }
-        const vpnToggle = document.getElementById('vpnToggle');
-        if (vpnToggle) {
-          vpnToggle.addEventListener('change', () => {
-            console.log("VPN toggled to: ", vpnToggle.checked ? "On" : "Off");
-          });
-        }
-      } else {
-        console.error("Sidebar or toggle not found!");
-      }
-
-      // Admin Modal Management
-      const logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-          document.getElementById('adminKey').value = '';
-          document.getElementById('adminMsg').innerText = '';
-          document.getElementById('adminDashboard').classList.add('hidden');
-          document.getElementById('adminSection').style.display = 'none';
-        });
-      }
-
-      const closeAdmin = document.getElementById('closeAdmin');
-      if (closeAdmin) {
-        closeAdmin.addEventListener('click', () => {
-          document.getElementById('adminSection').style.display = 'none';
-        });
-      }
-
-      const adminLink = document.getElementById('adminLink');
-      if (adminLink) {
-        adminLink.addEventListener('click', (e) => {
-          e.preventDefault();
-          document.getElementById('adminSection').style.display = 'flex';
-        });
-      }
-
-      // Matrix Animation (Spy Effect)
-      const canvas = document.getElementById('matrix');
-      const ctx = canvas.getContext('2d');
-      if (canvas && ctx) {
-        canvas.width = window.innerWidth;
+    <div class="footer">&copy; 2025 GoblinReach.ai | Support | Admin</div>
+    <script>
+        // Matrix rain effect (updated color)
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
-        const cols = Math.floor(canvas.width / 20) + 1;
-        const ypos = Array(cols).fill(0);
-        function matrix() {
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = '#22c55e';
-          ctx.font = '12px monospace';
-          ypos.forEach((y, ind) => {
-            const text = String.fromCharCode(33 + Math.random() * 94);
-            ctx.fillText(text, ind * 20, y);
-            ypos[ind] = y > canvas.height + Math.random() * 10000 ? 0 : y + 15;
-          });
+        canvas.width = window.innerWidth;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const fontSize = 12;
+        const columns = canvas.width / fontSize;
+        const drops = Array.from({ length: columns }, () => 1);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 10, 26, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff99';
+            ctx.font = fontSize + 'px monospace';
+            drops.forEach((y, i) => {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
         }
-        setInterval(matrix, 150);
-        window.addEventListener('resize', () => {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
+        setInterval(draw, 33);
+
+        // Slider update
+        const intervalSlider = document.getElementById('interval');
+        const intervalValue = document.getElementById('intervalValue');
+        intervalSlider.addEventListener('input', () => intervalValue.textContent = intervalSlider.value);
+
+        // Status light toggle
+        const statusLight = document.getElementById('statusLight');
+        document.getElementById('automation').addEventListener('change', () => {
+            statusLight.className = 'status-light ' + (document.getElementById('automation').checked ? 'green' : 'red');
         });
-      } else {
-        console.error("Canvas or context not found!");
-      }
-    });
 
-    // Generate Random Username and Access Key
-    function generateRandomUsername() {
-      const prefixes = ['Goblin', 'Shadow', 'Cyber', 'Elite'];
-      const suffixes = ['X', 'Pro', '007', 'AI'];
-      const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-      const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-      return `@${randomPrefix}${Math.floor(Math.random() * 1000)}${randomSuffix}`;
-    }
+        // Mouse Wiggler
+        const mouseWigglerCheckbox = document.getElementById('mouseWiggler');
+        let wigglerInterval;
+        function toggleMouseWiggler() {
+            if (mouseWigglerCheckbox.checked) {
+                wigglerInterval = setInterval(() => {
+                    const event = new MouseEvent('mousemove', { clientX: Math.random() * window.innerWidth, clientY: Math.random() * window.innerHeight });
+                    document.dispatchEvent(event);
+                }, 60000);
+            } else {
+                clearInterval(wigglerInterval);
+            }
+        }
+        mouseWigglerCheckbox.addEventListener('change', toggleMouseWiggler);
+        if (mouseWigglerCheckbox.checked) toggleMouseWiggler();
 
-    function generateRandomAccessKey() {
-      return 'GOBLIN-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-    }
+        // Unlock function: Mock code validation
+        function socialLogin() {
+            const username = document.getElementById('username').value;
+            const comment = document.getElementById('commentTemplate').value;
+            const accessCode = document.getElementById('accessKey').value;
+            const error = document.getElementById('error');
+            const botSection = document.getElementById('botSection');
+            const loginBtn = document.getElementById('loginBtn');
 
-    const validKeys = []; // Will be populated with new keys post-payment
-  </script>
+            if (!username.startsWith('@') || username.length < 2 || !comment.trim() || !accessCode.trim()) {
+                error.textContent = 'Invalid fields! Please fill all.';
+                error.style.display = 'block';
+                return;
+            }
+
+            if (accessCode === 'GOBLIN123') { // Replace with API fetch('/validate-code', {code: accessCode})
+                error.style.display = 'none';
+                botSection.style.display = 'block';
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Unlocked';
+                alert('Instagram Bot Unlocked! Use the Start Bot button to begin automation.');
+                setTimeout(() => {
+                    botSection.style.display = 'none';
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Unlock Instagram Bot';
+                    alert('Access expired. Renew subscription.');
+                }, 432000000); // 5 days
+            } else {
+                error.textContent = 'Invalid code! Check your purchase email.';
+                error.style.display = 'block';
+            }
+        }
+
+        function startBot() {
+            alert('Instagram Bot started! DMs automating to ' + document.getElementById('username').value + ' with template: ' + document.getElementById('commentTemplate').value);
+            console.log('Bot running with interval:', document.getElementById('interval').value + 's');
+        }
+
+        window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
+        window.addEventListener('load', () => console.log('GoblinReach launched bug-free!'));
+    </script>
 </body>
 </html>
