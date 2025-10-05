@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GoblinReach.Live</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
@@ -41,6 +41,10 @@
         }
         .left-panel { flex: 0.9; }
         .right-panel { flex: 1.8; }
+        @media (max-width: 480px) {
+            .container { flex-direction: column; gap: 10px; }
+            .left-panel, .right-panel { flex: 1; padding: 15px; }
+        }
         h1, h2 { color: #00ff99; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1px; }
         .price { 
             background: linear-gradient(135deg, #00ff99, #00cc77); 
@@ -321,30 +325,6 @@
 
         window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
         window.addEventListener('load', () => console.log('GoblinReach launched bug-free!'));
-    </script>
-    <!-- Firebase for 24/7 updates -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script>
-        // Firebase setup (replace with your config)
-        const firebaseConfig = {
-            apiKey: "AIzaSyD9k8q9QeN8Y8N8Y8N8Y8N8Y8N8Y8N8Y8",
-            authDomain: "goblinreach-live.firebaseapp.com",
-            databaseURL: "https://goblinreach-live-default-rtdb.firebaseio.com",
-            projectId: "goblinreach-live"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const userCountRef = db.ref('stats/activeUsers');
-        userCountRef.on('value', (snap) => {
-            document.querySelector('.stat:nth-child(2)').innerHTML = 'Active Users<br>' + snap.val();
-        });
-
-        // Admin update function (callable from phone via Firebase console)
-        function updateStats() {
-            const newCount = prompt('Enter new active user count (e.g., 444+):');
-            if (newCount) userCountRef.set(newCount);
-        }
     </script>
 </body>
 </html>
