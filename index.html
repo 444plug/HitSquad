@@ -133,6 +133,12 @@
             font-size: 0.85em; 
         }
         .error { color: #ff5555; display: none; margin-top: 8px; font-weight: 700; }
+        .world-clock { 
+            text-align: center; 
+            margin: 10px 0; 
+            font-size: 0.9em; 
+            color: #00ff99; 
+        }
     </style>
 </head>
 <body>
@@ -168,11 +174,13 @@
             <p>Keep 600s between actions for optimal deliverability.</p>
             <div class="input-group checkbox-group">
                 <label><input type="checkbox" id="automation" checked> Automation <span id="statusLight" class="status-light green"></span></label>
-                <label><input type="checkbox" id="status" checked> Status</label>
             </div>
             <div class="input-group">
                 <select>
-                    <option>People who liked a post</option>
+                    <option>users following</option>
+                    <option>users followers</option>
+                    <option>users who liked a post</option>
+                    <option>users who commented on a post</option>
                 </select>
             </div>
             <div class="input-group">
@@ -203,10 +211,12 @@
             <p>Enter code received after Stripe checkout to activate bot.</p>
             <div id="botSection" class="bot-section">Instagram Bot Unlocked! Starting automation...<br><button onclick="startBot()">Start Bot</button></div>
             <p id="error" class="error">Invalid code or fields! Check purchase email.</p>
+            <div class="world-clock" id="worldClock">World Clock: Loading...</div>
         </div>
     </div>
     <div class="footer">&copy; 2025 GoblinReach.ai | Support | Admin</div>
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
     <script>
         // Initialize Stripe with your live publishable key
         const stripe = Stripe('pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB');
@@ -263,7 +273,7 @@
         const intervalValue = document.getElementById('intervalValue');
         intervalSlider.addEventListener('input', () => intervalValue.textContent = intervalSlider.value);
 
-        // Status light toggle
+        // Status light toggle (Automation only)
         const statusLight = document.getElementById('statusLight');
         document.getElementById('automation').addEventListener('change', () => {
             statusLight.className = 'status-light ' + (document.getElementById('automation').checked ? 'green' : 'red');
@@ -322,6 +332,25 @@
             alert('Instagram Bot started! DMs automating to ' + document.getElementById('username').value + ' with template: ' + document.getElementById('commentTemplate').value);
             console.log('Bot running with interval:', document.getElementById('interval').value + 's');
         }
+
+        // World Clock
+        function updateWorldClock() {
+            const now = moment().utc();
+            const cities = [
+                { name: 'New York', offset: -4 },
+                { name: 'London', offset: 1 },
+                { name: 'Tokyo', offset: 9 },
+                { name: 'Sydney', offset: 10 }
+            ];
+            let clockText = 'World Clock: ';
+            cities.forEach(city => {
+                const localTime = moment(now).utcOffset(city.offset).format('HH:mm');
+                clockText += `${city.name}: ${localTime} `;
+            });
+            document.getElementById('worldClock').textContent = clockText;
+        }
+        setInterval(updateWorldClock, 1000);
+        updateWorldClock();
 
         window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
         window.addEventListener('load', () => console.log('GoblinReach launched bug-free!'));
