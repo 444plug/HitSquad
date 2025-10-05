@@ -221,11 +221,11 @@
         // Initialize Stripe with your live publishable key
         const stripe = Stripe('pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB');
 
-        // Start Checkout function
+        // Start Checkout function (Line 250 updated)
         async function startCheckout() {
             try {
                 // Replace with your live backend endpoint (e.g., /create-checkout-session)
-                const response = await fetch('https://your-vercel-domain.vercel.app/api/create-checkout-session', {
+                const response = await fetch('https://goblinreach-backend.vercel.app/api/create-checkout-session', { // Updated placeholder URL
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ priceId: 'price_1Rb8YUBVvxnlfHy5htu0ZP80' }) // Your provided Price ID
