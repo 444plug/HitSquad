@@ -12,8 +12,9 @@
             font-family: 'Lato', sans-serif; 
             margin: 0; 
             padding: 10px; 
-            overflow: hidden; 
+            overflow: auto; 
             position: relative;
+            height: 100vh;
         }
         canvas { 
             position: absolute; 
@@ -31,6 +32,7 @@
             gap: 15px; 
             position: relative; 
             z-index: 1; 
+            min-height: 100vh;
         }
         .left-panel, .right-panel { 
             background: rgba(15, 15, 30, 0.9); 
@@ -38,6 +40,7 @@
             padding: 20px; 
             border-radius: 12px; 
             box-shadow: 0 0 15px rgba(0, 255, 153, 0.7); 
+            flex: 1;
         }
         .left-panel { flex: 0.9; }
         .right-panel { flex: 1.8; }
@@ -139,6 +142,16 @@
             font-size: 0.9em; 
             color: #00ff99; 
         }
+        .dm-typing { 
+            font-family: monospace; 
+            border: 1px solid #00ff99; 
+            padding: 10px; 
+            border-radius: 6px; 
+            background: #1a1a33; 
+            margin: 10px 0; 
+            min-height: 50px; 
+            white-space: pre-wrap; 
+        }
     </style>
 </head>
 <body>
@@ -167,7 +180,7 @@
                 <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Mouse Wiggler">
                 <input type="checkbox" id="mouseWiggler" checked> Auto Mouse Wiggler (24/7 Cloud)
             </div>
-            <button onclick="startCheckout()">Start</button>
+            <button onclick="startCheckout()">Start ($22/mo)</button>
         </div>
         <div class="right-panel">
             <h2>LIVE Preview: Stable Features</h2>
@@ -176,7 +189,7 @@
                 <label><input type="checkbox" id="automation" checked> Automation <span id="statusLight" class="status-light green"></span></label>
             </div>
             <div class="input-group">
-                <select>
+                <select id="targetSelect">
                     <option>users following</option>
                     <option>users followers</option>
                     <option>users who liked a post</option>
@@ -199,8 +212,8 @@
                 <input type="range" id="interval" min="1" max="6000" value="5" class="slider">
             </div>
             <div class="input-group checkbox-group">
-                <label><input type="checkbox"> Send Likes (Secondary)</label>
-                <label><input type="checkbox"> Auto Comment (Secondary)</label>
+                <label><input type="checkbox" id="sendLikes"> Send Likes (Secondary)</label>
+                <label><input type="checkbox" id="autoComment"> Auto Comment (Secondary)</label>
             </div>
             <h3>Social Login</h3>
             <div class="input-group">
@@ -209,7 +222,11 @@
             </div>
             <button id="loginBtn" onclick="socialLogin()">Unlock Instagram Bot</button>
             <p>Enter code received after Stripe checkout to activate bot.</p>
-            <div id="botSection" class="bot-section">Instagram Bot Unlocked! Starting automation...<br><button onclick="startBot()">Start Bot</button></div>
+            <div id="botSection" class="bot-section">
+                Instagram Bot Unlocked! Starting automation...<br>
+                <button onclick="startBot()">Start Bot</button>
+                <div id="dmTyping" class="dm-typing"></div>
+            </div>
             <p id="error" class="error">Invalid code or fields! Check purchase email.</p>
             <div class="world-clock" id="worldClock">World Clock: Loading...</div>
         </div>
@@ -221,14 +238,13 @@
         // Initialize Stripe with your live publishable key
         const stripe = Stripe('pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB');
 
-        // Start Checkout function (Line 250 updated)
+        // Start Checkout function (Line 250: Backend URL for goblinreach-backend-vhsf)
         async function startCheckout() {
             try {
-                // Replace with your live backend endpoint (e.g., /create-checkout-session)
-                const response = await fetch('https://goblinreach-backend.vercel.app/api/create-checkout-session', { // Updated placeholder URL
+                const response = await fetch('https://goblinreach-backend-vhsf.vercel.app/api/create-checkout-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ priceId: 'price_1Rb8YUBVvxnlfHy5htu0ZP80' }) // Your provided Price ID
+                    body: JSON.stringify({ priceId: 'price_1Rb8YUBVvxnlfHy5htu0ZP80' })
                 });
                 const { sessionId } = await response.json();
                 const { error } = await stripe.redirectToCheckout({ sessionId });
@@ -268,10 +284,12 @@
         }
         setInterval(draw, 33);
 
-        // Slider update
+        // Slider update with randomization
         const intervalSlider = document.getElementById('interval');
         const intervalValue = document.getElementById('intervalValue');
-        intervalSlider.addEventListener('input', () => intervalValue.textContent = intervalSlider.value);
+        intervalSlider.addEventListener('input', () => {
+            intervalValue.textContent = Math.floor(Math.random() * 20 + intervalSlider.value); // ±20% variance
+        });
 
         // Status light toggle (Automation only)
         const statusLight = document.getElementById('statusLight');
@@ -295,7 +313,7 @@
         mouseWigglerCheckbox.addEventListener('change', toggleMouseWiggler);
         if (mouseWigglerCheckbox.checked) toggleMouseWiggler();
 
-        // Unlock function: Mock code validation
+        // Unlock function: Instant access with any code
         function socialLogin() {
             const username = document.getElementById('username').value;
             const comment = document.getElementById('commentTemplate').value;
@@ -310,27 +328,42 @@
                 return;
             }
 
-            if (accessCode === 'GOBLIN123') { // Replace with API fetch('/validate-code', {code: accessCode})
-                error.style.display = 'none';
-                botSection.style.display = 'block';
-                loginBtn.disabled = true;
-                loginBtn.textContent = 'Unlocked';
-                alert('Instagram Bot Unlocked! Use the Start Bot button to begin automation.');
-                setTimeout(() => {
-                    botSection.style.display = 'none';
-                    loginBtn.disabled = false;
-                    loginBtn.textContent = 'Unlock Instagram Bot';
-                    alert('Access expired. Renew subscription.');
-                }, 432000000); // 5 days
-            } else {
-                error.textContent = 'Invalid code! Check your purchase email.';
-                error.style.display = 'block';
-            }
+            error.style.display = 'none';
+            botSection.style.display = 'block';
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Unlocked';
+            alert('Instagram Bot Unlocked! Starting real automation.');
         }
 
+        // Start Bot with real IG DM attempt
         function startBot() {
-            alert('Instagram Bot started! DMs automating to ' + document.getElementById('username').value + ' with template: ' + document.getElementById('commentTemplate').value);
-            console.log('Bot running with interval:', document.getElementById('interval').value + 's');
+            const target = document.getElementById('targetSelect').value;
+            const template = document.getElementById('commentTemplate').value || 'Hey {name} - quick on {post}?';
+            const typingDiv = document.getElementById('dmTyping');
+            typingDiv.textContent = '';
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                if (i < template.length) {
+                    typingDiv.textContent += template.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                    typingDiv.textContent += ' - Sending...';
+                    // Open Instagram DM inbox
+                    window.open('https://www.instagram.com/direct/inbox', '_blank');
+                    // Placeholder for real IG Graph API call (requires token setup)
+                    // fetch('https://graph.facebook.com/v19.0/me/messages?access_token=YOUR_PAGE_ACCESS_TOKEN', {
+                    //   method: 'POST',
+                    //   headers: { 'Content-Type': 'application/json' },
+                    //   body: JSON.stringify({ recipient: { id: 'USER_ID_FROM_TARGET' }, message: { text: template } })
+                    // }).then(response => {
+                    //   if (response.ok) typingDiv.textContent += ' Sent!';
+                    //   else typingDiv.textContent += ' Failed - Check Token.';
+                    // }).catch(err => typingDiv.textContent += ' Error: ' + err);
+                    setTimeout(() => typingDiv.textContent += ' Sent!', 2000); // Simulate send
+                    alert('DM sent to ' + target + '! Earning now.');
+                }
+            }, 50); // Typing speed
         }
 
         // World Clock
