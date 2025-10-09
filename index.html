@@ -352,14 +352,6 @@
                     // Open Instagram DM inbox
                     window.open('https://www.instagram.com/direct/inbox', '_blank');
                     // Placeholder for real IG Graph API call (requires token setup)
-                    // fetch('https://graph.facebook.com/v19.0/me/messages?access_token=YOUR_PAGE_ACCESS_TOKEN', {
-                    //   method: 'POST',
-                    //   headers: { 'Content-Type': 'application/json' },
-                    //   body: JSON.stringify({ recipient: { id: 'USER_ID_FROM_TARGET' }, message: { text: template } })
-                    // }).then(response => {
-                    //   if (response.ok) typingDiv.textContent += ' Sent!';
-                    //   else typingDiv.textContent += ' Failed - Check Token.';
-                    // }).catch(err => typingDiv.textContent += ' Error: ' + err);
                     setTimeout(() => typingDiv.textContent += ' Sent!', 2000); // Simulate send
                     alert('DM sent to ' + target + '! Earning now.');
                 }
