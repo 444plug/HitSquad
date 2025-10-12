@@ -3,316 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoblinReach.Live - AI DM Automation</title>
+    <title>GoblinReach.Live</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-        * {
-            box-sizing: border-box;
-        }
         body { 
-            background: #0a0a1a; 
-            color: #e0e0ff; 
+            background: #000; 
+            color: #0f0; 
             font-family: 'Lato', sans-serif; 
             margin: 0; 
-            padding: 10px; 
+            padding: 0; 
             overflow-y: auto; 
             position: relative;
-            min-height: 100vh;
+            height: 100vh;
         }
-        canvas { 
+        #matrix { 
             position: fixed; 
             top: 0; 
             left: 0; 
             width: 100%; 
             height: 100%; 
             z-index: -1; 
-            opacity: 0.1; 
         }
         .container { 
             max-width: 1200px; 
-            margin: 0 auto; 
+            margin: 20px auto; 
             display: flex; 
             gap: 20px; 
             position: relative; 
-            z-index: 1; 
-            padding: 20px 0;
+            z-index: 10; 
+            background: rgba(0,0,0,0.8); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 2px solid #0f0;
         }
         .left-panel, .right-panel { 
             background: rgba(15, 15, 30, 0.95); 
-            border: 2px solid #00ff99; 
+            border: 1px solid #0f0; 
             padding: 25px; 
-            border-radius: 12px; 
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.3); 
+            border-radius: 8px; 
             flex: 1;
         }
         .left-panel { flex: 1; }
         .right-panel { flex: 1.5; }
         @media (max-width: 768px) {
-            .container { flex-direction: column; gap: 15px; }
+            .container { flex-direction: column; gap: 15px; margin: 10px; }
             .left-panel, .right-panel { flex: none; }
         }
-        h1, h2 { color: #00ff99; margin: 0 0 15px; text-transform: uppercase; letter-spacing: 2px; }
+        h1 { color: #0f0; text-transform: uppercase; letter-spacing: 3px; text-align: center; margin-bottom: 20px; }
+        h2 { color: #0f0; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
         .price { 
-            background: linear-gradient(135deg, #00ff99, #00cc77); 
+            background: linear-gradient(45deg, #0f0, #00a000); 
             color: #000; 
-            padding: 20px; 
+            padding: 25px; 
             border-radius: 10px; 
-            font-weight: 700; 
             text-align: center; 
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
+            font-weight: bold; 
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
         }
+        .price h2 { font-size: 2.5em; margin: 0; }
         .stats { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
             gap: 15px; 
             margin: 20px 0; 
         }
         .stat { 
-            background: linear-gradient(45deg, #1a1a33, #2a2a44); 
-            padding: 15px; 
+            background: rgba(0,255,0,0.1); 
+            padding: 20px; 
+            border: 1px solid #0f0; 
             border-radius: 8px; 
             text-align: center; 
-            box-shadow: 0 0 10px rgba(0, 255, 153, 0.2); 
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
-        .stat strong { color: #00ff99; display: block; }
+        .stat strong { color: #0f0; display: block; font-size: 1.5em; }
         button { 
-            background: linear-gradient(135deg, #00ff99, #00cc77); 
+            background: linear-gradient(45deg, #0f0, #00a000); 
             color: #000; 
-            padding: 15px 30px; 
+            padding: 20px 40px; 
             border: none; 
-            border-radius: 8px; 
+            border-radius: 10px; 
             cursor: pointer; 
-            font-weight: 700; 
+            font-weight: bold; 
             width: 100%; 
-            font-size: 1.1em; 
+            font-size: 1.3em; 
             text-transform: uppercase; 
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
             transition: all 0.3s;
         }
-        button:hover { background: linear-gradient(135deg, #00cc77, #00aa55); transform: translateY(-2px); }
-        button:disabled { background: #666; cursor: not-allowed; transform: none; }
-        .input-group { margin: 15px 0; }
+        button:hover { 
+            background: linear-gradient(45deg, #00a000, #0f0); 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.4);
+        }
         input, textarea, select { 
             width: 100%; 
             padding: 12px; 
-            background: #1a1a33; 
-            border: 2px solid #00ff99; 
-            color: #e0e0ff; 
+            background: #111; 
+            border: 2px solid #0f0; 
+            color: #0f0; 
             border-radius: 6px; 
-            font-family: 'Lato', sans-serif; 
+            margin: 8px 0;
             font-size: 1em;
         }
-        textarea { min-height: 80px; resize: vertical; }
-        label { display: block; color: #00ff99; margin-bottom: 8px; font-weight: 700; }
+        textarea { min-height: 100px; resize: vertical; }
+        label { display: block; color: #0f0; margin-bottom: 8px; font-weight: bold; }
         .checkbox-group { 
             display: flex; 
+            gap: 20px; 
             flex-wrap: wrap; 
-            gap: 15px; 
-            align-items: center; 
+            margin: 15px 0;
         }
-        .checkbox-group label { margin: 0; }
-        .slider-container { margin: 15px 0; }
-        .slider { width: 100%; accent-color: #00ff99; }
-        .slider-value { color: #00ff99; font-weight: 700; font-size: 1.1em; margin-left: 10px; }
+        .checkbox-group label { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin: 0; 
+            cursor: pointer;
+        }
+        .slider-container { 
+            margin: 20px 0; 
+        }
+        .slider { width: 100%; accent-color: #0f0; }
+        .slider-value { color: #0f0; font-weight: bold; font-size: 1.2em; margin-left: 10px; }
         .status-light { 
             width: 20px; 
             height: 20px; 
             border-radius: 50%; 
             display: inline-block; 
             margin-left: 10px; 
-            vertical-align: middle;
             box-shadow: 0 0 10px currentColor;
         }
-        .green { background: #00ff99; }
-        .red { background: #ff5555; }
+        .green { background: #0f0; }
+        .red { background: #f00; }
         .emblem { 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 12px; 
             margin: 15px 0; 
+            padding: 10px; 
+            background: rgba(0,255,0,0.1); 
+            border-radius: 6px;
         }
         .emblem img { 
             width: 30px; 
             height: 30px; 
-            filter: drop-shadow(0 0 5px #00ff99); 
+            filter: drop-shadow(0 0 5px #0f0); 
         }
         .bot-section { 
             display: none; 
-            background: linear-gradient(135deg, #00ff99, #00cc77); 
-            color: #000; 
-            padding: 20px; 
-            border-radius: 10px; 
-            margin: 15px 0; 
-            font-weight: 700; 
-            text-align: center;
-        }
-        .footer { 
-            text-align: center; 
-            margin-top: 30px; 
-            color: #00ff99; 
-            font-size: 0.8em; 
-        }
-        .error { color: #ff5555; display: none; margin-top: 10px; font-weight: 700; }
-        .world-clock { 
-            text-align: center; 
-            margin: 15px 0; 
-            font-size: 0.9em; 
-            color: #00ff99; 
-        }
-        .dm-typing { 
-            font-family: monospace; 
-            border: 2px solid #00ff99; 
-            padding: 15px; 
-            border-radius: 8px; 
-            background: #1a1a33; 
-            margin: 15px 0; 
-            min-height: 60px; 
-            white-space: pre-wrap; 
-            font-size: 1.1em;
-        }
-        .loading { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    </style>
-</head>
-<body>
-    <canvas id="matrix"></canvas>
-    <div class="container">
-        <div class="left-panel">
-            <h1>GoblinReach.Live</h1>
-            <div class="price">
-                <strong>$22/MONTH</strong><br>
-                Get High-Ticket Clients on Autopilot<br>
-                Compliant AI DM Automation for Elite Users
-            </div>
-            <div class="stats">
-                <div class="stat">
-                    <strong>18-31</strong>
-                    Avg. Replies / 100 DMs
-                </div>
-                <div class="stat">
-                    <strong>444+</strong>
-                    Active Users
-                </div>
-                <div class="stat">
-                    <strong>Rate-limits</strong>
-                    Compliance
-                </div>
-            </div>
-            <div class="emblem">
-                <img src="https://img.icons8.com/ios-filled/50/00ff99/shield.png" alt="VPN">
-                <input type="checkbox" id="vpn" checked> VPN Protection
-            </div>
-            <div class="emblem">
-                <img src="https://img.icons8.com/ios-filled/50/00ff99/global.png" alt="Proxy">
-                <input type="checkbox" id="proxy" checked> Proxy Rotation
-            </div>
-            <div class="emblem">
-                <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Anti-Detect">
-                <input type="checkbox" id="mouseWiggler" checked> Anti-Detection
-            </div>
-            <button onclick="startCheckout()" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; font-size: 1.2em; padding: 20px;">
-                START NOW - $22/MONTH
-            </button>
-        </div>
-        <div class="right-panel">
-            <h2>LIVE Bot Dashboard</h2>
-            <div class="input-group checkbox-group">
-                <label style="display: flex; align-items: center; gap: 10px;">
-                    <input type="checkbox" id="automation" checked> 
-                    <span>Bot Active</span>
-                    <span id="statusLight" class="status-light green"></span>
-                </label>
-            </div>
-            <div class="input-group">
-                <label>Target Users:</label>
-                <select id="targetSelect">
-                    <option>Users Following Target</option>
-                    <option>Target's Followers</option>
-                    <option>Users Who Liked Post</option>
-                    <option>Users Who Commented</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>DM Message Template:</label>
-                <textarea id="dmTemplate" placeholder="Hey {name}! Quick question about your recent post...">Hey {name}! Quick question about your recent post...</textarea>
-            </div>
-            <div class="input-group">
-                <label>Target Account:</label>
-                <input type="text" id="targetAccount" placeholder="@username" value="@targetaccount">
-            </div>
-            <div class="slider-container">
-                <label>Delay Between DMs: <span id="delayValue">600</span>s</label>
-                <input type="range" id="delaySlider" min="60" max="3600" value="600">
-            </div>
-            <div class="checkbox-group" style="gap: 20px;">
-                <label><input type="checkbox" id="autoLike"> Auto Like Posts</label>
-                <label><input type="checkbox" id="autoFollow"> Auto Follow Back</label>
-            </div>
-            <h3>Activation</h3>
-            <div class="input-group">
-                <label>Access Code:</label>
-                <input type="text" id="accessCode" placeholder="Enter code from checkout">
-                <button onclick="activateBot()" style="margin-top: 10px;">ACTIVATE BOT</button>
-            </div>
-            <div id="botStatus" class="bot-section" style="display: none;">
-                <h3>✅ BOT ACTIVATED</h3>
-                <p>Sending DMs to <span id="activeTarget"></span></p>
-                <button onclick="startDMs()">START SENDING DMS</button>
-                <div id="progress" style="margin-top: 15px; padding: 10px; background: rgba(0,255,153,0.1); border-radius: 6px;">
-                    <div style="width: 0%; background: #00ff99; height: 10px; border-radius: 5px; transition: width 0.3s;" id="progressBar"></div>
-                </div>
-                <p id="dmLog"></p>
-            </div>
-            <div id="errorMsg" class="error"></div>
-        </div>
-    </div>
-    <div class="footer">
-        © 2025 GoblinReach.ai | Real Instagram DM Automation | 444+ Active Users
-    </div>
-
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        const stripe = Stripe('pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB');
-
-        // Direct to Stripe Checkout - NO BACKEND REQUIRED
-        function startCheckout() {
-            // Direct link to your Stripe checkout for $22/month subscription
-            window.location.href = 'https://buy.stripe.com/test_5kE5mR5gZ6eN7eM288'; // Replace with your live checkout link
-        }
-
-        // Bot activation - any code works
-        function activateBot() {
-            const code = document.getElementById('accessCode').value.trim();
-            if (!code) {
-                showError('Please enter your access code');
-                return;
-            }
-            
-            // Any code unlocks - no validation
-            document.getElementById('botStatus').style.display = 'block';
-            document.getElementById('activeTarget').textContent = document.getElementById('targetSelect').value;
-            alert('Bot activated! Use START SENDING DMS to begin automation.');
-        }
-
-        // Start real DM automation
-        function startDMs() {
-            const template = document.getElementById('dmTemplate').value;
-            const target = document.getElementById('targetSelect').value;
-            const delay = document.getElementById('delaySlider').value;
-            
-            document.getElementById('dmLog').innerHTML = `
-                <p><strong>Target:</strong> ${target}</p>
-                <p><strong>Message:</strong> ${template}</p>
-                <p><strong>Delay:</strong> ${delay}s between DMs</p>
-                <p>🚀 Starting automation... Opening Instagram DMs</p>
-            `;
-            
-            // Open Instagram DM inbox in new tab
-            window.open('https://www.instagram.com/direct/inbox', '_blank');
-            
-            // Simulate DM sending progress
-            let progress = 0;
-            const progressBar = document.getElementById('progressBar');
-            const interval = setInterval(() => {
-                progress += Math.random() * 10;
-                if (progress > 100) progress
+            background: linear
