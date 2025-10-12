@@ -11,10 +11,10 @@
             color: #0f0; 
             font-family: 'Lato', sans-serif; 
             margin: 0; 
-            padding: 0; 
+            padding: 20px; 
             overflow-y: auto; 
             position: relative;
-            height: 100vh;
+            min-height: 100vh;
         }
         #matrix { 
             position: fixed; 
@@ -26,7 +26,7 @@
         }
         .container { 
             max-width: 1200px; 
-            margin: 20px auto; 
+            margin: 0 auto; 
             display: flex; 
             gap: 20px; 
             position: relative; 
@@ -46,11 +46,27 @@
         .left-panel { flex: 1; }
         .right-panel { flex: 1.5; }
         @media (max-width: 768px) {
-            .container { flex-direction: column; gap: 15px; margin: 10px; }
+            .container { 
+                flex-direction: column; 
+                gap: 15px; 
+                margin: 10px; 
+                padding: 10px; 
+            }
             .left-panel, .right-panel { flex: none; }
         }
-        h1 { color: #0f0; text-transform: uppercase; letter-spacing: 3px; text-align: center; margin-bottom: 20px; }
-        h2 { color: #0f0; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        h1 { 
+            color: #0f0; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+        }
+        h2 { 
+            color: #0f0; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-bottom: 15px; 
+        }
         .price { 
             background: linear-gradient(45deg, #0f0, #00a000); 
             color: #000; 
@@ -61,7 +77,10 @@
             margin: 20px 0;
             box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
         }
-        .price h2 { font-size: 2.5em; margin: 0; }
+        .price h2 { 
+            font-size: 2.5em; 
+            margin: 0; 
+        }
         .stats { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
@@ -72,85 +91,4 @@
             background: rgba(0,255,0,0.1); 
             padding: 20px; 
             border: 1px solid #0f0; 
-            border-radius: 8px; 
-            text-align: center; 
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-        }
-        .stat strong { color: #0f0; display: block; font-size: 1.5em; }
-        button { 
-            background: linear-gradient(45deg, #0f0, #00a000); 
-            color: #000; 
-            padding: 20px 40px; 
-            border: none; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            width: 100%; 
-            font-size: 1.3em; 
-            text-transform: uppercase; 
-            margin: 15px 0;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-            transition: all 0.3s;
-        }
-        button:hover { 
-            background: linear-gradient(45deg, #00a000, #0f0); 
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.4);
-        }
-        input, textarea, select { 
-            width: 100%; 
-            padding: 12px; 
-            background: #111; 
-            border: 2px solid #0f0; 
-            color: #0f0; 
-            border-radius: 6px; 
-            margin: 8px 0;
-            font-size: 1em;
-        }
-        textarea { min-height: 100px; resize: vertical; }
-        label { display: block; color: #0f0; margin-bottom: 8px; font-weight: bold; }
-        .checkbox-group { 
-            display: flex; 
-            gap: 20px; 
-            flex-wrap: wrap; 
-            margin: 15px 0;
-        }
-        .checkbox-group label { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            margin: 0; 
-            cursor: pointer;
-        }
-        .slider-container { 
-            margin: 20px 0; 
-        }
-        .slider { width: 100%; accent-color: #0f0; }
-        .slider-value { color: #0f0; font-weight: bold; font-size: 1.2em; margin-left: 10px; }
-        .status-light { 
-            width: 20px; 
-            height: 20px; 
-            border-radius: 50%; 
-            display: inline-block; 
-            margin-left: 10px; 
-            box-shadow: 0 0 10px currentColor;
-        }
-        .green { background: #0f0; }
-        .red { background: #f00; }
-        .emblem { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            margin: 15px 0; 
-            padding: 10px; 
-            background: rgba(0,255,0,0.1); 
-            border-radius: 6px;
-        }
-        .emblem img { 
-            width: 30px; 
-            height: 30px; 
-            filter: drop-shadow(0 0 5px #0f0); 
-        }
-        .bot-section { 
-            display: none; 
-            background: linear
+            border
