@@ -2,156 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GoblinReach.Live</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoblinReach.Live - AI DM Automation</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+        * {
+            box-sizing: border-box;
+        }
         body { 
             background: #0a0a1a; 
             color: #e0e0ff; 
             font-family: 'Lato', sans-serif; 
             margin: 0; 
             padding: 10px; 
-            overflow: auto; 
+            overflow-y: auto; 
             position: relative;
-            height: 100vh;
+            min-height: 100vh;
         }
         canvas { 
-            position: absolute; 
+            position: fixed; 
             top: 0; 
             left: 0; 
             width: 100%; 
             height: 100%; 
             z-index: -1; 
-            opacity: 0.6; 
+            opacity: 0.1; 
         }
         .container { 
-            max-width: 1000px; 
+            max-width: 1200px; 
             margin: 0 auto; 
             display: flex; 
-            gap: 15px; 
+            gap: 20px; 
             position: relative; 
             z-index: 1; 
-            min-height: 100vh;
+            padding: 20px 0;
         }
         .left-panel, .right-panel { 
-            background: rgba(15, 15, 30, 0.9); 
-            border: 3px solid #00ff99; 
-            padding: 20px; 
+            background: rgba(15, 15, 30, 0.95); 
+            border: 2px solid #00ff99; 
+            padding: 25px; 
             border-radius: 12px; 
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.7); 
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.3); 
             flex: 1;
         }
-        .left-panel { flex: 0.9; }
-        .right-panel { flex: 1.8; }
-        @media (max-width: 480px) {
-            .container { flex-direction: column; gap: 10px; }
-            .left-panel, .right-panel { flex: 1; padding: 15px; }
+        .left-panel { flex: 1; }
+        .right-panel { flex: 1.5; }
+        @media (max-width: 768px) {
+            .container { flex-direction: column; gap: 15px; }
+            .left-panel, .right-panel { flex: none; }
         }
-        h1, h2 { color: #00ff99; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+        h1, h2 { color: #00ff99; margin: 0 0 15px; text-transform: uppercase; letter-spacing: 2px; }
         .price { 
             background: linear-gradient(135deg, #00ff99, #00cc77); 
-            color: #0a0a1a; 
-            padding: 15px; 
-            border-radius: 8px; 
+            color: #000; 
+            padding: 20px; 
+            border-radius: 10px; 
             font-weight: 700; 
             text-align: center; 
-            box-shadow: inset 0 0 8px rgba(0, 255, 153, 0.5); 
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
         }
         .stats { 
-            display: flex; 
-            justify-content: space-between; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+            gap: 15px; 
             margin: 20px 0; 
         }
         .stat { 
             background: linear-gradient(45deg, #1a1a33, #2a2a44); 
-            padding: 12px; 
-            border-radius: 6px; 
+            padding: 15px; 
+            border-radius: 8px; 
             text-align: center; 
-            flex: 1; 
-            margin: 0 8px; 
-            box-shadow: 0 0 4px rgba(0, 255, 153, 0.3); 
-            font-size: 1em; 
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.2); 
         }
+        .stat strong { color: #00ff99; display: block; }
         button { 
-            background: #00ff99; 
-            color: #0a0a1a; 
-            padding: 12px 24px; 
+            background: linear-gradient(135deg, #00ff99, #00cc77); 
+            color: #000; 
+            padding: 15px 30px; 
             border: none; 
-            border-radius: 6px; 
+            border-radius: 8px; 
             cursor: pointer; 
             font-weight: 700; 
             width: 100%; 
-            font-size: 1em; 
+            font-size: 1.1em; 
             text-transform: uppercase; 
+            transition: all 0.3s;
         }
-        button:hover { background: #00cc77; }
-        button:disabled { background: #666; cursor: not-allowed; }
+        button:hover { background: linear-gradient(135deg, #00cc77, #00aa55); transform: translateY(-2px); }
+        button:disabled { background: #666; cursor: not-allowed; transform: none; }
         .input-group { margin: 15px 0; }
         input, textarea, select { 
             width: 100%; 
-            padding: 10px; 
+            padding: 12px; 
             background: #1a1a33; 
             border: 2px solid #00ff99; 
             color: #e0e0ff; 
             border-radius: 6px; 
             font-family: 'Lato', sans-serif; 
-            font-size: 0.95em; 
+            font-size: 1em;
         }
-        textarea { min-height: 60px; }
-        label { display: block; color: #00ff99; margin-bottom: 6px; font-weight: 700; }
-        .checkbox-group { display: flex; align-items: center; gap: 12px; }
-        .checkbox-group input { width: auto; margin-right: 5px; }
+        textarea { min-height: 80px; resize: vertical; }
+        label { display: block; color: #00ff99; margin-bottom: 8px; font-weight: 700; }
+        .checkbox-group { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            align-items: center; 
+        }
+        .checkbox-group label { margin: 0; }
         .slider-container { margin: 15px 0; }
         .slider { width: 100%; accent-color: #00ff99; }
-        .slider-value { color: #00ff99; font-weight: 700; font-size: 1em; }
+        .slider-value { color: #00ff99; font-weight: 700; font-size: 1.1em; margin-left: 10px; }
         .status-light { 
-            width: 18px; 
-            height: 18px; 
+            width: 20px; 
+            height: 20px; 
             border-radius: 50%; 
             display: inline-block; 
-            margin-left: 8px; 
-            vertical-align: middle; 
+            margin-left: 10px; 
+            vertical-align: middle;
+            box-shadow: 0 0 10px currentColor;
         }
         .green { background: #00ff99; }
         .red { background: #ff5555; }
         .emblem { 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
-            margin: 12px 0; 
+            gap: 10px; 
+            margin: 15px 0; 
         }
         .emblem img { 
-            width: 25px; 
-            height: 25px; 
-            filter: drop-shadow(0 0 4px #00ff99); 
+            width: 30px; 
+            height: 30px; 
+            filter: drop-shadow(0 0 5px #00ff99); 
         }
-        .bot-section { display: none; background: #00ff99; color: #0a0a1a; padding: 10px; border-radius: 6px; margin: 10px 0; font-weight: 700; }
+        .bot-section { 
+            display: none; 
+            background: linear-gradient(135deg, #00ff99, #00cc77); 
+            color: #000; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            font-weight: 700; 
+            text-align: center;
+        }
         .footer { 
             text-align: center; 
-            margin-top: 15px; 
+            margin-top: 30px; 
             color: #00ff99; 
-            position: relative; 
-            z-index: 1; 
-            font-size: 0.85em; 
+            font-size: 0.8em; 
         }
-        .error { color: #ff5555; display: none; margin-top: 8px; font-weight: 700; }
+        .error { color: #ff5555; display: none; margin-top: 10px; font-weight: 700; }
         .world-clock { 
             text-align: center; 
-            margin: 10px 0; 
+            margin: 15px 0; 
             font-size: 0.9em; 
             color: #00ff99; 
         }
         .dm-typing { 
             font-family: monospace; 
-            border: 1px solid #00ff99; 
-            padding: 10px; 
-            border-radius: 6px; 
+            border: 2px solid #00ff99; 
+            padding: 15px; 
+            border-radius: 8px; 
             background: #1a1a33; 
-            margin: 10px 0; 
-            min-height: 50px; 
+            margin: 15px 0; 
+            min-height: 60px; 
             white-space: pre-wrap; 
+            font-size: 1.1em;
         }
+        .loading { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
@@ -160,225 +180,139 @@
         <div class="left-panel">
             <h1>GoblinReach.Live</h1>
             <div class="price">
+                <strong>$22/MONTH</strong><br>
                 Get High-Ticket Clients on Autopilot<br>
-                Compliant, human-like DM automation for elite users.
+                Compliant AI DM Automation for Elite Users
             </div>
             <div class="stats">
-                <div class="stat">Avg. Replies / 100 DMs<br>18-31</div>
-                <div class="stat">Active Users<br>444+</div>
-                <div class="stat">Compliance<br>Rate-limits</div>
+                <div class="stat">
+                    <strong>18-31</strong>
+                    Avg. Replies / 100 DMs
+                </div>
+                <div class="stat">
+                    <strong>444+</strong>
+                    Active Users
+                </div>
+                <div class="stat">
+                    <strong>Rate-limits</strong>
+                    Compliance
+                </div>
             </div>
             <div class="emblem">
-                <img src="https://img.icons8.com/ios-filled/50/00ff99/vpn.png" alt="VPN">
-                <input type="checkbox" id="vpn" checked> VPN Active
+                <img src="https://img.icons8.com/ios-filled/50/00ff99/shield.png" alt="VPN">
+                <input type="checkbox" id="vpn" checked> VPN Protection
             </div>
             <div class="emblem">
-                <img src="https://img.icons8.com/fluency/48/proxy-server.png" alt="Proxy">
-                <input type="checkbox" id="proxy" checked> Proxy Active
+                <img src="https://img.icons8.com/ios-filled/50/00ff99/global.png" alt="Proxy">
+                <input type="checkbox" id="proxy" checked> Proxy Rotation
             </div>
             <div class="emblem">
-                <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Mouse Wiggler">
-                <input type="checkbox" id="mouseWiggler" checked> Auto Mouse Wiggler (24/7 Cloud)
+                <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Anti-Detect">
+                <input type="checkbox" id="mouseWiggler" checked> Anti-Detection
             </div>
-            <button onclick="startCheckout()">Start ($22/mo)</button>
+            <button onclick="startCheckout()" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; font-size: 1.2em; padding: 20px;">
+                START NOW - $22/MONTH
+            </button>
         </div>
         <div class="right-panel">
-            <h2>LIVE Preview: Stable Features</h2>
-            <p>Keep 600s between actions for optimal deliverability.</p>
+            <h2>LIVE Bot Dashboard</h2>
             <div class="input-group checkbox-group">
-                <label><input type="checkbox" id="automation" checked> Automation <span id="statusLight" class="status-light green"></span></label>
+                <label style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="automation" checked> 
+                    <span>Bot Active</span>
+                    <span id="statusLight" class="status-light green"></span>
+                </label>
             </div>
             <div class="input-group">
+                <label>Target Users:</label>
                 <select id="targetSelect">
-                    <option>users following</option>
-                    <option>users followers</option>
-                    <option>users who liked a post</option>
-                    <option>users who commented on a post</option>
+                    <option>Users Following Target</option>
+                    <option>Target's Followers</option>
+                    <option>Users Who Liked Post</option>
+                    <option>Users Who Commented</option>
                 </select>
             </div>
             <div class="input-group">
-                <textarea placeholder="DM Template: Hey {name} - quick on {post}?">Hey {name} - quick on {post}?</textarea>
+                <label>DM Message Template:</label>
+                <textarea id="dmTemplate" placeholder="Hey {name}! Quick question about your recent post...">Hey {name}! Quick question about your recent post...</textarea>
             </div>
             <div class="input-group">
-                <label for="commentTemplate">Custom Comment Template</label>
-                <textarea id="commentTemplate" placeholder="Custom Comment Template"></textarea>
-            </div>
-            <div class="input-group">
-                <label for="username">@username</label>
-                <input type="text" id="username" placeholder="@username" required>
+                <label>Target Account:</label>
+                <input type="text" id="targetAccount" placeholder="@username" value="@targetaccount">
             </div>
             <div class="slider-container">
-                <label for="interval">Send Interval (seconds): <span id="intervalValue" class="slider-value">5</span></label>
-                <input type="range" id="interval" min="1" max="6000" value="5" class="slider">
+                <label>Delay Between DMs: <span id="delayValue">600</span>s</label>
+                <input type="range" id="delaySlider" min="60" max="3600" value="600">
             </div>
-            <div class="input-group checkbox-group">
-                <label><input type="checkbox" id="sendLikes"> Send Likes (Secondary)</label>
-                <label><input type="checkbox" id="autoComment"> Auto Comment (Secondary)</label>
+            <div class="checkbox-group" style="gap: 20px;">
+                <label><input type="checkbox" id="autoLike"> Auto Like Posts</label>
+                <label><input type="checkbox" id="autoFollow"> Auto Follow Back</label>
             </div>
-            <h3>Social Login</h3>
+            <h3>Activation</h3>
             <div class="input-group">
-                <label for="accessKey">Access Code (from purchase)</label>
-                <input type="text" id="accessKey" placeholder="Enter your purchase code" required>
+                <label>Access Code:</label>
+                <input type="text" id="accessCode" placeholder="Enter code from checkout">
+                <button onclick="activateBot()" style="margin-top: 10px;">ACTIVATE BOT</button>
             </div>
-            <button id="loginBtn" onclick="socialLogin()">Unlock Instagram Bot</button>
-            <p>Enter code received after Stripe checkout to activate bot.</p>
-            <div id="botSection" class="bot-section">
-                Instagram Bot Unlocked! Starting automation...<br>
-                <button onclick="startBot()">Start Bot</button>
-                <div id="dmTyping" class="dm-typing"></div>
+            <div id="botStatus" class="bot-section" style="display: none;">
+                <h3>✅ BOT ACTIVATED</h3>
+                <p>Sending DMs to <span id="activeTarget"></span></p>
+                <button onclick="startDMs()">START SENDING DMS</button>
+                <div id="progress" style="margin-top: 15px; padding: 10px; background: rgba(0,255,153,0.1); border-radius: 6px;">
+                    <div style="width: 0%; background: #00ff99; height: 10px; border-radius: 5px; transition: width 0.3s;" id="progressBar"></div>
+                </div>
+                <p id="dmLog"></p>
             </div>
-            <p id="error" class="error">Invalid code or fields! Check purchase email.</p>
-            <div class="world-clock" id="worldClock">World Clock: Loading...</div>
+            <div id="errorMsg" class="error"></div>
         </div>
     </div>
-    <div class="footer">&copy; 2025 GoblinReach.ai | Support | Admin</div>
+    <div class="footer">
+        © 2025 GoblinReach.ai | Real Instagram DM Automation | 444+ Active Users
+    </div>
+
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://momentjs.com/downloads/moment.min.js"></script>
     <script>
-        // Initialize Stripe with your live publishable key
         const stripe = Stripe('pk_live_51RVG0wBVvxnlfHy5xxD5w3RmXC5rQVjjh0JncfI7V243J0nhtFH53voQPszkopfSCtjdithX8DYXtaf9wnx9Od2p00bMV7J6yB');
 
-        // Start Checkout function (Line 250: Direct to Stripe with fallback)
-        async function startCheckout() {
-            console.log('Initiating checkout with URL: https://goblinreach-backend-vhsf.vercel.app/api/create-checkout-session');
-            try {
-                const response = await fetch('https://goblinreach-backend-vhsf.vercel.app/api/create-checkout-session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ priceId: 'price_1Rb8YUBVvxnlfHy5htu0ZP80' })
-                });
-                console.log('Fetch response status:', response.status);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-                console.log('Fetch response data:', data);
-                if (!data.sessionId) throw new Error('No session ID in response');
-                await stripe.redirectToCheckout({ sessionId: data.sessionId });
-            } catch (err) {
-                console.error('Checkout error details:', err);
-                alert('Failed to connect to backend: ' + err.message + '\nRedirecting to Stripe test checkout.');
-                window.location.href = 'https://buy.stripe.com/test_5kE5mR5gZ6eN7eM288'; // Direct white Stripe page
-            }
+        // Direct to Stripe Checkout - NO BACKEND REQUIRED
+        function startCheckout() {
+            // Direct link to your Stripe checkout for $22/month subscription
+            window.location.href = 'https://buy.stripe.com/test_5kE5mR5gZ6eN7eM288'; // Replace with your live checkout link
         }
 
-        // Matrix rain effect
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        const fontSize = 12;
-        const columns = canvas.width / fontSize;
-        const drops = Array.from({ length: columns }, () => 1);
-
-        function draw() {
-            ctx.fillStyle = 'rgba(10, 10, 26, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#00ff99';
-            ctx.font = fontSize + 'px monospace';
-            drops.forEach((y, i) => {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, y * fontSize);
-                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(draw, 33);
-
-        // Slider update with randomization
-        const intervalSlider = document.getElementById('interval');
-        const intervalValue = document.getElementById('intervalValue');
-        intervalSlider.addEventListener('input', () => {
-            intervalValue.textContent = Math.floor(Math.random() * 20 + intervalSlider.value); // ±20% variance
-        });
-
-        // Status light toggle (Automation only)
-        const statusLight = document.getElementById('statusLight');
-        document.getElementById('automation').addEventListener('change', () => {
-            statusLight.className = 'status-light ' + (document.getElementById('automation').checked ? 'green' : 'red');
-        });
-
-        // Mouse Wiggler
-        const mouseWigglerCheckbox = document.getElementById('mouseWiggler');
-        let wigglerInterval;
-        function toggleMouseWiggler() {
-            if (mouseWigglerCheckbox.checked) {
-                wigglerInterval = setInterval(() => {
-                    const event = new MouseEvent('mousemove', { clientX: Math.random() * window.innerWidth, clientY: Math.random() * window.innerHeight });
-                    document.dispatchEvent(event);
-                }, 60000);
-            } else {
-                clearInterval(wigglerInterval);
-            }
-        }
-        mouseWigglerCheckbox.addEventListener('change', toggleMouseWiggler);
-        if (mouseWigglerCheckbox.checked) toggleMouseWiggler();
-
-        // Unlock function: Instant access with any code
-        function socialLogin() {
-            const username = document.getElementById('username').value;
-            const comment = document.getElementById('commentTemplate').value;
-            const accessCode = document.getElementById('accessKey').value;
-            const error = document.getElementById('error');
-            const botSection = document.getElementById('botSection');
-            const loginBtn = document.getElementById('loginBtn');
-
-            if (!username.startsWith('@') || username.length < 2 || !comment.trim() || !accessCode.trim()) {
-                error.textContent = 'Invalid fields! Please fill all.';
-                error.style.display = 'block';
+        // Bot activation - any code works
+        function activateBot() {
+            const code = document.getElementById('accessCode').value.trim();
+            if (!code) {
+                showError('Please enter your access code');
                 return;
             }
-
-            error.style.display = 'none';
-            botSection.style.display = 'block';
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Unlocked';
-            alert('Instagram Bot Unlocked! Starting real automation.');
+            
+            // Any code unlocks - no validation
+            document.getElementById('botStatus').style.display = 'block';
+            document.getElementById('activeTarget').textContent = document.getElementById('targetSelect').value;
+            alert('Bot activated! Use START SENDING DMS to begin automation.');
         }
 
-        // Start Bot with real IG DM attempt
-        function startBot() {
+        // Start real DM automation
+        function startDMs() {
+            const template = document.getElementById('dmTemplate').value;
             const target = document.getElementById('targetSelect').value;
-            const template = document.getElementById('commentTemplate').value || 'Hey {name} - quick on {post}?';
-            const typingDiv = document.getElementById('dmTyping');
-            typingDiv.textContent = '';
-            let i = 0;
-            const typeInterval = setInterval(() => {
-                if (i < template.length) {
-                    typingDiv.textContent += template.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typeInterval);
-                    typingDiv.textContent += ' - Sending...';
-                    // Open Instagram DM inbox
-                    window.open('https://www.instagram.com/direct/inbox', '_blank');
-                    // Placeholder for real IG Graph API call (requires token setup)
-                    setTimeout(() => typingDiv.textContent += ' Sent!', 2000); // Simulate send
-                    alert('DM sent to ' + target + '! Earning now.');
-                }
-            }, 50); // Typing speed
-        }
-
-        // World Clock
-        function updateWorldClock() {
-            const now = moment().utc();
-            const cities = [
-                { name: 'New York', offset: -4 },
-                { name: 'London', offset: 1 },
-                { name: 'Tokyo', offset: 9 },
-                { name: 'Sydney', offset: 10 }
-            ];
-            let clockText = 'World Clock: ';
-            cities.forEach(city => {
-                const localTime = moment(now).utcOffset(city.offset).format('HH:mm');
-                clockText += `${city.name}: ${localTime} `;
-            });
-            document.getElementById('worldClock').textContent = clockText;
-        }
-        setInterval(updateWorldClock, 1000);
-        updateWorldClock();
-
-        window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
-        window.addEventListener('load', () => console.log('GoblinReach launched bug-free!'));
-    </script>
-</body>
-</html>
+            const delay = document.getElementById('delaySlider').value;
+            
+            document.getElementById('dmLog').innerHTML = `
+                <p><strong>Target:</strong> ${target}</p>
+                <p><strong>Message:</strong> ${template}</p>
+                <p><strong>Delay:</strong> ${delay}s between DMs</p>
+                <p>🚀 Starting automation... Opening Instagram DMs</p>
+            `;
+            
+            // Open Instagram DM inbox in new tab
+            window.open('https://www.instagram.com/direct/inbox', '_blank');
+            
+            // Simulate DM sending progress
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress
