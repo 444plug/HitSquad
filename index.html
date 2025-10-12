@@ -14,7 +14,6 @@
       overflow-x: hidden;
       background-image: radial-gradient(circle at center, #001100 0%, #000000 100%);
     }
-
     .container {
       display: flex;
       flex-direction: column;
@@ -25,19 +24,16 @@
       position: relative;
       z-index: 2;
     }
-
     h1 {
       color: #00ff88;
       font-size: 2em;
       margin-bottom: 10px;
     }
-
     p {
       color: #66ffcc;
       font-size: 0.9em;
       margin-bottom: 25px;
     }
-
     .panel {
       background: rgba(0, 0, 0, 0.7);
       border: 1px solid #00ff88;
@@ -50,19 +46,16 @@
       justify-content: space-between;
       box-shadow: 0 0 30px #00ff88;
     }
-
     .panel-left, .panel-right {
       flex: 1 1 420px;
       padding: 20px;
     }
-
     .stats {
       display: flex;
       justify-content: space-between;
       gap: 10px;
       margin-bottom: 20px;
     }
-
     .stat-box {
       flex: 1;
       background: #001a10;
@@ -72,18 +65,22 @@
       padding: 10px;
       color: #00ff88;
     }
-
     .stat-box small {
       display: block;
       font-size: 0.8em;
       color: #66ffcc;
     }
-
     .features label {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin: 8px 0;
     }
-
+    .features img {
+      width: 18px;
+      height: 18px;
+      filter: drop-shadow(0 0 5px #00ff88);
+    }
     .btn {
       display: block;
       background: #00ff88;
@@ -97,13 +94,11 @@
       transition: all 0.2s;
       margin-top: 15px;
     }
-
     .btn:hover {
       background: #00cc66;
       box-shadow: 0 0 30px #00ff88;
       transform: scale(1.05);
     }
-
     input, textarea, select {
       width: 100%;
       background: black;
@@ -114,7 +109,21 @@
       margin-bottom: 10px;
       font-family: 'Orbitron', sans-serif;
     }
-
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+    .indicator {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 1px solid #00ff88;
+      transition: 0.3s;
+    }
+    .indicator.on { background: #00ff88; }
+    .indicator.off { background: red; }
     .matrix-bg {
       position: fixed;
       top: 0; left: 0;
@@ -123,25 +132,27 @@
       background: black;
       overflow: hidden;
     }
-
     canvas {
       position: absolute;
       top: 0;
       left: 0;
     }
-
     footer {
       color: #009966;
       font-size: 0.8em;
       margin-top: 20px;
       text-align: center;
     }
+    .slider-value {
+      font-size: 0.8em;
+      color: #66ffcc;
+      text-align: right;
+      margin-top: -5px;
+    }
   </style>
 </head>
 <body>
-  <div class="matrix-bg">
-    <canvas id="matrixCanvas"></canvas>
-  </div>
+  <div class="matrix-bg"><canvas id="matrixCanvas"></canvas></div>
 
   <div class="container">
     <h1>GOBLINREACH.LIVE</h1>
@@ -150,24 +161,15 @@
     <div class="panel">
       <div class="panel-left">
         <div class="stats">
-          <div class="stat-box">
-            <strong>18–31</strong>
-            <small>Avg Replies / 100 DMs</small>
-          </div>
-          <div class="stat-box">
-            <strong>444+</strong>
-            <small>Active Users</small>
-          </div>
-          <div class="stat-box">
-            <strong>99%</strong>
-            <small>Compliance Rate</small>
-          </div>
+          <div class="stat-box"><strong>18–31</strong><small>Avg Replies / 100 DMs</small></div>
+          <div class="stat-box"><strong>444+</strong><small>Active Users</small></div>
+          <div class="stat-box"><strong>99%</strong><small>Compliance Rate</small></div>
         </div>
 
         <div class="features">
-          <label><input type="checkbox" checked> VPN Active</label>
-          <label><input type="checkbox" checked> Proxy Active</label>
-          <label><input type="checkbox" checked> Auto Mouse Wiggler (24/7 Cloud)</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="VPN"> VPN Active</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Active</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/753/753210.png" alt="Mouse"> Auto Mouse Wiggler (24/7 Cloud)</label>
         </div>
 
         <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="btn">START ($22/MO)</a>
@@ -178,16 +180,34 @@
         <label><input type="checkbox" checked> Automation</label>
         <select>
           <option>users following</option>
+          <option>users followers</option>
+          <option>who liked a post</option>
+          <option>who commented on a post</option>
         </select>
+
         <textarea rows="2">Hey {name} - quick on {post}?</textarea>
         <input type="text" placeholder="Custom Comment Template" />
         <input type="text" placeholder="@username" />
-        <input type="range" min="1" max="60" value="5">
-        <label><input type="checkbox"> Send Likes (Secondary)</label>
-        <label><input type="checkbox"> Auto Comment (Secondary)</label>
+
+        <input id="intervalSlider" type="range" min="1" max="60" value="5">
+        <div class="slider-value">Seconds: <span id="intervalValue">5</span></div>
+
+        <div class="toggle-group">
+          <span>DM Primary</span>
+          <div id="dmIndicator" class="indicator on"></div>
+        </div>
+        <div class="toggle-group">
+          <span>Like Secondary</span>
+          <div id="likeIndicator" class="indicator off"></div>
+        </div>
+        <div class="toggle-group">
+          <span>Comment Secondary</span>
+          <div id="commentIndicator" class="indicator off"></div>
+        </div>
+
         <h4>Social Login</h4>
-        <input type="text" placeholder="Enter your purchase code">
-        <a href="app.html" class="btn">UNLOCK INSTAGRAM BOT</a>
+        <input id="codeInput" type="text" placeholder="Enter your purchase code">
+        <a id="unlockBtn" href="app.html" class="btn">UNLOCK INSTAGRAM BOT</a>
         <small>Enter code received after Stripe checkout to activate bot.</small>
         <br><br>
         <small style="color:#00cc99;">World Clock: New York: 15:27 | London: 20:27 | Tokyo: 04:27 | Sydney: 05:27</small>
@@ -207,7 +227,6 @@
     const fontSize = 16;
     const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
-
     function drawMatrix() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -221,6 +240,31 @@
       }
     }
     setInterval(drawMatrix, 50);
+
+    // Show seconds value under slider
+    const slider = document.getElementById('intervalSlider');
+    const intervalValue = document.getElementById('intervalValue');
+    slider.oninput = () => { intervalValue.textContent = slider.value; };
+
+    // Toggle lights for Like/Comment
+    const like = document.getElementById('likeIndicator');
+    const comment = document.getElementById('commentIndicator');
+    like.onclick = () => like.classList.toggle('on');
+    comment.onclick = () => comment.classList.toggle('on');
+
+    // Unlock code generator
+    const unlockBtn = document.getElementById('unlockBtn');
+    const codeInput = document.getElementById('codeInput');
+    unlockBtn.addEventListener('click', (e) => {
+      if (!codeInput.value) {
+        e.preventDefault();
+        const randomNum = Math.floor(1000000 + Math.random() * 9000000);
+        const code = 'G' + randomNum;
+        codeInput.value = code;
+        alert('Your access code: ' + code);
+      }
+    });
+
     window.addEventListener('resize', () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
