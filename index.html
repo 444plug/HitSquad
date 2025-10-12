@@ -1,116 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>GoblinReach.ai</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GoblinReach.Live</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: black;
-      color: #00ff88;
-      font-family: 'Orbitron', sans-serif;
-      overflow: hidden;
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+    :root{
+      --neon:#00ff66;
+      --bg:#071016;
+      --panel:#07121a;
+      --accent:#00ff88;
+      --muted:#8ef0c1;
     }
-    .matrix {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #001100 0%, #000 100%);
-      overflow: hidden;
-      z-index: 0;
+
+    html,body{height:100%;margin:0;font-family:'Lato',sans-serif;background:radial-gradient(circle at center, #00110a 0%, #000000 60%); color:var(--muted); overflow:auto;}
+    body{background-image: url('');}
+
+    /* outer layout */
+    .wrap{max-width:1180px;margin:24px auto;display:flex;gap:20px;padding:22px;box-sizing:border-box;}
+    .panel{background:linear-gradient(180deg, rgba(10,14,12,0.86), rgba(4,6,6,0.9));border-radius:10px;padding:22px;border:2px solid rgba(0,255,102,0.12);box-shadow:0 0 40px rgba(0,255,102,0.04);flex:1;min-height:calc(100vh - 80px);position:relative}
+    .left{flex:0.9;border:2px solid rgba(0,255,120,0.25);background:rgba(2,6,4,0.6)}
+    .right{flex:1.6;border:2px solid rgba(0,255,120,0.12)}
+
+    h1,h2,h3{color:var(--neon);margin:0 0 12px 0;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+    p{color:#9ef6cf;margin:6px 0 12px 0;line-height:1.3}
+
+    .price{background:linear-gradient(90deg, rgba(0,255,120,0.15), rgba(0,200,100,0.06));padding:14px;border-radius:8px;color:#04220f;font-weight:800;margin-bottom:16px}
+    .stats{display:flex;gap:10px;margin-bottom:16px}
+    .stat{flex:1;background:linear-gradient(180deg,#08121a,#061217);padding:14px;border-radius:8px;text-align:center;border:1px solid rgba(0,255,102,0.05)}
+    .emblem{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--muted)}
+    .emblem img{width:28px;height:28px;filter:drop-shadow(0 2px 6px rgba(0,255,120,0.25));}
+
+    /* button */
+    .btn{display:inline-block;background:var(--neon);color:#01120a;padding:14px 22px;border-radius:8px;font-weight:800;text-transform:uppercase;border:none;cursor:pointer;box-shadow:0 6px 24px rgba(0,255,120,0.12);width:100%}
+    .btn:hover{transform:translateY(-2px);background:#00e06a}
+    .small{padding:8px 12px;font-size:0.9em;width:auto;text-transform:none}
+
+    /* form-like area on right */
+    .control{margin-bottom:14px}
+    input[type="text"], textarea, select{
+      width:100%;padding:10px;border-radius:6px;background:#041018;border:1px solid rgba(0,255,120,0.12);color:var(--muted);box-sizing:border-box;
     }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-    .content {
-      text-align: center;
-      z-index: 2;
-      position: relative;
-      padding: 30px;
-    }
-    .logo {
-      width: 110px;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: 2.2em;
-      margin: 0 0 15px;
-      letter-spacing: 2px;
-      color: #00ff88;
-    }
-    p {
-      font-size: 1em;
-      color: #66ffcc;
-      margin-bottom: 30px;
-    }
-    .start-btn {
-      display: inline-block;
-      background: #00ff88;
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 14px 40px;
-      border-radius: 12px;
-      font-size: 1.1em;
-      transition: all 0.2s ease-in-out;
-      box-shadow: 0 0 20px #00ff88;
-    }
-    .start-btn:hover {
-      background: #00cc66;
-      box-shadow: 0 0 30px #00ff88;
-      transform: scale(1.05);
-    }
+    label{display:block;color:var(--neon);font-weight:700;margin-bottom:6px}
+    .slider{width:100%}
+
+    .bot-section{display:none;padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(0,255,120,0.06), rgba(0,255,120,0.02));color:#001a0f;font-weight:700}
+
+    .footer{text-align:center;color:var(--neon);padding:10px 0;font-size:0.85em}
+
+    /* overlay / modal */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1200;display:none}
+    .modal{background:#04121a;border-radius:10px;padding:20px;border:2px solid rgba(0,255,120,0.2);width:92%;max-width:720px;box-shadow:0 30px 80px rgba(0,0,0,0.7)}
+    .modal h3{color:var(--neon);margin:0 0 8px}
+    .modal p{color:#9ef6cf;margin:6px 0 12px}
+    .row{display:flex;gap:8px}
+    .col{flex:1}
+
+    /* matrix background canvas */
+    #bgCanvas{position:fixed;left:0;top:0;width:100%;height:100%;z-index:-1;opacity:0.12;pointer-events:none}
+
+    /* red dev note */
+    .dev-note{color:#ff6666;background:rgba(0,0,0,0.5);padding:8px;border-radius:6px;font-weight:700;margin-top:8px;text-align:center}
+
+    /* small layout tweaks */
+    .left .btn-wrap{margin-top:20px}
+    .right .unlock-wrap{margin-top:10px}
+    .status-light{display:inline-block;width:12px;height:12px;border-radius:50%;margin-left:8px;vertical-align:middle;background:var(--neon)}
   </style>
 </head>
 <body>
-  <div class="matrix">
-    <canvas id="matrixCanvas"></canvas>
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="wrap" role="main">
+    <!-- LEFT / sales panel -->
+    <div class="panel left" aria-label="left panel">
+      <h1>GOBLINREACH.LIVE</h1>
+      <div class="price">
+        Get High-Ticket Clients on Autopilot<br>
+        Compliant, human-like DM automation for elite users.
+      </div>
+
+      <div class="stats" aria-hidden>
+        <div class="stat">Avg. Replies / 100 DMs<br><strong>18–31</strong></div>
+        <div class="stat">Active Users<br><strong>444+</strong></div>
+        <div class="stat">Compliance<br><strong>Rate-limits</strong></div>
+      </div>
+
+      <div class="emblem"><img src="https://img.icons8.com/ios-filled/50/00ff99/vpn.png" alt=""><label style="margin:0"><input id="vpnChk" type="checkbox" checked> VPN Active</label></div>
+      <div class="emblem"><img src="https://img.icons8.com/fluency/48/proxy-server.png" alt=""><label style="margin:0"><input id="proxyChk" type="checkbox" checked> Proxy Active</label></div>
+      <div class="emblem"><img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt=""><label style="margin:0"><input id="wiggleChk" type="checkbox" checked> Auto Mouse Wiggler (24/7 Cloud)</label></div>
+
+      <div class="btn-wrap" style="margin-top:22px">
+        <!-- START BUTTON: opens Stripe Checkout in new tab and shows local post-checkout modal -->
+        <button id="startBtn" class="btn">START ($22/MO)</button>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div class="dev-note">DO NOT TOUCH — Software in progress</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT / live preview & login -->
+    <div class="panel right" aria-label="right panel">
+      <h2>LIVE PREVIEW: STABLE FEATURES</h2>
+      <p>Keep 600s between actions for optimal deliverability.</p>
+
+      <div class="control">
+        <label><input id="automation" type="checkbox" checked> Automation <span class="status-light" id="statusLight"></span></label>
+      </div>
+
+      <div class="control">
+        <label for="targetSelect">Target Source</label>
+        <select id="targetSelect"><option>users following</option><option>users followers</option><option>users who liked a post</option><option>users who commented on a post</option></select>
+      </div>
+
+      <div class="control">
+        <label for="dmTemplate">DM Template</label>
+        <textarea id="dmTemplate">Hey {name} - quick on {post}?</textarea>
+      </div>
+
+      <div class="control">
+        <label for="commentTemplate">Custom Comment Template</label>
+        <textarea id="commentTemplate" placeholder="Custom Comment Template"></textarea>
+      </div>
+
+      <div class="control">
+        <label for="usernameInput">@username</label>
+        <input id="usernameInput" type="text" placeholder="@username">
+      </div>
+
+      <div class="control">
+        <label for="interval">Send Interval (seconds): <span id="intervalValue">5</span></label>
+        <input id="interval" class="slider" type="range" min="1" max="600" value="5">
+      </div>
+
+      <div class="control" style="display:flex;gap:12px;align-items:center">
+        <label><input id="likeChk" type="checkbox"> Send Likes (Secondary)</label>
+        <label><input id="commentChk" type="checkbox"> Auto Comment (Secondary)</label>
+      </div>
+
+      <h3 style="margin-top:18px">Social Login</h3>
+      <div class="control">
+        <label for="accessKey">Access Code (from purchase)</label>
+        <input id="accessKey" type="text" placeholder="Enter your purchase code (email or code)">
+      </div>
+
+      <div class="unlock-wrap">
+        <button id="unlockBtn" class="btn small" style="width:100%">UNLOCK INSTAGRAM BOT</button>
+        <div style="margin-top:10px;color:#ffd6d6;font-weight:700;display:none" id="errorMsg">Invalid code or fields! Check purchase email.</div>
+      </div>
+
+      <div id="botSection" class="bot-section" style="margin-top:14px;">
+        Instagram Bot Unlocked! Starting automation...<br>
+        <div style="margin-top:8px"><button id="openIg" class="btn small">Open Instagram Inbox</button></div>
+        <div id="typing" style="margin-top:10px;background:#001418;padding:8px;border-radius:6px;border:1px solid rgba(0,255,120,0.06);font-family:monospace;min-height:48px"></div>
+      </div>
+
+      <p style="margin-top:14px;font-size:0.9em;color:#88f6c4">Enter the code you received after Stripe checkout to activate bot. For production, validate purchase via Stripe webhooks and return a server-generated code or username.</p>
+
+      <div style="margin-top:14px;color:#8ef6c1;font-size:0.88em">World Clock: <span id="worldClock">Loading...</span></div>
+
+    </div>
   </div>
 
-  <div class="content">
-    <img src="https://i.ibb.co/kGq1vYV/goblin-logo.png" alt="GoblinReach Logo" class="logo">
-    <h1>GoblinReach.ai</h1>
-    <p>Launch your automation instantly. Click below to start.</p>
-    <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="start-btn">Start Now</a>
+  <div class="footer">&copy; 2025 GoblinReach.ai | Support | Admin</div>
+
+  <!-- Post-checkout modal -->
+  <div id="overlay" class="overlay" role="dialog" aria-hidden="true">
+    <div class="modal">
+      <h3>Thanks — Checkout opened</h3>
+      <p>We opened the Stripe checkout in a new tab. After payment completes, you'll receive an email with your access code (or your code may be shown on Stripe success page). Paste that code below on the right panel to unlock the bot.</p>
+      <p><strong>Stripe checkout link used:</strong> <br><code>https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03</code></p>
+      <div style="margin-top:12px;display:flex;gap:10px">
+        <button id="gotIt" class="btn small">Got it — I paid</button>
+        <button id="closeOverlay" class="btn small" style="background:#1a1a1a;color:var(--neon);box-shadow:none">Close</button>
+      </div>
+      <p style="margin-top:10px;font-size:0.85em;color:#cfeee0">Tip: connect this form to your backend and Stripe webhooks to auto-provision codes & usernames after payment. See code comments in the file for where to integrate.</p>
+    </div>
   </div>
 
   <script>
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-    const letters = 'GOBLINREACHAI01';
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#00ff88';
-      ctx.font = fontSize + 'px monospace';
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    /***** Matrix background effect (subtle) *****/
+    const bg = document.getElementById('bgCanvas');
+    const gctx = bg.getContext?.('2d');
+    function fitCanvas(){
+      bg.width = window.innerWidth;
+      bg.height = window.innerHeight;
+    }
+    fitCanvas();
+    window.addEventListener('resize', fitCanvas);
+    // simple falling characters
+    const letters = '01GOBLINREACHLIVE';
+    const fontSize = 14;
+    let columns = Math.floor(window.innerWidth / fontSize);
+    let drops = Array(columns).fill(1);
+    function draw(){
+      if(!gctx) return;
+      gctx.fillStyle = 'rgba(0,0,0,0.12)';
+      gctx.fillRect(0,0,bg.width,bg.height);
+      gctx.fillStyle = 'rgba(0,255,120,0.06)';
+      gctx.font = fontSize + 'px monospace';
+      for(let i=0;i<drops.length;i++){
+        const text = letters[Math.floor(Math.random()*letters.length)];
+        gctx.fillText(text, i*fontSize, drops[i]*fontSize);
+        if(drops[i]*fontSize > bg.height && Math.random() > 0.985) drops[i]=0;
         drops[i]++;
       }
     }
-    setInterval(drawMatrix, 50);
-    window.addEventListener('resize', () => {
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
+    setInterval(draw, 60);
+
+    /***** START button wiring *****/
+    const START_LINK = 'https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03'; // your working Stripe link
+    const startBtn = document.getElementById('startBtn');
+    const overlay = document.getElementById('overlay');
+    const gotIt = document.getElementById('gotIt');
+    const closeOverlay = document.getElementById('closeOverlay');
+
+    startBtn.addEventListener('click', () => {
+      // open Stripe in a new tab so user doesn't lose landing page
+      window.open(START_LINK, '_blank', 'noopener');
+
+      // show modal with instructions
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden','false');
+
+      // optionally set a flag so you can later detect returning users
+      localStorage.setItem('goblin_pending_checkout','1');
+      // NOTE: for production, create a checkout session server-side and store mapping to user
     });
+
+    gotIt.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      overlay.setAttribute('aria-hidden','true');
+      // focus accessKey for pasting
+      document.getElementById('accessKey').focus();
+    });
+    closeOverlay.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      overlay.setAttribute('aria-hidden','true');
+    });
+
+    /***** Unlock flow (client-side simulation) *****/
+    const unlockBtn = document.getElementById('unlockBtn');
+    const accessKey = document.getElementById('accessKey');
+    const errorMsg = document.getElementById('errorMsg');
+    const botSection = document.getElementById('botSection');
+    const typing = document.getElementById('typing');
+
+    unlockBtn.addEventListener('click', () => {
+      const code = accessKey.value.trim();
+      // CLIENT-SIDE: accept any non-empty code as "valid". Replace with server validation.
+      if(!code){
+        errorMsg.style.display = 'block';
+        setTimeout(()=>errorMsg.style.display='none',4000);
+        return;
+      }
+      // mark unlocked locally
+      localStorage.setItem('goblin_access_code', code);
+      botSection.style.display = 'block';
+      unlockBtn.textContent = 'Unlocked';
+      unlockBtn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      // simulate typing + open IG button enabled
+      simulateTyping(document.getElementById('dmTemplate').value || 'Hey {name} - quick on {post}?');
+      // in production: call your backend to activate user's account, send credentials, etc.
+    });
+
+    function simulateTyping(text){
+      typing.textContent = '';
+      let i=0;
+      const iv = setInterval(()=>{
+        if(i < text.length){
+          typing.textContent += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(iv);
+          typing.textContent += ' — Ready to send';
+        }
+      },40);
+    }
+
+    // open ig button
+    document.getElementById('openIg').addEventListener('click', () => {
+      window.open('https://www.instagram.com/direct/inbox/', '_blank', 'noopener');
+    });
+
+    /***** UI helpers (slider + status) *****/
+    const interval = document.getElementById('interval');
+    const intervalValue = document.getElementById('intervalValue');
+    interval.addEventListener('input', () => intervalValue.textContent = interval.value);
+
+    const automation = document.getElementById('automation');
+    const statusLight = document.getElementById('statusLight');
+    automation.addEventListener('change', ()=> statusLight.style.background = automation.checked ? 'var(--neon)' : '#ff6b6b');
+
+    // small mouse wiggler simulation (client-only, harmless)
+    const wiggleChk = document.getElementById('wiggleChk');
+    let wiggleI;
+    function toggleWiggle(){
+      if(wiggleChk.checked){
+        wiggleI = setInterval(()=>{ const evt = new MouseEvent('mousemove', {clientX:Math.random()*window.innerWidth, clientY:Math.random()*window.innerHeight}); window.dispatchEvent(evt); }, 60_000);
+      } else {
+        clearInterval(wiggleI);
+      }
+    }
+    wiggleChk.addEventListener('change', toggleWiggle);
+    toggleWiggle();
+
+    // VPN/Proxy toggles (visual only)
+    document.getElementById('vpnChk').addEventListener('change', e => {/* visual only */});
+    document.getElementById('proxyChk').addEventListener('change', e => {/* visual only */});
+
+    /***** World clock (simple) *****/
+    function updateClock(){
+      const now = new Date();
+      const toLocal = (tzOffset)=>{ // tzOffset in hours
+        const copy = new Date(now.getTime() + (tzOffset - now.getTimezoneOffset()/60)*3600*1000);
+        return copy.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      };
+      const text = `New York: ${toLocal(-4)}  London: ${toLocal(1)}  Tokyo: ${toLocal(9)}  Sydney: ${toLocal(10)}`;
+      document.getElementById('worldClock').textContent = text;
+    }
+    updateClock();
+    setInterval(updateClock,60_000);
+
+    /***** On load: if user already unlocked previously, show botSection *****/
+    window.addEventListener('load', ()=>{
+      const existing = localStorage.getItem('goblin_access_code');
+      if(existing){
+        document.getElementById('accessKey').value = existing;
+        botSection.style.display = 'block';
+        document.getElementById('unlockBtn').disabled = true;
+        document.getElementById('unlockBtn').textContent = 'Unlocked';
+      }
+    });
+
+    /***** IMPORTANT NOTES (for you / devs)
+         - This page opens the Stripe payment link in a new tab. For production, use a server-side Checkout Session
+           and handle Stripe webhooks to securely provision access codes and user accounts.
+         - After successful payment, your backend should:
+            1) verify the Stripe event,
+            2) generate a unique access code / username / password,
+            3) email that to the customer and store mapping in DB,
+            4) optionally redirect the Stripe success_url back to a page with the code or a tokenized link that auto-unlocks.
+         - Replace the START_LINK constant above with a server-created checkout session or payment link if you prefer.
+    ***********************************************/
+
   </script>
 </body>
 </html>
