@@ -1,69 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoblinReach.Live</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-        body { 
-            background: #000; 
-            color: #0f0; 
-            font-family: 'Lato', sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            overflow-y: auto; 
-            position: relative;
-            min-height: 100vh;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GoblinReach.Live</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+    body {
+      background: #0a0a1a;
+      color: #e0e0ff;
+      font-family: 'Lato', sans-serif;
+      margin: 0;
+      padding: 10px;
+      overflow: auto;
+      position: relative;
+      height: 100vh;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.6;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      gap: 15px;
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+    .left-panel, .right-panel {
+      background: rgba(15, 15, 30, 0.9);
+      border: 3px solid #00ff99;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
+      flex: 1;
+    }
+    .left-panel { flex: 0.9; }
+    .right-panel { flex: 1.8; }
+    @media (max-width: 480px) {
+      .container { flex-direction: column; gap: 10px; }
+      .left-panel, .right-panel { flex: 1; padding: 15px; }
+    }
+    h1, h2 { color: #00ff99; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .price {
+      background: linear-gradient(135deg, #00ff99, #00cc77);
+      color: #0a0a1a;
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: inset 0 0 8px rgba(0, 255, 153, 0.5);
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    .stat {
+      background: linear-gradient(45deg, #1a1a33, #2a2a44);
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      flex: 1;
+      margin: 0 8px;
+      box-shadow: 0 0 4px rgba(0, 255, 153, 0.3);
+      font-size: 1em;
+    }
+    button {
+      background: #00ff99;
+      color: #0a0a1a;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      width: 100%;
+      font-size: 1em;
+      text-transform: uppercase;
+    }
+    button:hover { background: #00cc77; }
+    button:disabled { background: #666; cursor: not-allowed; }
+    .input-group { margin: 15px 0; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      background: #1a1a33;
+      border: 2px solid #00ff99;
+      color: #e0e0ff;
+      border-radius: 6px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95em;
+    }
+    textarea { min-height: 60px; }
+    label { display: block; color: #00ff99; margin-bottom: 6px; font-weight: 700; }
+    .checkbox-group { display: flex; align-items: center; gap: 12px; }
+    .checkbox-group input { width: auto; margin-right: 5px; }
+    .slider-container { margin: 15px 0; }
+    .slider { width: 100%; accent-color: #00ff99; }
+    .slider-value { color: #00ff99; font-weight: 700; font-size: 1em; }
+    .status-light {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .green { background: #00ff99; }
+    .red { background: #ff5555; }
+    .emblem {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .emblem img {
+      width: 25px;
+      height: 25px;
+      filter: drop-shadow(0 0 4px #00ff99);
+    }
+    .bot-section { display: none; background: #00ff99; color: #0a0a1a; padding: 10px; border-radius: 6px; margin: 10px 0; font-weight: 700; }
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      color: #00ff99;
+      position: relative;
+      z-index: 1;
+      font-size: 0.85em;
+    }
+    .error { color: #ff5555; display: none; margin-top: 8px; font-weight: 700; }
+    .world-clock {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 0.9em;
+      color: #00ff99;
+    }
+    .dm-typing {
+      font-family: monospace;
+      border: 1px solid #00ff99;
+      padding: 10px;
+      border-radius: 6px;
+      background: #1a1a33;
+      margin: 10px 0;
+      min-height: 50px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="container">
+    <div class="left-panel">
+      <h1>GoblinReach.Live</h1>
+      <div class="price">
+        Get High-Ticket Clients on Autopilot<br>
+        Compliant, human-like DM automation for elite users.
+      </div>
+      <div class="stats">
+        <div class="stat">Avg. Replies / 100 DMs<br>18-31</div>
+        <div class="stat">Active Users<br>444+</div>
+        <div class="stat">Compliance<br>Rate-limits</div>
+      </div>
+      <div class="emblem">
+        <img src="https://img.icons8.com/ios-filled/50/00ff99/vpn.png" alt="VPN">
+        <input type="checkbox" id="vpn" checked> VPN Active
+      </div>
+      <div class="emblem">
+        <img src="https://img.icons8.com/fluency/48/proxy-server.png" alt="Proxy">
+        <input type="checkbox" id="proxy" checked> Proxy Active
+      </div>
+      <div class="emblem">
+        <img src="https://img.icons8.com/ios-filled/50/00ff99/mouse.png" alt="Mouse Wiggler">
+        <input type="checkbox" id="mouseWiggler" checked> Auto Mouse Wiggler (24/7 Cloud)
+      </div>
+      <button onclick="startCheckout()">Start ($22/mo)</button>
+    </div>
+
+    <div class="right-panel">
+      <h2>LIVE Preview: Stable Features</h2>
+      <p>Keep 600s between actions for optimal deliverability.</p>
+      <div class="input-group checkbox-group">
+        <label><input type="checkbox" id="automation" checked> Automation <span id="statusLight" class="status-light green"></span></label>
+      </div>
+      <div class="input-group">
+        <select id="targetSelect">
+          <option>users following</option>
+          <option>users followers</option>
+          <option>users who liked a post</option>
+          <option>users who commented on a post</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <textarea placeholder="DM Template: Hey {name} - quick on {post}?">Hey {name} - quick on {post}?</textarea>
+      </div>
+      <div class="input-group">
+        <label for="commentTemplate">Custom Comment Template</label>
+        <textarea id="commentTemplate" placeholder="Custom Comment Template"></textarea>
+      </div>
+      <div class="input-group">
+        <label for="username">@username</label>
+        <input type="text" id="username" placeholder="@username" required>
+      </div>
+      <div class="slider-container">
+        <label for="interval">Send Interval (seconds): <span id="intervalValue" class="slider-value">5</span></label>
+        <input type="range" id="interval" min="1" max="6000" value="5" class="slider">
+      </div>
+      <div class="input-group checkbox-group">
+        <label><input type="checkbox" id="sendLikes"> Send Likes (Secondary)</label>
+        <label><input type="checkbox" id="autoComment"> Auto Comment (Secondary)</label>
+      </div>
+      <h3>Social Login</h3>
+      <div class="input-group">
+        <label for="accessKey">Access Code (from purchase)</label>
+        <input type="text" id="accessKey" placeholder="Enter your purchase code" required>
+      </div>
+      <button id="loginBtn" onclick="socialLogin()">Unlock Instagram Bot</button>
+      <p>Enter code received after Stripe checkout to activate bot.</p>
+      <div id="botSection" class="bot-section">
+        Instagram Bot Unlocked! Starting automation...<br>
+        <button onclick="startBot()">Start Bot</button>
+        <div id="dmTyping" class="dm-typing"></div>
+      </div>
+      <p id="error" class="error">Invalid code or fields! Check purchase email.</p>
+      <div class="world-clock" id="worldClock">World Clock: Loading...</div>
+    </div>
+  </div>
+  <div class="footer">&copy; 2025 GoblinReach.ai | Support | Admin</div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://momentjs.com/downloads/moment.min.js"></script>
+  <script>
+    // ✅ Instant Stripe Checkout Redirect (clean + reliable)
+    function startCheckout() {
+      const stripeCheckoutUrl = 'https://buy.stripe.com/test_5kE5mR5gZ6eN7eM288'; 
+      // Replace with your live checkout link, e.g. 'https://buy.stripe.com/live_xxxxxxxxxxxxx'
+      window.location.href = stripeCheckoutUrl;
+    }
+
+    // Matrix Rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const fontSize = 12;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }, () => 1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(10, 10, 26, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff99';
+      ctx.font = fontSize + 'px monospace';
+      drops.forEach((y, i) => {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, y * fontSize);
+        if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      });
+    }
+    setInterval(draw, 33);
+
+    // Other logic (same as before)
+    document.getElementById('interval').addEventListener('input', e => {
+      document.getElementById('intervalValue').textContent = e.target.value;
+    });
+
+    const statusLight = document.getElementById('statusLight');
+    document.getElementById('automation').addEventListener('change', e => {
+      statusLight.className = 'status-light ' + (e.target.checked ? 'green' : 'red');
+    });
+
+    function socialLogin() {
+      const username = document.getElementById('username').value;
+      const comment = document.getElementById('commentTemplate').value;
+      const accessCode = document.getElementById('accessKey').value;
+      const error = document.getElementById('error');
+      const botSection = document.getElementById('botSection');
+      const loginBtn = document.getElementById('loginBtn');
+
+      if (!username.startsWith('@') || !comment.trim() || !accessCode.trim()) {
+        error.style.display = 'block';
+        return;
+      }
+      error.style.display = 'none';
+      botSection.style.display = 'block';
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Unlocked';
+      alert('Instagram Bot Unlocked!');
+    }
+
+    function startBot() {
+      const typingDiv = document.getElementById('dmTyping');
+      const template = document.getElementById('commentTemplate').value || 'Hey {name} - quick on {post}?';
+      typingDiv.textContent = '';
+      let i = 0;
+      const typeInterval = setInterval(() => {
+        if (i < template.length) {
+          typingDiv.textContent += template.charAt(i);
+          i++;
+        } else {
+          clearInterval(typeInterval);
+          typingDiv.textContent += ' - Sending...';
+          setTimeout(() => typingDiv.textContent += ' Sent!', 2000);
         }
-        canvas { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: -1; 
-            opacity: 0.3; 
-        }
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            display: flex; 
-            gap: 20px; 
-            position: relative; 
-            z-index: 10; 
-            background: rgba(0,0,0,0.8); 
-            padding: 20px; 
-            border-radius: 10px; 
-            border: 2px solid #0f0;
-        }
-        .left-panel, .right-panel { 
-            background: rgba(15, 15, 30, 0.95); 
-            border: 1px solid #0f0; 
-            padding: 25px; 
-            border-radius: 8px; 
-            flex: 1;
-        }
-        .left-panel { flex: 1; }
-        .right-panel { flex: 1.5; }
-        @media (max-width: 768px) {
-            .container { flex-direction: column; gap: 15px; margin: 10px; padding: 10px; }
-            .left-panel, .right-panel { flex: none; }
-        }
-        h1 { color: #0f0; text-transform: uppercase; letter-spacing: 3px; text-align: center; margin-bottom: 20px; }
-        h2 { color: #0f0; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
-        .price { 
-            background: linear-gradient(45deg, #0f0, #00a000); 
-            color: #000; 
-            padding: 25px; 
-            border-radius: 10px; 
-            text-align: center; 
-            font-weight: bold; 
-            margin: 20px 0;
-            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
-        }
-        .price h2 { font-size: 2.5em; margin: 0; }
-        .stats { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap:
+      }, 50);
+    }
+
+    function updateWorldClock() {
+      const now = moment().utc();
+      const cities = [
+        { name: 'New York', offset: -4 },
+        { name: 'London', offset: 1 },
+        { name: 'Tokyo', offset: 9 },
+        { name: 'Sydney', offset: 10 }
+      ];
+      let text = 'World Clock: ';
+      cities.forEach(city => {
+        const local = moment(now).utcOffset(city.offset).format('HH:mm');
+        text += `${city.name}: ${local} `;
+      });
+      document.getElementById('worldClock').textContent = text;
+    }
+    setInterval(updateWorldClock, 1000);
+    updateWorldClock();
+  </script>
+</body>
+</html>
