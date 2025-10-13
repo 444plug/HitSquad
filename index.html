@@ -149,6 +149,16 @@
       text-align: right;
       margin-top: -5px;
     }
+    .log-area {
+      background: #001a10;
+      border: 1px solid #00ff88;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 20px;
+      height: 200px;
+      overflow-y: auto;
+      color: #00ff88;
+    }
   </style>
 </head>
 <body>
@@ -170,6 +180,8 @@
           <label><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="VPN"> VPN Active</label>
           <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Active</label>
           <label><img src="https://cdn-icons-png.flaticon.com/512/753/753210.png" alt="Mouse"> Auto Mouse Wiggler (24/7 Cloud)</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Rotation"> IP Rotation Enabled</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Delay"> Human-Like Delays</label>
         </div>
 
         <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="btn">START ($22/MO)</a>
@@ -178,16 +190,16 @@
       <div class="panel-right">
         <h3>LIVE PREVIEW: STABLE FEATURES</h3>
         <label><input type="checkbox" checked> Automation</label>
-        <select>
+        <select id="targetType">
           <option>users following</option>
           <option>users followers</option>
           <option>who liked a post</option>
           <option>who commented on a post</option>
         </select>
 
-        <textarea rows="2">Hey {name} - quick on {post}?</textarea>
-        <input type="text" placeholder="Custom Comment Template" />
-        <input type="text" placeholder="@username" />
+        <textarea id="dmTemplate" rows="2">Hey {name} - quick on {post}?</textarea>
+        <input id="customComment" type="text" placeholder="Custom Comment Template" />
+        <input id="targetUsername" type="text" placeholder="@username" />
 
         <input id="intervalSlider" type="range" min="1" max="60" value="5">
         <div class="slider-value">Seconds: <span id="intervalValue">5</span></div>
@@ -206,11 +218,18 @@
         </div>
 
         <h4>Social Login</h4>
+        <input id="igUsername" type="text" placeholder="Instagram Username">
+        <input id="igPassword" type="password" placeholder="Instagram Password">
+        <input id="proxyInput" type="text" placeholder="Proxy (e.g., http://user:pass@ip:port)">
         <input id="codeInput" type="text" placeholder="Enter your purchase code">
-        <a id="unlockBtn" href="app.html" class="btn">UNLOCK INSTAGRAM BOT</a>
-        <small>Enter code received after Stripe checkout to activate bot.</small>
+        <button id="startBtn" class="btn">START AUTOMATION</button>
+        <small>Enter code received after Stripe checkout to activate bot. Use proxies for safety.</small>
         <br><br>
         <small style="color:#00cc99;">World Clock: New York: 15:27 | London: 20:27 | Tokyo: 04:27 | Sydney: 05:27</small>
+
+        <div class="log-area" id="logArea">
+          <p>Logs will appear here...</p>
+        </div>
       </div>
     </div>
 
@@ -252,23 +271,40 @@
     like.onclick = () => like.classList.toggle('on');
     comment.onclick = () => comment.classList.toggle('on');
 
-    // Unlock code generator
-    const unlockBtn = document.getElementById('unlockBtn');
-    const codeInput = document.getElementById('codeInput');
-    unlockBtn.addEventListener('click', (e) => {
-      if (!codeInput.value) {
-        e.preventDefault();
-        const randomNum = Math.floor(1000000 + Math.random() * 9000000);
-        const code = 'G' + randomNum;
-        codeInput.value = code;
-        alert('Your access code: ' + code);
-      }
-    });
-
     window.addEventListener('resize', () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
     });
+
+    // Automation logic (simulated for frontend, real backend needed for actual DMs)
+    const startBtn = document.getElementById('startBtn');
+    const logArea = document.getElementById('logArea');
+    startBtn.addEventListener('click', () => {
+      const code = document.getElementById('codeInput').value;
+      if (!code) {
+        alert('Enter purchase code!');
+        return;
+      }
+      logArea.innerHTML += '<p>Validating code...</p>';
+      // Simulate validation
+      setTimeout(() => {
+        logArea.innerHTML += '<p>Code validated. Starting automation...</p>';
+        // Here, in a real setup, you'd post to backend
+        // For demo, simulate
+        simulateAutomation();
+      }, 1000);
+    });
+
+    function simulateAutomation() {
+      const interval = parseInt(document.getElementById('intervalSlider').value) * 1000;
+      let count = 0;
+      const timer = setInterval(() => {
+        count++;
+        logArea.innerHTML += '<p>Sending DM #' + count + ' (simulated)...</p>';
+        logArea.scrollTop = logArea.scrollHeight;
+        if (count >= 5) clearInterval(timer); // Stop after 5 for demo
+      }, interval);
+    }
   </script>
 </body>
 </html>
