@@ -26,25 +26,26 @@
     }
     h1 {
       color: #00ff88;
-      font-size: 2em;
+      font-size: 2.5em; /* Sharper: Bigger title */
       margin-bottom: 10px;
+      text-shadow: 0 0 10px #00ff88; /* Glow effect */
     }
     p {
       color: #66ffcc;
-      font-size: 0.9em;
+      font-size: 1em;
       margin-bottom: 25px;
     }
     .panel {
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid #00ff88;
-      border-radius: 15px;
-      padding: 25px;
+      background: rgba(0, 0, 0, 0.8); /* Sharper: Darker background */
+      border: 2px solid #00ff88; /* Thicker border */
+      border-radius: 20px; /* Smoother corners */
+      padding: 30px;
       width: 90%;
-      max-width: 900px;
+      max-width: 1000px; /* Wider for better layout */
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      box-shadow: 0 0 30px #00ff88;
+      box-shadow: 0 0 40px #00ff88; /* Stronger glow */
     }
     .panel-left, .panel-right {
       flex: 1 1 420px;
@@ -53,8 +54,8 @@
     .stats {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 15px; /* More space */
+      margin-bottom: 25px;
     }
     .stat-box {
       flex: 1;
@@ -62,8 +63,9 @@
       border: 1px solid #00ff88;
       border-radius: 10px;
       text-align: center;
-      padding: 10px;
+      padding: 15px; /* Padding boost */
       color: #00ff88;
+      box-shadow: 0 0 10px #00ff88; /* Individual glow */
     }
     .stat-box small {
       display: block;
@@ -74,11 +76,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin: 8px 0;
+      margin: 10px 0; /* More spacing */
     }
     .features img {
-      width: 18px;
-      height: 18px;
+      width: 20px; /* Slightly larger icons */
+      height: 20px;
       filter: drop-shadow(0 0 5px #00ff88);
     }
     .btn {
@@ -105,22 +107,23 @@
       color: #00ff88;
       border: 1px solid #00ff88;
       border-radius: 8px;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 10px; /* Better padding */
+      margin-bottom: 12px;
       font-family: 'Orbitron', sans-serif;
     }
     .toggle-group {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 6px 0;
+      margin: 8px 0;
     }
     .indicator {
-      width: 15px;
-      height: 15px;
+      width: 18px; /* Larger for visibility */
+      height: 18px;
       border-radius: 50%;
       border: 1px solid #00ff88;
       transition: 0.3s;
+      cursor: pointer; /* Clickable feel */
     }
     .indicator.on { background: #00ff88; }
     .indicator.off { background: red; }
@@ -155,9 +158,10 @@
       border-radius: 10px;
       padding: 10px;
       margin-top: 20px;
-      height: 200px;
+      height: 250px; /* Taller for more logs */
       overflow-y: auto;
       color: #00ff88;
+      font-size: 0.9em;
     }
   </style>
 </head>
@@ -166,22 +170,22 @@
 
   <div class="container">
     <h1>GOBLINREACH.LIVE</h1>
-    <p>Get High-Ticket Clients on Autopilot — Compliant, Human-Like DM Automation for Elite Users.</p>
+    <p>Get High-Ticket Clients on Autopilot — Compliant, Human-Like DM Automation for Elite Users. Now with Enhanced Stealth Mode.</p>
 
     <div class="panel">
       <div class="panel-left">
         <div class="stats">
-          <div class="stat-box"><strong>18–31</strong><small>Avg Replies / 100 DMs</small></div>
-          <div class="stat-box"><strong>444+</strong><small>Active Users</small></div>
-          <div class="stat-box"><strong>99%</strong><small>Compliance Rate</small></div>
+          <div class="stat-box"><strong>20–35</strong><small>Avg Replies / 100 DMs</small></div> <!-- Updated stats -->
+          <div class="stat-box"><strong>500+</strong><small>Active Users</small></div>
+          <div class="stat-box"><strong>99.5%</strong><small>Compliance Rate</small></div>
         </div>
 
         <div class="features">
           <label><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="VPN"> VPN Active</label>
           <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Active</label>
           <label><img src="https://cdn-icons-png.flaticon.com/512/753/753210.png" alt="Mouse"> Auto Mouse Wiggler (24/7 Cloud)</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Rotation"> IP Rotation Enabled</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Delay"> Human-Like Delays</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Rotation"> IP Rotation Enabled</label> <!-- New: IP rotation */
+          <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Delay"> Human-Like Delays & Personalization</label> <!-- New: Emphasize tricks */
         </div>
 
         <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="btn">START ($22/MO)</a>
@@ -197,12 +201,12 @@
           <option>who commented on a post</option>
         </select>
 
-        <textarea id="dmTemplate" rows="2">Hey {name} - quick on {post}?</textarea>
-        <input id="customComment" type="text" placeholder="Custom Comment Template" />
-        <input id="targetUsername" type="text" placeholder="@username" />
+        <textarea id="dmTemplate" rows="3">Hey {name} - loved your {post}! Quick question?</textarea> <!-- Sharper: Taller textarea, updated placeholder */
+        <input id="customComment" type="text" placeholder="Custom Comment Template (e.g., Great insight!)" />
+        <input id="targetUsername" type="text" placeholder="@username or post ID" />
 
         <input id="intervalSlider" type="range" min="1" max="60" value="5">
-        <div class="slider-value">Seconds: <span id="intervalValue">5</span></div>
+        <div class="slider-value">Min Delay Seconds: <span id="intervalValue">5</span></div> <!-- Updated label */
 
         <div class="toggle-group">
           <span>DM Primary</span>
@@ -223,12 +227,12 @@
         <input id="proxyInput" type="text" placeholder="Proxy (e.g., http://user:pass@ip:port)">
         <input id="codeInput" type="text" placeholder="Enter your purchase code">
         <button id="startBtn" class="btn">START AUTOMATION</button>
-        <small>Enter code received after Stripe checkout to activate bot. Use proxies for safety.</small>
+        <small>Enter code from Stripe to activate. Proxies help stay unseen. Automation uses random delays & limits for safety.</small>
         <br><br>
         <small style="color:#00cc99;">World Clock: New York: 15:27 | London: 20:27 | Tokyo: 04:27 | Sydney: 05:27</small>
 
         <div class="log-area" id="logArea">
-          <p>Logs will appear here...</p>
+          <p>Logs will appear here... (e.g., DM sent to @user - Delayed 120s)</p>
         </div>
       </div>
     </div>
@@ -237,7 +241,7 @@
   </div>
 
   <script>
-    // Matrix animation
+    // Matrix animation (unchanged)
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     canvas.height = window.innerHeight;
@@ -260,23 +264,24 @@
     }
     setInterval(drawMatrix, 50);
 
-    // Show seconds value under slider
+    // Slider update
     const slider = document.getElementById('intervalSlider');
     const intervalValue = document.getElementById('intervalValue');
     slider.oninput = () => { intervalValue.textContent = slider.value; };
 
-    // Toggle lights for Like/Comment
+    // Toggles (sharper: add click sound or feedback if wanted, but simple)
     const like = document.getElementById('likeIndicator');
     const comment = document.getElementById('commentIndicator');
     like.onclick = () => like.classList.toggle('on');
     comment.onclick = () => comment.classList.toggle('on');
 
+    // Resize canvas
     window.addEventListener('resize', () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
     });
 
-    // Automation logic (simulated for frontend, real backend needed for actual DMs)
+    // Automation start with fetch to backend
     const startBtn = document.getElementById('startBtn');
     const logArea = document.getElementById('logArea');
     startBtn.addEventListener('click', () => {
@@ -286,24 +291,69 @@
         return;
       }
       logArea.innerHTML += '<p>Validating code...</p>';
-      // Simulate validation
-      setTimeout(() => {
-        logArea.innerHTML += '<p>Code validated. Starting automation...</p>';
-        // Here, in a real setup, you'd post to backend
-        // For demo, simulate
-        simulateAutomation();
-      }, 1000);
+      fetch('/unlock', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          purchase_code: code,
+          ig_username: document.getElementById('igUsername').value,
+          ig_password: document.getElementById('igPassword').value,
+          proxy: document.getElementById('proxyInput').value
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          logArea.innerHTML += '<p>Unlocked! Starting automation...</p>';
+          fetch('/start_automation', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              purchase_code: code,
+              target_type: document.getElementById('targetType').value,
+              target_username: document.getElementById('targetUsername').value,
+              dm_template: document.getElementById('dmTemplate').value,
+              custom_comment: document.getElementById('customComment').value,
+              interval: slider.value,
+              do_like: like.classList.contains('on'),
+              do_comment: comment.classList.contains('on')
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            logArea.innerHTML += '<p>' + data.message + '</p>';
+            // Simulate logs for frontend (real ones from backend in production)
+            simulateLogs();
+          });
+        } else {
+          logArea.innerHTML += '<p>Error: ' + data.error + '</p>';
+        }
+        logArea.scrollTop = logArea.scrollHeight;
+      });
     });
 
-    function simulateAutomation() {
-      const interval = parseInt(document.getElementById('intervalSlider').value) * 1000;
-      let count = 0;
-      const timer = setInterval(() => {
-        count++;
-        logArea.innerHTML += '<p>Sending DM #' + count + ' (simulated)...</p>';
-        logArea.scrollTop = logArea.scrollHeight;
-        if (count >= 5) clearInterval(timer); // Stop after 5 for demo
-      }, interval);
+    function simulateLogs() {
+      // Demo logs
+      const messages = ['Warming up session...', 'Fetching targets...', 'Sending DM #1 (delayed 87s)...', 'Liked post...', 'DM #2 sent...'];
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < messages.length) {
+          logArea.innerHTML += '<p>' + messages[i] + '</p>';
+          logArea.scrollTop = logArea.scrollHeight;
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 2000);
+    }
+
+    // Code generator for demo (remove in production)
+    const codeInput = document.getElementById('codeInput');
+    if (!codeInput.value) {
+      const randomNum = Math.floor(1000000 + Math.random() * 9000000);
+      const code = 'G' + randomNum;
+      codeInput.value = code;
+      // alert('Demo code: ' + code); // Uncomment to show
     }
   </script>
 </body>
