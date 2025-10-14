@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GoblinReach.live - Full Auto DM</title>
+  <title>GoblinReach.live - Elite DM Automation</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
     body {
@@ -176,8 +176,13 @@
       height: 100%;
       background: #00ff88;
       width: 0%;
-      transition: width 0.3s;
+      transition: width 0.5s ease-in-out;
       border-radius: 5px;
+    }
+    .status-message {
+      color: #66ffcc;
+      font-size: 0.9em;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -185,23 +190,23 @@
   <div class="matrix-bg"><canvas id="matrixCanvas"></canvas></div>
 
   <div class="container">
-    <h1>GOBLINREACH.LIVE - FULL AUTO</h1>
-    <p>Starve No More: High-Ticket Clients on Autopilot. 24/7 DMs, Stealth Mode, Scales to Thousands.</p>
+    <h1>GOBLINREACH.LIVE - ELITE DM AUTO</h1>
+    <p>Land High-Ticket Clients with Stealth Automation. Scales to Thousands, Powered by AI.</p>
 
     <div class="panel">
       <div class="panel-left">
         <div class="stats">
-          <div class="stat-box"><strong>25–40</strong><small>Avg Replies / 100 DMs</small></div>
+          <div class="stat-box"><strong>25–40</strong><small>Replies / 100 DMs</small></div>
           <div class="stat-box"><strong>1K+</strong><small>Active Users</small></div>
           <div class="stat-box"><strong>99.9%</strong><small>Undetected Rate</small></div>
         </div>
 
         <div class="features">
           <label><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="VPN"> VPN Active</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Active</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Rotation</label>
           <label><img src="https://cdn-icons-png.flaticon.com/512/753/753210.png" alt="Mouse"> Cloud Wiggler 24/7</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Rotation"> Auto IP Rotation</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Delay"> Adaptive Delays + Personalization</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Rotation"> Auto IP Switch</label>
+          <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Delay"> Adaptive Delays + AI Personalization</label>
           <label><img src="https://cdn-icons-png.flaticon.com/512/2995/2995672.png" alt="Recovery"> Ban Recovery</label>
         </div>
 
@@ -209,8 +214,8 @@
       </div>
 
       <div class="panel-right">
-        <h3>CONFIGURE AUTO DM</h3>
-        <label><input type="checkbox" checked> Enable Automation</label>
+        <h3>CONFIGURE YOUR AUTOMATION</h3>
+        <label><input type="checkbox" id="autoToggle" checked> Enable Automation</label>
         <select id="targetType">
           <option>users following</option>
           <option>users followers</option>
@@ -223,9 +228,10 @@
         <input id="targetUsername" type="text" placeholder="@target or post ID" />
 
         <input id="intervalSlider" type="range" min="30" max="600" value="120">
-        <div class="slider-value">Adaptive Delay (s): <span id="intervalValue">120</span></div>
+        <div class="slider-value">Min Delay (s): <span id="intervalValue">120</span></div>
 
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="status-message" id="statusMessage">Ready to launch...</div>
 
         <div class="toggle-group">
           <span>DM Primary</span>
@@ -249,12 +255,12 @@
         </div>
 
         <h4>LOGIN & ACTIVATE</h4>
-        <input id="igUsername" type="text" placeholder="IG Username">
-        <input id="igPassword" type="password" placeholder="IG Password">
-        <input id="proxyInput" type="text" placeholder="Proxy<a href="http://user:pass@ip:port" target="_blank" rel="noopener noreferrer nofollow"></a> - Optional">
+        <input id="igUsername" type="text" placeholder="Instagram Username">
+        <input id="igPassword" type="password" placeholder="Instagram Password">
+        <input id="proxyInput" type="text" placeholder="Proxy (http://user:pass@ip:port) - Optional">
         <input id="codeInput" type="text" placeholder="Stripe Purchase Code">
         <button id="startBtn" class="btn">LAUNCH FULL AUTO DM</button>
-        <small>Code from Stripe unlocks. Runs 24/7 in cloud background.</small>
+        <small>Code from Stripe unlocks. Runs 24/7 with stealth mode.</small>
         <br><br>
         <small style="color:#00cc99;">Global Time: NY 15:27 | LDN 20:27 | TOK 04:27 | SYD 05:27</small>
 
@@ -264,11 +270,11 @@
       </div>
     </div>
 
-    <footer>© 2025 GoblinReach.ai | Urgent Support: DM @goblinreach | Scale Ready</footer>
+    <footer>© 2025 GoblinReach.ai | Support: DM @goblinreach | Scale Ready</footer>
   </div>
 
   <script>
-    // Matrix (unchanged)
+    // Matrix animation
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     canvas.height = window.innerHeight;
@@ -310,6 +316,7 @@
     // WebSocket for real-time logs
     const ws = new WebSocket('ws://localhost:5001');
     const logArea = document.getElementById('logArea');
+    const statusMessage = document.getElementById('statusMessage');
     ws.onmessage = (event) => {
       const log = JSON.parse(event.data);
       logArea.innerHTML += `<p>${log.message}</p>`;
@@ -317,24 +324,29 @@
       if (log.progress) {
         document.getElementById('progressFill').style.width = log.progress + '%';
       }
+      statusMessage.textContent = log.message.includes('Error') ? 'Error - Check Logs' : 'Running...';
     };
 
     // Launch
     const startBtn = document.getElementById('startBtn');
     startBtn.addEventListener('click', () => {
       const code = document.getElementById('codeInput').value;
-      if (!code) {
-        alert('Need purchase code!');
+      const username = document.getElementById('igUsername').value;
+      const password = document.getElementById('igPassword').value;
+      if (!code || !username || !password) {
+        alert('Please enter purchase code, Instagram username, and password.');
+        statusMessage.textContent = 'Missing required fields!';
         return;
       }
       logArea.innerHTML += '<p>Unlocking & launching...</p>';
+      statusMessage.textContent = 'Starting...';
       fetch('/unlock', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           purchase_code: code,
-          ig_username: document.getElementById('igUsername').value,
-          ig_password: document.getElementById('igPassword').value,
+          ig_username: username,
+          ig_password: password,
           proxy: document.getElementById('proxyInput').value
         })
       }).then(res => res.json()).then(data => {
@@ -356,10 +368,21 @@
             })
           }).then(res => res.json()).then(data => {
             logArea.innerHTML += `<p>${data.message}</p>`;
+            statusMessage.textContent = data.message.includes('Error') ? 'Error - Check Logs' : 'Automation Active!';
+          }).catch(err => {
+            logArea.innerHTML += `<p>Error: ${err.message}</p>`;
+            statusMessage.textContent = 'Error - Check Logs';
           });
         } else {
           logArea.innerHTML += `<p>Error: ${data.error}</p>`;
+          statusMessage.textContent = 'Error - Invalid Code';
+          alert('Invalid purchase code. Check Stripe or try again.');
         }
+        logArea.scrollTop = logArea.scrollHeight;
+      }).catch(err => {
+        logArea.innerHTML += `<p>Error: ${err.message}</p>`;
+        statusMessage.textContent = 'Error - Server Issue';
+        alert('Server connection failed. Ensure app.py is running.');
       });
     });
 
