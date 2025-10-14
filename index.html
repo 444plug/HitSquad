@@ -184,6 +184,11 @@
       font-size: 0.9em;
       margin-top: 10px;
     }
+    .error-message {
+      color: red;
+      font-size: 0.8em;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -257,9 +262,10 @@
         <h4>LOGIN & ACTIVATE</h4>
         <input id="igUsername" type="text" placeholder="Instagram Username">
         <input id="igPassword" type="password" placeholder="Instagram Password">
-        <input id="proxyInput" type="text" placeholder="Proxy (http://user:pass@ip:port) - Optional">
+        <input id="proxyInput" type="text" placeholder="Proxy<a href="http://user:pass@ip:port" target="_blank" rel="noopener noreferrer nofollow"></a> - Optional">
         <input id="codeInput" type="text" placeholder="Stripe Purchase Code">
         <button id="startBtn" class="btn">LAUNCH FULL AUTO DM</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
         <small>Code from Stripe unlocks. Runs 24/7 with stealth mode.</small>
         <br><br>
         <small style="color:#00cc99;">Global Time: NY 15:27 | LDN 20:27 | TOK 04:27 | SYD 05:27</small>
@@ -317,6 +323,7 @@
     const ws = new WebSocket('ws://localhost:5001');
     const logArea = document.getElementById('logArea');
     const statusMessage = document.getElementById('statusMessage');
+    const errorMessage = document.getElementById('errorMessage');
     ws.onmessage = (event) => {
       const log = JSON.parse(event.data);
       logArea.innerHTML += `<p>${log.message}</p>`;
@@ -333,11 +340,14 @@
       const code = document.getElementById('codeInput').value;
       const username = document.getElementById('igUsername').value;
       const password = document.getElementById('igPassword').value;
-      if (!code || !username || !password) {
-        alert('Please enter purchase code, Instagram username, and password.');
-        statusMessage.textContent = 'Missing required fields!';
+      const target = document.getElementById('targetUsername').value;
+      if (!code || !username || !password || !target) {
+        errorMessage.textContent = 'Missing required fields: Code, Username, Password, Target.';
+        errorMessage.style.display = 'block';
+        statusMessage.textContent = 'Missing fields!';
         return;
       }
+      errorMessage.style.display = 'none';
       logArea.innerHTML += '<p>Unlocking & launching...</p>';
       statusMessage.textContent = 'Starting...';
       fetch('/unlock', {
@@ -357,7 +367,7 @@
             body: JSON.stringify({
               purchase_code: code,
               target_type: document.getElementById('targetType').value,
-              target_username: document.getElementById('targetUsername').value,
+              target_username: target,
               dm_template: document.getElementById('dmTemplate').value,
               custom_comment: document.getElementById('customComment').value,
               interval: slider.value,
@@ -372,17 +382,21 @@
           }).catch(err => {
             logArea.innerHTML += `<p>Error: ${err.message}</p>`;
             statusMessage.textContent = 'Error - Check Logs';
+            errorMessage.textContent = 'Network error - Check server.';
+            errorMessage.style.display = 'block';
           });
         } else {
           logArea.innerHTML += `<p>Error: ${data.error}</p>`;
           statusMessage.textContent = 'Error - Invalid Code';
-          alert('Invalid purchase code. Check Stripe or try again.');
+          errorMessage.textContent = 'Invalid code - Check Stripe.';
+          errorMessage.style.display = 'block';
         }
         logArea.scrollTop = logArea.scrollHeight;
       }).catch(err => {
         logArea.innerHTML += `<p>Error: ${err.message}</p>`;
         statusMessage.textContent = 'Error - Server Issue';
-        alert('Server connection failed. Ensure app.py is running.');
+        errorMessage.textContent = 'Server connection failed - Run app.py.';
+        errorMessage.style.display = 'block';
       });
     });
 
