@@ -1,435 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="GoblinReach - Elite DM Automation: Automate Instagram DMs with session ID login, proxy rotation, and AI personalization." />
-  <title>GoblinReach.live - Elite DM Automation</title>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_TRACKING_ID"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-YOUR_TRACKING_ID');
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-    body {
-      margin: 0;
-      background: black;
-      color: #00ff88;
-      font-family: 'Orbitron', sans-serif;
-      overflow-x: hidden;
-      background-image: radial-gradient(circle at center, #001100 0%, #000000 100%);
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
-      z-index: 2;
-    }
-    h1 {
-      color: #00ff88;
-      font-size: 3em;
-      margin-bottom: 10px;
-      text-shadow: 0 0 15px #00ff88;
-    }
-    p {
-      color: #66ffcc;
-      font-size: 1.1em;
-      margin-bottom: 25px;
-    }
-    .panel {
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #00ff88;
-      border-radius: 20px;
-      padding: 30px;
-      width: 95%;
-      max-width: 1100px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      box-shadow: 0 0 50px #00ff88;
-    }
-    .panel-left, .panel-right {
-      flex: 1 1 500px;
-      padding: 20px;
-    }
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    .stat-box {
-      flex: 1;
-      background: #001a10;
-      border: 1px solid #00ff88;
-      border-radius: 10px;
-      text-align: center;
-      padding: 15px;
-      color: #00ff88;
-      box-shadow: 0 0 10px #00ff88;
-    }
-    .stat-box small {
-      display: block;
-      font-size: 0.8em;
-      color: #66ffcc;
-    }
-    .features label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 10px 0;
-    }
-    .features img {
-      width: 20px;
-      height: 20px;
-      filter: drop-shadow(0 0 5px #00ff88);
-    }
-    .btn {
-      display: block;
-      background: #00ff88;
-      color: black;
-      text-align: center;
-      font-weight: bold;
-      border-radius: 12px;
-      padding: 14px;
-      text-decoration: none;
-      box-shadow: 0 0 20px #00ff88;
-      transition: all 0.2s;
-      margin-top: 15px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #00cc66;
-      box-shadow: 0 0 30px #00ff88;
-      transform: scale(1.05);
-    }
-    input, textarea, select {
-      width: 100%;
-      background: black;
-      color: #00ff88;
-      border: 1px solid #00ff88;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 12px;
-      font-family: 'Orbitron', sans-serif;
-      resize: vertical;
-    }
-    textarea { height: 80px; }
-    .toggle-group {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 8px 0;
-    }
-    .indicator {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1px solid #00ff88;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .indicator.on { background: #00ff88; }
-    .indicator.off { background: red; }
-    .matrix-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-      background: black;
-      overflow: hidden;
-    }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    footer {
-      color: #009966;
-      font-size: 0.8em;
-      margin-top: 20px;
-      text-align: center;
-    }
-    footer a {
-      color: #00ff88;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-    .slider-value {
-      font-size: 0.8em;
-      color: #66ffcc;
-      text-align: right;
-      margin-top: -5px;
-    }
-    .log-area {
-      background: #001a10;
-      border: 1px solid #00ff88;
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 20px;
-      height: 300px;
-      overflow-y: auto;
-      color: #00ff88;
-      font-size: 0.9em;
-    }
-    .progress-bar {
-      width: 100%;
-      height: 10px;
-      background: #001a10;
-      border: 1px solid #00ff88;
-      border-radius: 5px;
-      margin: 10px 0;
-    }
-    .progress-fill {
-      height: 100%;
-      background: #00ff88;
-      width: 0%;
-      transition: width 0.5s ease-in-out;
-      border-radius: 5px;
-    }
-    .status-message {
-      color: #66ffcc;
-      font-size: 0.9em;
-      margin-top: 10px;
-    }
-    .error-message {
-      color: red;
-      font-size: 0.8em;
-      margin-top: 5px;
-      display: none;
-    }
-    .warning {
-      color: orange;
-      font-size: 0.8em;
-      margin: 5px 0;
-    }
-    [style*="color: white"], [style*="color: #fff"] { display: none !important; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="GoblinReach - Elite DM Automation: Automate Instagram DMs with session ID login, proxy rotation, and AI personalization." />
+    <title>GoblinReach.live - Elite DM Automation</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_TRACKING_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YOUR_TRACKING_ID');
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+        body {
+            margin: 0;
+            background: black;
+            color: #00ff88;
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #001100 0%, #000000 100%);
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            color: #00ff88;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px #00ff88;
+        }
+        p {
+            color: #66ffcc;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+        .panel {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff88;
+            border-radius: 20px;
+            padding: 30px;
+            width: 95%;
+            max-width: 1100px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            box-shadow: 0 0 50px #00ff88;
+        }
+        .panel-left, .panel-right {
+            flex: 1 1 500px;
+            padding: 20px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-box {
+            flex: 1;
+            background: #001a10;
+            border: 1px solid #00ff88;
+            border-radius: 10px;
+            text-align: center;
+            padding: 15px;
+            color: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        .stat-box small {
+            display: block;
+            font-size: 0.8em;
+            color: #66ffcc;
+        }
+        .features label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .features img {
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0 0 5px #00ff88);
+        }
+        .btn {
+            display: block;
+            background: #00ff88;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 12px;
+            padding: 14px;
+            text-decoration: none;
+            box-shadow: 0 0 20px #00ff88;
+            transition: all 0.2s;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #00cc66;
+            box-shadow: 0 0 30px #00ff88;
+            transform: scale(1.05);
+        }
+        input, textarea, select {
+            width: 100%;
+            background: black;
+            color: #00ff88;
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 12px;
+            font-family: 'Orbitron', sans-serif;
+            resize: vertical;
+        }
+        textarea {
+            height: 80px;
+        }
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+        .indicator {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid #00ff88;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .indicator.on {
+            background: #00ff88;
+        }
+        .indicator.off {
+            background: red;
+        }
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: black;
+            overflow: hidden;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        footer {
+            color: #009966;
+            font-size: 0.8em;
+            margin-top: 20px;
+            text-align: center;
+        }
+        footer a {
+            color: #00ff88;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .slider-value {
+            font-size: 0.8em;
+            color: #66ffcc;
+            text-align: right;
+            margin-top: -5px;
+        }
+        .log-area {
+            background: #001a10;
+            border: 1px solid #00ff88;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 20px;
+            height: 300px;
+            overflow-y: auto;
+            color: #00ff88;
+            font-size: 0.9em;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #001a10;
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #00ff88;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 5px;
+        }
+        .status-message {
+            color: #66ffcc;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+        .warning {
+            color: orange;
+            font-size: 0.8em;
+            margin: 5px 0;
+        }
+        [style*="color: white"], [style*="color: #fff"] {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
-  <div class="matrix-bg"><canvas id="matrixCanvas"></canvas></div>
-  <div class="container">
-    <a href="https://instagram.com/goblinreach.ai" style="position: absolute; top: 20px; left: 20px;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="Instagram" width="40" height="40">
-    </a>
-    <h1>GOBLINREACH.LIVE - ELITE DM AUTO</h1>
-    <p>Land High-Ticket Clients with Stealth Automation. Scales to Thousands, Powered by AI.</p>
-    <div class="panel">
-      <div class="panel-left">
-        <div class="stats">
-          <div class="stat-box"><strong>25–40</strong><small>Replies / 100 DMs</small></div>
-          <div class="stat-box"><strong>1K+</strong><small>Active Users</small></div>
-          <div class="stat-box"><strong>99.9%</strong><small>Undetected Rate</small></div>
+    <div class="matrix-bg"><canvas id="matrixCanvas"></canvas></div>
+    <div class="container">
+        <a href="https://instagram.com/goblinreach.ai" style="position: absolute; top: 20px; left: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="Instagram" width="40" height="40">
+        </a>
+        <h1>GOBLINREACH.LIVE - ELITE DM AUTO</h1>
+        <p>Land High-Ticket Clients with Stealth Automation. Scales to Thousands, Powered by AI.</p>
+        <div class="panel">
+            <div class="panel-left">
+                <div class="stats">
+                    <div class="stat-box"><strong>25–40</strong><small>Replies / 100 DMs</small></div>
+                    <div class="stat-box"><strong>1K+</strong><small>Active Users</small></div>
+                    <div class="stat-box"><strong>99.9%</strong><small>Undetected Rate</small></div>
+                </div>
+                <div class="features">
+                    <label><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Session"> Session ID Login</label>
+                    <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Rotation</label>
+                    <label><img src="https://cdn-icons-png.flaticon.com/512/753/753210.png" alt="Bulk"> Bulk Username Lists</label>
+                    <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Limit"> Rate Limits (50/hour)</label>
+                    <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Personalize"> AI Personalization</label>
+                    <label><img src="https://cdn-icons-png.flaticon.com/512/2995/2995672.png" alt="Recovery"> Ban Recovery</label>
+                </div>
+                <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="btn">SUBSCRIBE $22/MO - INSTANT ACCESS</a>
+                <div class="warning">Max 50 DMs/hour to avoid bans. Comply with Instagram TOS.</div>
+            </div>
+            <div class="panel-right">
+                <h3>CONFIGURE YOUR AUTOMATION</h3>
+                <label><input type="checkbox" id="autoToggle" checked> Enable Automation</label>
+                <select id="targetType">
+                    <option>bulk usernames</option>
+                    <option>users following</option>
+                    <option>users followers</option>
+                    <option>who liked a post</option>
+                    <option>who commented on a post</option>
+                </select>
+                <textarea id="usernamesList" placeholder="Enter usernames (one per line, e.g., @user1&#10;@user2)"></textarea>
+                <textarea id="dmTemplate" rows="3">Hey {name}, saw you're into {bio_snippet} - quick chat on {post}?</textarea>
+                <input id="customComment" type="text" placeholder="Comment Template (e.g., Love this!)" />
+                <input id="intervalSlider" type="range" min="30" max="600" value="120">
+                <div class="slider-value">Min Delay (s): <span id="intervalValue">120</span> (with jitter)</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="status-message" id="statusMessage">Ready to launch...</div>
+                <div class="toggle-group">
+                    <span>DM Primary</span>
+                    <div id="dmIndicator" class="indicator on"></div>
+                </div>
+                <div class="toggle-group">
+                    <span>Like Secondary</span>
+                    <div id="likeIndicator" class="indicator on"></div>
+                </div>
+                <div class="toggle-group">
+                    <span>Comment Secondary</span>
+                    <div id="commentIndicator" class="indicator on"></div>
+                </div>
+                <div class="toggle-group">
+                    <span>IP Rotation</span>
+                    <div id="ipRotationIndicator" class="indicator on"></div>
+                </div>
+                <div class="toggle-group">
+                    <span>Ban Recovery</span>
+                    <div id="banRecoveryIndicator" class="indicator on"></div>
+                </div>
+                <h4>LOGIN & ACTIVATE (Session ID)</h4>
+                <input id="sessionId" type="text" placeholder="Instagram Session ID (from dev tools)" required>
+                <input id="proxyInput" type="text" placeholder="Proxies (one per line, e.g., socks5://ip:port) - Optional">
+                <input id="codeInput" type="text" placeholder="Stripe Subscription ID (e.g., sub_xxx)" required>
+                <button id="startBtn" class="btn">LAUNCH FULL AUTO DM</button>
+                <button id="exportBtn" class="btn" style="background: #66ffcc; color: black; margin-top: 5px;">Export Dataset</button>
+                <div id="errorMessage" class="error-message"></div>
+                <small>Extract sessionid from IG cookies (F12 > Application > Cookies). Max 50 DMs/hour. Ethical use only.</small>
+                <br><br>
+                <small style="color:#00cc99;">Global Time: NY 19:12 | LDN 00:12 | TOK 08:12 | SYD 10:12</small>
+                <div class="log-area" id="logArea">
+                    <p>Ready... Enter details and launch for live logs.</p>
+                </div>
+            </div>
         </div>
-        <div class="features">
-          <label><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Session"> Session ID Login</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/3652/3652263.png" alt="Proxy"> Proxy Rotation</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/753/753210.png" alt="Bulk"> Bulk Username Lists</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/2985/2985073.png" alt="Limit"> Rate Limits (50/hour)</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Personalize"> AI Personalization</label>
-          <label><img src="https://cdn-icons-png.flaticon.com/512/2995/2995672.png" alt="Recovery"> Ban Recovery</label>
-        </div>
-        <a href="https://buy.stripe.com/cNi14mbtHajR98jdBuaZi03" class="btn">SUBSCRIBE $22/MO - INSTANT ACCESS</a>
-        <div class="warning">Max 50 DMs/hour to avoid bans. Comply with Instagram TOS.</div>
-      </div>
-      <div class="panel-right">
-        <h3>CONFIGURE YOUR AUTOMATION</h3>
-        <label><input type="checkbox" id="autoToggle" checked> Enable Automation</label>
-        <select id="targetType">
-          <option>bulk usernames</option>
-          <option>users following</option>
-          <option>users followers</option>
-          <option>who liked a post</option>
-          <option>who commented on a post</option>
-        </select>
-        <textarea id="usernamesList" placeholder="Enter usernames (one per line, e.g., @user1&#10;@user2)"></textarea>
-        <textarea id="dmTemplate" rows="3">Hey {name}, saw you're into {bio_snippet} - quick chat on {post}?</textarea>
-        <input id="customComment" type="text" placeholder="Comment Template (e.g., Love this!)" />
-        <input id="intervalSlider" type="range" min="30" max="600" value="120">
-        <div class="slider-value">Min Delay (s): <span id="intervalValue">120</span> (with jitter)</div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="status-message" id="statusMessage">Ready to launch...</div>
-        <div class="toggle-group">
-          <span>DM Primary</span> <div id="dmIndicator" class="indicator on"></div>
-        </div>
-        <div class="toggle-group">
-          <span>Like Secondary</span> <div id="likeIndicator" class="indicator on"></div>
-        </div>
-        <div class="toggle-group">
-          <span>Comment Secondary</span> <div id="commentIndicator" class="indicator on"></div>
-        </div>
-        <div class="toggle-group">
-          <span>IP Rotation</span> <div id="ipRotationIndicator" class="indicator on"></div>
-        </div>
-        <div class="toggle-group">
-          <span>Ban Recovery</span> <div id="banRecoveryIndicator" class="indicator on"></div>
-        </div>
-        <h4>LOGIN & ACTIVATE (Session ID)</h4>
-        <input id="sessionId" type="text" placeholder="Instagram Session ID (from dev tools)" required>
-        <input id="proxyInput" type="text" placeholder="Proxies (one per line, e.g., socks5://ip:port) - Optional">
-        <input id="codeInput" type="text" placeholder="Stripe Subscription ID (e.g., sub_xxx)" required>
-        <button id="startBtn" class="btn">LAUNCH FULL AUTO DM</button>
-        <button id="exportBtn" class="btn" style="background: #66ffcc; color: black; margin-top: 5px;">Export Dataset</button>
-        <div id="errorMessage" class="error-message"></div>
-        <small>Extract sessionid from IG cookies (F12 > Application > Cookies). Max 50 DMs/hour. Ethical use only.</small>
-        <br><br>
-        <small style="color:#00cc99;">Global Time: NY 19:12 | LDN 00:12 | TOK 08:12 | SYD 10:12</small>
-        <div class="log-area" id="logArea">
-          <p>Ready... Enter details and launch for live logs.</p>
-        </div>
-      </div>
+        <footer>
+            © 2025 GoblinReach.ai | Support: DM <a href="https://instagram.com/goblinreach.ai">@goblinreach</a> | <a href="/privacy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a> | Ethical Automation Only
+        </footer>
     </div>
-    <footer>
-      © 2025 GoblinReach.ai | Support: DM <a href="https://instagram.com/goblinreach.ai">@goblinreach</a> | 
-      <a href="/privacy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a> | Ethical Automation Only
-    </footer>
-  </div>
-  <script>
-    // Matrix animation
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-    const letters = 'GOBLINREACH01';
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#00ff88';
-      ctx.font = fontSize + 'px monospace';
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-    setInterval(drawMatrix, 33);
-    // Slider
-    const slider = document.getElementById('intervalSlider');
-    const intervalValue = document.getElementById('intervalValue');
-    slider.oninput = () => { intervalValue.textContent = slider.value; };
-    // Toggles
-    document.querySelectorAll('.indicator').forEach(ind => {
-      ind.onclick = () => ind.classList.toggle('on');
-    });
-    // Resize
-    window.addEventListener('resize', () => {
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
-    });
-    // WebSocket with reconnection
-    const logArea = document.getElementById('logArea');
-    const statusMessage = document.getElementById('statusMessage');
-    const errorMessage = document.getElementById('errorMessage');
-    function connectWebSocket() {
-      const ws = new WebSocket('wss://goblinreach-app.herokuapp.com:5001'); // Update to your Heroku URL
-      ws.onopen = () => logArea.innerHTML += '<p>WebSocket connected</p>';
-      ws.onmessage = (event) => {
-        try {
-          const log = JSON.parse(event.data);
-          logArea.innerHTML += `<p>[${new Date().toLocaleTimeString()}] ${log.message}</p>`;
-          logArea.scrollTop = logArea.scrollHeight;
-          if (log.progress) document.getElementById('progressFill').style.width = log.progress + '%';
-          statusMessage.textContent = log.message.includes('Error') ? 'Error - Check Logs' : 'Running...';
-        } catch (e) {
-          logArea.innerHTML += `<p>Log: ${event.data}</p>`;
+    <script>
+        // Matrix animation
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+        const letters = 'GOBLINREACH01';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff88';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
         }
-      };
-      ws.onclose = () => {
-        logArea.innerHTML += '<p>WebSocket disconnected, reconnecting...</p>';
-        setTimeout(connectWebSocket, 5000);
-      };
-      ws.onerror = (err) => console.error('WebSocket error:', err);
-    }
-    connectWebSocket();
-    // Launch with validation
-    document.getElementById('startBtn').addEventListener('click', () => {
-      const code = document.getElementById('codeInput').value;
-      const sessionId = document.getElementById('sessionId').value;
-      const usernames = document.getElementById('usernamesList').value;
-      if (!code || !sessionId || !usernames.trim()) {
-        errorMessage.textContent = 'Fill: Code, Session ID, Usernames.';
-        errorMessage.style.display = 'block';
-        return;
-      }
-      if (usernames.split('\n').filter(u => u.trim()).length > 50) {
-        errorMessage.textContent = 'Max 50 DMs/hour - split runs.';
-        errorMessage.style.display = 'block';
-        return;
-      }
-      errorMessage.style.display = 'none';
-      logArea.innerHTML += '<p>Launching bulk DMs...</p>';
-      statusMessage.textContent = 'Starting...';
-      fetch('/unlock', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ purchase_code: code, session_id: sessionId, proxy: document.getElementById('proxyInput').value })
-      }).then(res => res.json()).then(data => {
-        if (data.success) {
-          fetch('/start_automation', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              purchase_code: code,
-              usernames: usernames,
-              target_type: document.getElementById('targetType').value,
-              dm_template: document.getElementById('dmTemplate').value,
-              custom_comment: document.getElementById('customComment').value,
-              interval: slider.value,
-              do_like: document.getElementById('likeIndicator').classList.contains('on'),
-              do_comment: document.getElementById('commentIndicator').classList.contains('on'),
-              ip_rotation: document.getElementById('ipRotationIndicator').classList.contains('on'),
-              ban_recovery: document.getElementById('banRecoveryIndicator').classList.contains('on')
-            })
-          }).then(res => res.json()).then(data => {
-            logArea.innerHTML += `<p>${data.message}</p>`;
-            if (data.dataset) logArea.innerHTML += `<p>Dataset: ${JSON.stringify(data.dataset, null, 2)}</p>`;
-            statusMessage.textContent = 'Complete! Export below.';
-          }).catch(err => {
-            logArea.innerHTML += `<p>Error: ${err.message}</p>`;
-            errorMessage.textContent = 'Network error.';
-            errorMessage.style.display = 'block';
-          });
-        } else {
-          logArea.innerHTML += `<p>Error: ${data.error}</p>`;
-          errorMessage.textContent = 'Invalid code.';
-          errorMessage.style.display = 'block';
+        setInterval(drawMatrix, 33);
+
+        // Slider
+        const slider = document.getElementById('intervalSlider');
+        const intervalValue = document.getElementById('intervalValue');
+        slider.oninput = () => {
+            intervalValue.textContent = slider.value;
+        };
+
+        // Toggles
+        document.querySelectorAll('.indicator').forEach(ind => {
+            ind.onclick = () => ind.classList.toggle('on');
+        });
+
+        // Resize
+        window.addEventListener('resize', () => {
+            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+        });
+
+        // Simple log simulation (mock WS for now; replace with real backend WS)
+        const logArea = document.getElementById('logArea');
+        const statusMessage = document.getElementById('statusMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        function addLog(msg, progress = null) {
+            const time = new Date().toLocaleTimeString();
+            logArea.innerHTML += `<p>[${time}] ${msg}</p>`;
+            logArea.scrollTop = logArea.scrollHeight;
+            if (progress) {
+                document.getElementById('progressFill').style.width = progress + '%';
+            }
+            statusMessage.textContent = msg.includes('Error') || msg.includes('Failed') ? 'Error - Check Logs' : 'Running...';
         }
-        logArea.scrollTop = logArea.scrollHeight;
-      }).catch(err => {
-        logArea.innerHTML += `<p>Server error: ${err.message}</p>`;
-        errorMessage.textContent = 'Server down - restart app.py.';
-        errorMessage.style.display = 'block';
-      });
-    });
-    // Export dataset
-    document.getElementById('exportBtn').addEventListener('click', () => {
-      fetch('/export_dataset').then(res => res.json()).then(data => {
-        const blob = new Blob([JSON.stringify(data.dataset, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'dm_dataset.json';
-        a.click();
-      });
-    });
-    // Demo data
-    if (!document.getElementById('codeInput').value) {
-      document.getElementById('codeInput').value = 'sub_test123';
-    }
-    document.getElementById('usernamesList').value = '@demo1\n@demo2';
-  </script>
+
+        // Launch with validation
+        document.getElementById('startBtn').addEventListener('click', () => {
+            const code = document.getElementById('codeInput').value;
+            const sessionId = document.getElementById('sessionId').value;
+            const usernames = document.getElementById('usernamesList').value;
+            if (!code || !sessionId || !usernames.trim()) {
+                errorMessage.textContent = 'Fill: Code, Session ID, Usernames.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            const userCount = usernames.split('\n').filter(u => u.trim()).length;
+            if (userCount > 50) {
+                errorMessage.textContent = 'Max 50 DMs/hour - split runs.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            errorMessage.style.display = 'none';
+            addLog('Launching bulk DMs...');
+            statusMessage.textContent = 'Starting...';
+            // Unlock
+            fetch('/unlock', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    purchase_code: code,
+                    session_id: sessionId,
+                    proxy: document.getElementById('proxyInput').value
+                })
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    // Start automation
+                    fetch('/start_automation', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            purchase_code: code,
+                            usernames: usernames,
+                            target_type: document.getElementById('targetType').value,
+                            dm_template: document.getElementById('dmTemplate').value,
+                            custom_comment: document.getElementById('customComment').value,
+                            interval: slider.value,
+                            do_like: document.getElementById('likeIndicator').classList.contains('on'),
+                            do_comment: document.getElementById('commentIndicator').classList.contains('on'),
+                            ip_rotation: document.getElementById('ipRotationIndicator').classList.contains('on'),
+                            ban_recovery: document.getElementById('banRecoveryIndicator').classList.contains('on')
+                        })
+                    }).then(res => res.json()).then(data => {
+                        addLog(data.message);
+                        if (data.dataset) {
+                            addLog(`Dataset: ${JSON.stringify(data.dataset, null, 2)}`);
+                        }
+                        statusMessage.textContent = 'Complete! Export below.';
+                    }).catch(err => {
+                        addLog(`Error: ${err.message}`);
+                        errorMessage.textContent = 'Network error.';
+                        errorMessage.style.display = 'block';
+                    });
+                } else {
+                    addLog(`Error: ${data.error}`);
+                    errorMessage.textContent = 'Invalid code.';
+                    errorMessage.style.display = 'block';
+                }
+            }).catch(err => {
+                addLog(`Server error: ${err.message}`);
+                errorMessage.textContent = 'Server down - restart app.py.';
+                errorMessage.style.display = 'block';
+            });
+        });
+
+        // Export dataset
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            fetch('/export_dataset').then(res => res.json()).then(data => {
+                const blob = new Blob([JSON.stringify(data.dataset, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'dm_dataset.json';
+                a.click();
+            }).catch(err => {
+                addLog(`Export error: ${err.message}`);
+            });
+        });
+
+        // Demo data
+        if (!document.getElementById('codeInput').value) {
+            document.getElementById('codeInput').value = 'sub_test123';
+        }
+        document.getElementById('usernamesList').value = '@demo1\n@demo2';
+    </script>
 </body>
 </html>
